@@ -14,6 +14,8 @@
 - (void) createDataBase;
 - (BOOL) createNoteTable;
 - (BOOL) deleteAllOldNotes;
+- (BOOL) pushNote: (NSDictionary *) note;
+- (void) pushNotesFromResponse: (NSDictionary *) notes;
 
 @property FMDatabase *database;
 @property BOOL databaseExisted;

@@ -8,6 +8,7 @@
 
 #import "DataPusher.h"
 #import "AllDefines.h"
+#import "SADictionaryAddtions.h"
 
 @implementation DataPusher
 
@@ -32,7 +33,7 @@
         self.databaseExisted = YES;
     }
     self.database = [FMDatabase databaseWithPath:databasePath];
-    self.database.traceExecution = YES;
+//    self.database.traceExecution = YES;
     BOOL opened = [self.database open];
     if (opened) {
         self.databaseOpened = YES;
@@ -85,4 +86,39 @@
     }
 }
 
+- (BOOL) pushNote:(NSDictionary *)note {
+    NSDictionary *updatedDict = [note flat:nil];
+    NSLog(@"%@", updatedDict);
+    NSString *sql = [updatedDict makeSQLinsTable:@"note"];
+    if (![self.database beginTransaction]) {
+        self.beginTransactionFailPanic = YES;
+        return NO;
+    }
+    else {
+        BOOL pushed = [self.database executeUpdate:sql];
+        if (!pushed) {
+            if (![self.database rollback]) {
+                self.rollbackFailPanic = YES;
+            }
+            return NO;
+        }
+        else {
+            if (![self.database commit]) {
+                self.commitFailPanic = YES;
+                return  NO;
+            }
+            return YES;
+        }
+    }
+    return YES;
+}
+
+- (void) pushNotesFromResponse: (NSDictionary *) notes {
+    TICK;
+    for (NSDictionary *note in notes) {
+        [self pushNote:note];
+    }
+    TACK;
+    NSLog(@"%@", tackInfo);
+}
 @end

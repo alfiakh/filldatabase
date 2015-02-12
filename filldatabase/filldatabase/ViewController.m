@@ -101,40 +101,40 @@
         [self addToConsole:@"\nВЫ НЕ НАЖАЛИ КНОПКУ \"Загрузить\"!!!"];
     }
     else {
-    DataPusher *pusher = [[DataPusher alloc] init];
-    [pusher createDataBase];
-    if (!pusher.databaseExisted) {
-        [self addToConsole:@"\nБазы не было, создали"];
-    }
-    else {
-        [self addToConsole:@"\nБаза уже была"];
-    }
-    if (pusher.databaseOpened) {
-        [self addToConsole:@"\nУдалось открыть базу"];
-        BOOL noteTableCreated = [pusher createNoteTable];
-        if (!noteTableCreated) {
-            [self addToConsole:@"\nНе удалось создать таблицу note"];
+        DataPusher *pusher = [[DataPusher alloc] init];
+        [pusher createDataBase];
+        if (!pusher.databaseExisted) {
+            [self addToConsole:@"\nБазы не было, создали"];
         }
         else {
-            [self addToConsole:@"\nТаблица note создана либо уже была"];
-            BOOL oldRowsDeleted = [pusher deleteAllOldNotes];
-            if (!oldRowsDeleted) {
-                if (pusher.beginTransactionFailPanic || pusher.commitFailPanic || pusher.rollbackFailPanic){
-                    [self transactionPanicDetector:pusher];
-                }
-                else {
-                    [self addToConsole:@"\nНе удалось удалить старые записи из таблицы note"];
-                }
+            [self addToConsole:@"\nБаза уже была"];
+        }
+        if (pusher.databaseOpened) {
+            [self addToConsole:@"\nУдалось открыть базу"];
+            BOOL noteTableCreated = [pusher createNoteTable];
+            if (!noteTableCreated) {
+                [self addToConsole:@"\nНе удалось создать таблицу note"];
             }
             else {
-                [self addToConsole:@"\nСтарые заметки удалены"];
-                
+                [self addToConsole:@"\nТаблица note создана либо уже была"];
+                BOOL oldRowsDeleted = [pusher deleteAllOldNotes];
+                if (!oldRowsDeleted) {
+                    if (pusher.beginTransactionFailPanic || pusher.commitFailPanic || pusher.rollbackFailPanic){
+                        [self transactionPanicDetector:pusher];
+                    }
+                    else {
+                        [self addToConsole:@"\nНе удалось удалить старые записи из таблицы note"];
+                    }
+                }
+                else {
+                    [self addToConsole:@"\nСтарые заметки удалены"];
+                    [pusher pushNotesFromResponse: self.responseData[@"data"]];
+                }
             }
         }
-    }
-    else {
-        [self addToConsole:@"\nБаза не была открыта"];
-    }
+        else {
+            [self addToConsole:@"\nБаза не была открыта"];
+        }
     }
 }
 
