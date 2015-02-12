@@ -15,7 +15,6 @@
     self = [super init];
     if (self) {
         self.databaseExisted = NO;
-        self.noteTableCreated = NO;
         self.databaseOpened = NO;
     }
     return self;
@@ -31,20 +30,27 @@
         self.databaseExisted = YES;
     }
     self.database = [FMDatabase databaseWithPath:databasePath];
+    self.database.traceExecution = YES;
     BOOL opened = [self.database open];
     if (opened) {
         self.databaseOpened = YES;
     }
 }
 
--(void) createNoteTable {
+-(BOOL) createNoteTable {
     if (![self.database executeUpdate:CREATE_NOTE_TABLE_QUERY]) {
         NSLog(@"Table note didn't create");
+        return NO;
     }
     else {
         NSLog(@"Table note created");
-        self.noteTableCreated = YES;
+        return YES;
     }
+}
+
+-(BOOL) deleteAllOldNotes {
+    BOOL deleted = [self.database executeUpdate:DELETE_NOTES_QUERY];
+    return deleted;
 }
 
 @end

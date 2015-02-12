@@ -76,27 +76,39 @@
     );
 }
 
+- (void) addToConsole: (NSString *) message {
+    self.console.text = [self.console.text stringByAppendingString:message];
+}
 - (IBAction)pushNotes:(id)sender {
     DataPusher *pusher = [[DataPusher alloc] init];
     [pusher createDataBase];
     if (!pusher.databaseExisted) {
-        self.console.text = [self.console.text stringByAppendingString:@"\nБазы не было, создали"];
+        [self addToConsole:@"\nБазы не было, создали"];
     }
     else {
-        self.console.text = [self.console.text stringByAppendingString:@"\nБаза уже была"];
+        [self addToConsole:@"\nБаза уже была"];
     }
     if (pusher.databaseOpened) {
-        self.console.text = [self.console.text stringByAppendingString:@"\nУдалось открыть базу"];
-        [pusher createNoteTable];
-        if (!pusher.noteTableCreated) {
-            self.console.text = [self.console.text stringByAppendingString:@"\nНе удалось создать таблицу note"];
+        [self addToConsole:@"\nУдалось открыть базу"];
+        BOOL noteTableCreated = [pusher createNoteTable];
+        if (!noteTableCreated) {
+            [self addToConsole:@"\nНе удалось создать таблицу note"];
         }
         else {
-            self.console.text = [self.console.text stringByAppendingString:@"\nТаблица note создана либо уже была"];
+            [self addToConsole:@"\nТаблица note создана либо уже была"];
+            FMResultSet *set = [pusher.database executeQuery:@"select * from note"];
+            NSLog(@"%@", set);
+            BOOL oldRowsDeleted = [pusher deleteAllOldNotes];
+            if (!oldRowsDeleted) {
+                [self addToConsole:@"\nНе удалось удалить старые записи из таблицы note"];
+            }
+            else {
+                [self addToConsole:@"\nСтарые заметки удалены"];
+            }
         }
     }
     else {
-        self.console.text = [self.console.text stringByAppendingString:@"\nБаза не была открыта"];
+        [self addToConsole:@"\nБаза не была открыта"];
     }
 }
 

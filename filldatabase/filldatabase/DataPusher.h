@@ -12,11 +12,11 @@
 @interface DataPusher : NSObject
 
 - (void) createDataBase;
-- (void) createNoteTable;
+- (BOOL) createNoteTable;
+- (BOOL) deleteAllOldNotes;
 
 @property FMDatabase *database;
 @property BOOL databaseExisted;
-@property BOOL noteTableCreated;
 @property BOOL databaseOpened;
 
 @end
