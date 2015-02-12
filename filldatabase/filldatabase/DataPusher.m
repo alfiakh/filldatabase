@@ -16,6 +16,8 @@
     if (self) {
         self.databaseExisted = NO;
         self.databaseOpened = NO;
+        self.commitFailPanic = NO;
+        self.rollbackFailPanic = NO;
     }
     return self;
 }
@@ -38,19 +40,49 @@
 }
 
 -(BOOL) createNoteTable {
-    if (![self.database executeUpdate:CREATE_NOTE_TABLE_QUERY]) {
-        NSLog(@"Table note didn't create");
+    if (![self.database beginTransaction]) {
+        self.beginTransactionFailPanic = YES;
         return NO;
     }
     else {
-        NSLog(@"Table note created");
-        return YES;
+        BOOL created = [self.database executeUpdate:CREATE_NOTE_TABLE_QUERY];
+        if (!created) {
+            if (![self.database rollback]) {
+                self.rollbackFailPanic = YES;
+            };
+            return NO;
+        }
+        else {
+            if (![self.database commit]) {
+                self.commitFailPanic = YES;
+                return NO;
+            }
+            return YES;
+        }
     }
 }
 
 -(BOOL) deleteAllOldNotes {
-    BOOL deleted = [self.database executeUpdate:DELETE_NOTES_QUERY];
-    return deleted;
+    if (![self.database beginTransaction]) {
+        self.beginTransactionFailPanic = YES;
+        return NO;
+    }
+    else {
+        BOOL deleted = [self.database executeUpdate:DELETE_NOTES_QUERY];
+        if (!deleted) {
+            if (![self.database rollback]) {
+                self.rollbackFailPanic = YES;
+            }
+            return NO;
+        }
+        else {
+            if (![self.database commit]) {
+                self.commitFailPanic = YES;
+                return  NO;
+            }
+            return YES;
+        }
+    }
 }
 
 @end

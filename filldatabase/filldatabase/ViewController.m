@@ -10,6 +10,7 @@
 #import "DataGetter.h"
 #import "DataPusher.h"
 #import "AllDefines.h"
+#import "SADictionaryAddtions.h"
 
 @interface ViewController ()
 
@@ -79,7 +80,12 @@
 - (void) addToConsole: (NSString *) message {
     self.console.text = [self.console.text stringByAppendingString:message];
 }
+
 - (IBAction)pushNotes:(id)sender {
+    if (!self.responseData) {
+        [self addToConsole:@"\nВЫ НЕ НАЖАЛИ КНОПКУ \"Загрузить\"!!!"];
+    }
+    else {
     DataPusher *pusher = [[DataPusher alloc] init];
     [pusher createDataBase];
     if (!pusher.databaseExisted) {
@@ -96,19 +102,19 @@
         }
         else {
             [self addToConsole:@"\nТаблица note создана либо уже была"];
-            FMResultSet *set = [pusher.database executeQuery:@"select * from note"];
-            NSLog(@"%@", set);
             BOOL oldRowsDeleted = [pusher deleteAllOldNotes];
             if (!oldRowsDeleted) {
                 [self addToConsole:@"\nНе удалось удалить старые записи из таблицы note"];
             }
             else {
                 [self addToConsole:@"\nСтарые заметки удалены"];
+                
             }
         }
     }
     else {
         [self addToConsole:@"\nБаза не была открыта"];
+    }
     }
 }
 

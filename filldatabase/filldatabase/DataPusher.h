@@ -18,5 +18,8 @@
 @property FMDatabase *database;
 @property BOOL databaseExisted;
 @property BOOL databaseOpened;
+@property BOOL commitFailPanic;
+@property BOOL rollbackFailPanic;
+@property BOOL beginTransactionFailPanic;
 
 @end

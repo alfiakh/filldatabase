@@ -22,6 +22,7 @@
 		F0B2DBD01A8C90C700E8655D /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBC81A8C90C700E8655D /* FMDatabasePool.m */; };
 		F0B2DBD11A8C90C700E8655D /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBCA1A8C90C700E8655D /* FMDatabaseQueue.m */; };
 		F0B2DBD21A8C90C700E8655D /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBCD1A8C90C700E8655D /* FMResultSet.m */; };
+		F0B2DBD51A8CECCA00E8655D /* SADictionaryAddtions.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBD41A8CECCA00E8655D /* SADictionaryAddtions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,8 @@
 		F0B2DBCB1A8C90C700E8655D /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDB.h; path = filldatabase/FMDB.h; sourceTree = "<group>"; };
 		F0B2DBCC1A8C90C700E8655D /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = filldatabase/FMResultSet.h; sourceTree = "<group>"; };
 		F0B2DBCD1A8C90C700E8655D /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = filldatabase/FMResultSet.m; sourceTree = "<group>"; };
+		F0B2DBD31A8CECCA00E8655D /* SADictionaryAddtions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SADictionaryAddtions.h; sourceTree = "<group>"; };
+		F0B2DBD41A8CECCA00E8655D /* SADictionaryAddtions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SADictionaryAddtions.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +122,8 @@
 		F009E2A81A8BA9E600271245 /* filldatabase */ = {
 			isa = PBXGroup;
 			children = (
+				F0B2DBD31A8CECCA00E8655D /* SADictionaryAddtions.h */,
+				F0B2DBD41A8CECCA00E8655D /* SADictionaryAddtions.m */,
 				F009E2D21A8BB20F00271245 /* AllDefines.h */,
 				F009E2AD1A8BA9E600271245 /* AppDelegate.h */,
 				F009E2AE1A8BA9E600271245 /* AppDelegate.m */,
@@ -271,6 +276,7 @@
 				F0B2DBD21A8C90C700E8655D /* FMResultSet.m in Sources */,
 				F009E2AC1A8BA9E600271245 /* main.m in Sources */,
 				F0B2DBCE1A8C90C700E8655D /* FMDatabase.m in Sources */,
+				F0B2DBD51A8CECCA00E8655D /* SADictionaryAddtions.m in Sources */,
 				F0B2DBCF1A8C90C700E8655D /* FMDatabaseAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
