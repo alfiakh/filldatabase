@@ -15,7 +15,7 @@
     self = [super init];
     if (self) {
         self.databaseExisted = NO;
-        self.noteTableCrested = NO;
+        self.noteTableCreated = NO;
         self.databaseOpened = NO;
     }
     return self;
@@ -28,7 +28,6 @@
         NSLog(@"Database doesn't exist");
     }
     else {
-        NSLog(@"Database exists");
         self.databaseExisted = YES;
     }
     self.database = [FMDatabase databaseWithPath:databasePath];
@@ -44,7 +43,7 @@
     }
     else {
         NSLog(@"Table note created");
-        self.noteTableCrested = YES;
+        self.noteTableCreated = YES;
     }
 }
 

@@ -16,7 +16,7 @@
 
 @property FMDatabase *database;
 @property BOOL databaseExisted;
-@property BOOL noteTableCrested;
+@property BOOL noteTableCreated;
 @property BOOL databaseOpened;
 
 @end

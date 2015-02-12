@@ -88,11 +88,11 @@
     if (pusher.databaseOpened) {
         self.console.text = [self.console.text stringByAppendingString:@"\nУдалось открыть базу"];
         [pusher createNoteTable];
-        if (!pusher.noteTableCrested) {
-            self.console.text = [self.console.text stringByAppendingString:@"\nТаблицы не было, создали"];
+        if (!pusher.noteTableCreated) {
+            self.console.text = [self.console.text stringByAppendingString:@"\nНе удалось создать таблицу note"];
         }
         else {
-            self.console.text = [self.console.text stringByAppendingString:@"\nТаблица уже есть в базе"];
+            self.console.text = [self.console.text stringByAppendingString:@"\nТаблица note создана либо уже была"];
         }
     }
     else {
