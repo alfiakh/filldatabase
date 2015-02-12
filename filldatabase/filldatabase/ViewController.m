@@ -81,6 +81,21 @@
     self.console.text = [self.console.text stringByAppendingString:message];
 }
 
+- (void) transactionPanicDetector: (DataPusher *) pusher {
+    if (pusher.beginTransactionFailPanic) {
+        [self addToConsole:@"Fail begin transaction"];
+    }
+    else if (pusher.commitFailPanic) {
+        [self addToConsole:@"Fail commit transaction"];
+    }
+    else if (pusher.rollbackFailPanic) {
+        [self addToConsole:@"Fail rollback transaction"];
+    }
+    else {
+        [self addToConsole:@"Unknown fail of transaction"];
+    }
+}
+
 - (IBAction)pushNotes:(id)sender {
     if (!self.responseData) {
         [self addToConsole:@"\nВЫ НЕ НАЖАЛИ КНОПКУ \"Загрузить\"!!!"];
@@ -104,7 +119,12 @@
             [self addToConsole:@"\nТаблица note создана либо уже была"];
             BOOL oldRowsDeleted = [pusher deleteAllOldNotes];
             if (!oldRowsDeleted) {
-                [self addToConsole:@"\nНе удалось удалить старые записи из таблицы note"];
+                if (pusher.beginTransactionFailPanic || pusher.commitFailPanic || pusher.rollbackFailPanic){
+                    [self transactionPanicDetector:pusher];
+                }
+                else {
+                    [self addToConsole:@"\nНе удалось удалить старые записи из таблицы note"];
+                }
             }
             else {
                 [self addToConsole:@"\nСтарые заметки удалены"];
