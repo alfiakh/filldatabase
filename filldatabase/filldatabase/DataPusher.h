@@ -7,7 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "FMDatabase.h"
 
 @interface DataPusher : NSObject
+
+- (void) createDataBase;
+- (void) createNoteTable;
+
+@property FMDatabase *database;
+@property BOOL databaseExisted;
+@property BOOL noteTableCrested;
+@property BOOL databaseOpened;
 
 @end

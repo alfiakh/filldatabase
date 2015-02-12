@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "DataGetter.h"
+#import "DataPusher.h"
 #import "AllDefines.h"
 
 @interface ViewController ()
@@ -36,12 +37,12 @@
     [getter runRequestWithUrl:listUrl];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
         dispatch_group_wait(getter.requestGroup, DISPATCH_TIME_FOREVER);
-        NSLog(@"%@", getter.requestError);
-        NSLog(@"%ld", getter.statusCode);
-        NSLog(@"%@", getter.jsonParsingError);
-        NSLog(@"%ld", (long)getter.srvMessageCode);
-        NSLog(@"%ld", getter.notesCount);
-        NSLog(@"statusCode: %ld", getter.statusCode);
+//        NSLog(@"%@", getter.requestError);
+//        NSLog(@"%ld", getter.statusCode);
+//        NSLog(@"%@", getter.jsonParsingError);
+//        NSLog(@"%ld", (long)getter.srvMessageCode);
+//        NSLog(@"%ld", getter.notesCount);
+//        NSLog(@"statusCode: %ld", getter.statusCode);
         if (getter.requestError) {
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 self.console.text = [self.console.text stringByAppendingString:@"\nНеизвестная ошибка при отправке запроса"];
@@ -49,7 +50,7 @@
         }
         else if (getter.statusCode != 200){
             dispatch_async(dispatch_get_main_queue(), ^(void) {
-                NSString *incorrectStatusCodeMessage = [NSString stringWithFormat:@"\nНекорректный статус-код ответа. Код %ld", getter.statusCode];
+                NSString *incorrectStatusCodeMessage = [NSString stringWithFormat:@"\nНекорректный статус-код ответа. Код %ld", (long)getter.statusCode];
                 self.console.text = [self.console.text stringByAppendingString:incorrectStatusCodeMessage];
             });
         }
@@ -66,15 +67,37 @@
         }
         else {
             dispatch_async(dispatch_get_main_queue(), ^(void) {
-                NSString *notesRecievedMessage = [NSString stringWithFormat:@"\nЗапрос вернул корректный ответ. Получено %ld заметок", getter.notesCount];
+                NSString *notesRecievedMessage = [NSString stringWithFormat:@"\nЗапрос вернул корректный ответ. Получено %ld заметок", (long)getter.notesCount];
                 self.console.text = [self.console.text stringByAppendingString:notesRecievedMessage];
             });
+            self.responseData = getter.responseData;
         }
     }
     );
 }
 
 - (IBAction)pushNotes:(id)sender {
+    DataPusher *pusher = [[DataPusher alloc] init];
+    [pusher createDataBase];
+    if (!pusher.databaseExisted) {
+        self.console.text = [self.console.text stringByAppendingString:@"\nБазы не было, создали"];
+    }
+    else {
+        self.console.text = [self.console.text stringByAppendingString:@"\nБаза уже была"];
+    }
+    if (pusher.databaseOpened) {
+        self.console.text = [self.console.text stringByAppendingString:@"\nУдалось открыть базу"];
+        [pusher createNoteTable];
+        if (!pusher.noteTableCrested) {
+            self.console.text = [self.console.text stringByAppendingString:@"\nТаблицы не было, создали"];
+        }
+        else {
+            self.console.text = [self.console.text stringByAppendingString:@"\nТаблица уже есть в базе"];
+        }
+    }
+    else {
+        self.console.text = [self.console.text stringByAppendingString:@"\nБаза не была открыта"];
+    }
 }
 
 @end

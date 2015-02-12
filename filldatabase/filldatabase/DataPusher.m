@@ -7,7 +7,45 @@
 //
 
 #import "DataPusher.h"
+#import "AllDefines.h"
 
 @implementation DataPusher
+
+-(id)init {
+    self = [super init];
+    if (self) {
+        self.databaseExisted = NO;
+        self.noteTableCrested = NO;
+        self.databaseOpened = NO;
+    }
+    return self;
+}
+
+-(void) createDataBase {
+    NSString *databasePath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:DATABASE_NAME];
+    NSLog(@"%@", databasePath);
+    if(![[NSFileManager defaultManager] fileExistsAtPath:databasePath]) {
+        NSLog(@"Database doesn't exist");
+    }
+    else {
+        NSLog(@"Database exists");
+        self.databaseExisted = YES;
+    }
+    self.database = [FMDatabase databaseWithPath:databasePath];
+    BOOL opened = [self.database open];
+    if (opened) {
+        self.databaseOpened = YES;
+    }
+}
+
+-(void) createNoteTable {
+    if (![self.database executeUpdate:CREATE_NOTE_TABLE_QUERY]) {
+        NSLog(@"Table note didn't create");
+    }
+    else {
+        NSLog(@"Table note created");
+        self.noteTableCrested = YES;
+    }
+}
 
 @end

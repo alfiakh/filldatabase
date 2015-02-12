@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FMDatabase.h"
 
 @interface ViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UITextView *console;
+@property NSDictionary *responseData;
 
 @end
 
