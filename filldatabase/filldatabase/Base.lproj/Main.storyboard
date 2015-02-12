@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="ufC-wZ-h7g">
+            <objects>
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
+                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rxe-Lp-AUZ">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Загрузить">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loadNotes:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ceZ-EX-thN"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wxi-Ko-IC0">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Запушить">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pushNotes:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="tUZ-1X-V2A"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Записи еще не загружены." selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zz6-ky-SVf">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Zz6-ky-SVf" firstAttribute="trailing" secondItem="Wxi-Ko-IC0" secondAttribute="trailing" id="3Yt-Sw-0M3"/>
+                            <constraint firstItem="Wxi-Ko-IC0" firstAttribute="baseline" secondItem="Rxe-Lp-AUZ" secondAttribute="baseline" id="5bn-T1-1yv"/>
+                            <constraint firstItem="Rxe-Lp-AUZ" firstAttribute="leading" secondItem="Zz6-ky-SVf" secondAttribute="leading" id="EhH-EZ-55W"/>
+                            <constraint firstItem="Zz6-ky-SVf" firstAttribute="top" secondItem="Rxe-Lp-AUZ" secondAttribute="bottom" constant="8" symbolic="YES" id="IqI-dY-Q2U"/>
+                            <constraint firstItem="Wxi-Ko-IC0" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="YgW-RC-P7G"/>
+                            <constraint firstAttribute="bottom" secondItem="Zz6-ky-SVf" secondAttribute="bottom" constant="20" symbolic="YES" id="azt-Am-ut0"/>
+                            <constraint firstItem="Rxe-Lp-AUZ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="enb-C9-Wqb"/>
+                            <constraint firstItem="Wxi-Ko-IC0" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="ewb-mB-0yV"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="Rxe-Lp-AUZ"/>
+                                <exclude reference="Wxi-Ko-IC0"/>
+                                <exclude reference="Zz6-ky-SVf"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="EhH-EZ-55W"/>
+                                <exclude reference="enb-C9-Wqb"/>
+                                <exclude reference="5bn-T1-1yv"/>
+                                <exclude reference="YgW-RC-P7G"/>
+                                <exclude reference="ewb-mB-0yV"/>
+                                <exclude reference="3Yt-Sw-0M3"/>
+                                <exclude reference="IqI-dY-Q2U"/>
+                                <exclude reference="azt-Am-ut0"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="Rxe-Lp-AUZ"/>
+                                <include reference="Wxi-Ko-IC0"/>
+                                <include reference="Zz6-ky-SVf"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="EhH-EZ-55W"/>
+                                <include reference="enb-C9-Wqb"/>
+                                <include reference="5bn-T1-1yv"/>
+                                <include reference="YgW-RC-P7G"/>
+                                <include reference="ewb-mB-0yV"/>
+                                <include reference="3Yt-Sw-0M3"/>
+                                <include reference="IqI-dY-Q2U"/>
+                                <include reference="azt-Am-ut0"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="console" destination="Zz6-ky-SVf" id="DQk-3G-aeN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
