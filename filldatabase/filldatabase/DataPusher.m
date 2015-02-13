@@ -73,31 +73,6 @@
     return YES;
 }
 
-- (BOOL) pushNote:(NSDictionary *)note {
-    NSDictionary *updatedDict = [note flat:nil];
-    NSLog(@"%@", updatedDict);
-    NSString *sql = [updatedDict makeSQLinsTable:@"note"];
-    if (![self.database beginTransaction]) {
-        self.beginTransactionFailPanic = YES;
-        return NO;
-    }
-        BOOL pushed = [self.database executeUpdate:sql];
-        if (!pushed) {
-            if (![self.database rollback]) {
-                self.rollbackFailPanic = YES;
-            }
-            return NO;
-        }
-        else {
-            if (![self.database commit]) {
-                self.commitFailPanic = YES;
-                return  NO;
-            }
-            return YES;
-        }
-    return YES;
-}
-
 - (BOOL) pushNotesFromResponse: (NSDictionary *) notes {
     if (![self.database beginTransaction]) {
         self.beginTransactionFailPanic = YES;
@@ -105,7 +80,7 @@
     }
     TICK;
     for (NSDictionary *note in notes) {
-        NSDictionary *updatedDict = [note flat:nil];
+        NSDictionary *updatedDict = [note flat:@"_"];
         NSString *sql = [updatedDict makeSQLinsTable:@"note"];
         if(![self.database executeUpdate:sql]) {
             self.rollbackFailPanic = ![self.database rollback];
@@ -114,9 +89,10 @@
         }
         else {
             self.commitFailPanic = ![self.database commit];
+            TACK;
+            return !self.commitFailPanic;
         }
     }
-    TACK;
-    return !self.commitFailPanic;
+    return YES;
 }
 @end

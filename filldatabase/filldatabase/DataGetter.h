@@ -23,7 +23,7 @@
 @property NSError *requestError;
 @property NSInteger statusCode;
 @property dispatch_group_t requestGroup;
-@property NSDictionary *responseData;
+@property (weak) NSDictionary *responseData;
 @property NSError *jsonParsingError;
 @property NSInteger srvMessageCode;
 @property NSInteger notesCount;
