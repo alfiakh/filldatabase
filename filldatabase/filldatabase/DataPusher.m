@@ -15,84 +15,111 @@
 -(id)init {
     self = [super init];
     if (self) {
-        self.databaseExisted = NO;
-        self.databaseOpened = NO;
-        self.commitFailPanic = NO;
-        self.rollbackFailPanic = NO;
+        [self createDataBase];
+        [self createNoteTable];
+        [self deleteAllOldNotes];
     }
     return self;
 }
 
 -(void) createDataBase {
     NSString *databasePath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:DATABASE_NAME];
-    NSLog(@"%@", databasePath);
-    if(![[NSFileManager defaultManager] fileExistsAtPath:databasePath]) {
-        NSLog(@"Database doesn't exist");
+    if([[NSFileManager defaultManager] fileExistsAtPath:databasePath]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherDatabaseExistedNotification" object: nil];
     }
     else {
-        self.databaseExisted = YES;
+        [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherDatabaseDidntExistNotification" object: nil];
     }
     self.database = [FMDatabase databaseWithPath:databasePath];
 //    self.database.traceExecution = YES;
     BOOL opened = [self.database open];
     if (opened) {
-        self.databaseOpened = YES;
+        [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherDatabaseOpenedNotification" object: nil];
+    }
+    else {
+        [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherDatabaseFailedToOpenNotification" object: nil];
     }
 }
 
--(BOOL) createNoteTable {
+-(void) createNoteTable {
     if (![self.database beginTransaction]) {
-        self.beginTransactionFailPanic = YES;
-        return NO;
-    }
-    if (![self.database executeUpdate:CREATE_NOTE_TABLE_QUERY]) {
-        self.rollbackFailPanic = ![self.database rollback];
-        return NO;
-    }
-    if (![self.database commit]) {
-        self.commitFailPanic = YES;
-        return NO;
-    }
-    return YES;
-
-}
-
--(BOOL) deleteAllOldNotes {
-    if (![self.database beginTransaction]) {
-        self.beginTransactionFailPanic = YES;
-        return NO;
-    }
-    if (![self.database executeUpdate:DELETE_NOTES_QUERY]) {
-        self.rollbackFailPanic = ![self.database rollback];
-        return NO;
-    }
-    if (![self.database commit]) {
-        self.commitFailPanic = YES;
-        return  NO;
-    }
-    return YES;
-}
-
-- (BOOL) pushNotesFromResponse: (NSDictionary *) notes {
-    if (![self.database beginTransaction]) {
-        self.beginTransactionFailPanic = YES;
-        return NO;
-    }
-    TICK;
-    for (NSDictionary *note in notes) {
-        NSDictionary *updatedDict = [note flat:@"_"];
-        NSString *sql = [updatedDict makeSQLinsTable:@"note"];
-        if(![self.database executeUpdate:sql]) {
-            self.rollbackFailPanic = ![self.database rollback];
-            TACK;
-            return NO;
+        if ([self.database executeUpdate:CREATE_NOTE_TABLE_QUERY]) {
+            if (![self.database commit]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherCommitTransactionFailNotification" object: nil];
+            }
+            else {
+                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherCreatedNoteTableNotification" object: nil];
+            }
         }
         else {
-            self.commitFailPanic = ![self.database commit];
-            TACK;
-            return !self.commitFailPanic;
+            if (![self.database rollback]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherRollBackTransactionFailNotification" object: nil];
+            }
+            else {
+                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherTransactionRollbackedNotification" object: nil];
+            }
         }
     }
-    return YES;
+    else {
+        [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherBeginTransactionFailNotification" object: nil];
+    }
+}
+
+-(void) deleteAllOldNotes {
+    if (![self.database beginTransaction]) {
+        if ([self.database executeUpdate:DELETE_NOTES_QUERY]) {
+            if (![self.database commit]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherCommitTransactionFailNotification" object: nil];
+            }
+            else {
+                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherOldNotesDeletedNotification" object: nil];
+            }
+        }
+        else {
+            if (![self.database rollback]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherRollBackTransactionFailNotification" object: nil];
+            }
+            else {
+                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherTransactionRollbackedNotification" object: nil];
+            }
+        }
+    }
+    else {
+        [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherBeginTransactionFailNotification" object: nil];
+    }
+}
+
+- (void) pushNotesFromResponse: (NSDictionary *) notes {
+    if ([self.database beginTransaction]) {
+        BOOL rollbacked = NO;
+        TICK;
+        for (NSDictionary *note in notes[@"data"]) {
+            NSDictionary *updatedDict = [note flat:nil];
+            NSString *sql = [updatedDict makeSQLinsTable:@"note"];
+            if(![self.database executeUpdate:sql]) {
+                rollbacked = YES;
+                if (![self.database rollback]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherRollBackTransactionFailNotification" object: nil];
+                }
+                else {
+                    [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherTransactionRollbackedNotification" object: nil];
+                }
+            }
+
+        }
+        if (!rollbacked) {
+            if (![self.database commit]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherCommitTransactionFailNotification" object: nil];
+            }
+            else {
+                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherNotesPushedNotification" object: nil];
+            }
+        }
+        TACK;
+        NSLog(@"pushNotes: %@", tackInfo);
+    }
+    else {
+        [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherBeginTransactionFailNotification" object: nil];
+    }
 }
 @end

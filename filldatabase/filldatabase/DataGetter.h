@@ -18,7 +18,7 @@
                              lastTimeStamp: (NSInteger) timestamp
                                 notesCount: (NSInteger) count;
 - (void) runRequestWithUrl: (NSString*) url;
-- (void) encodeJsonData:(NSData*) data;
+- (void) decodeJsonData:(NSData*) data;
 
 @property NSError *requestError;
 @property NSInteger statusCode;

@@ -12,15 +12,10 @@
 @interface DataPusher : NSObject
 
 - (void) createDataBase;
-- (BOOL) createNoteTable;
-- (BOOL) deleteAllOldNotes;
-- (BOOL) pushNotesFromResponse: (NSDictionary *) notes;
+- (void) createNoteTable;
+- (void) deleteAllOldNotes;
+- (void) pushNotesFromResponse: (NSDictionary *) notes;
 
 @property FMDatabase *database;
-@property BOOL databaseExisted;
-@property BOOL databaseOpened;
-@property BOOL commitFailPanic;
-@property BOOL rollbackFailPanic;
-@property BOOL beginTransactionFailPanic;
 
 @end

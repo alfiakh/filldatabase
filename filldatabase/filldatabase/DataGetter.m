@@ -47,8 +47,7 @@
 -(void) runRequestWithUrl: (NSString *) url {
     NSURLSession *session = [NSURLSession sharedSession];
     self.requestGroup = dispatch_group_create();
-    dispatch_group_enter(self.requestGroup);
-    NSLog(@"URL:%@", url);
+    TICK;
     NSURLSessionDataTask *dataTask = [session
                                       dataTaskWithURL:[NSURL URLWithString:url]
                                       completionHandler:^(
@@ -57,29 +56,51 @@
                                                           NSError *error) {
                                           if (!error) {
                                               NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
-                                              self.statusCode = [httpResponse statusCode];
-                                              if(self.statusCode == 200) {
-                                                  NSLog(@"It's OK!!!");
-                                                  [self encodeJsonData:data];
+                                              if([httpResponse statusCode] == 200) {
+                                                  [self decodeJsonData:data];
+                                              }
+                                              else {
+                                                  dispatch_async(dispatch_get_main_queue(), ^(void) {
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName:@"DataGetterDetectedWrongStatusCodeNotification" object:nil];
+                                                  });
                                               }
                                           }
                                           else {
-                                              self.requestError = error;
+                                              dispatch_async(dispatch_get_main_queue(), ^(void) {
+                                                  [[NSNotificationCenter defaultCenter] postNotificationName:@"DataGetterDetectedRequestErrorNotification" object:nil];
+                                              });
                                           }
-                                          dispatch_group_leave(self.requestGroup);
+                                          TACK;
+                                          NSLog(@"%@", tackInfo);
     }];
     [dataTask resume];
 }
 
--(void) encodeJsonData:(NSData *)data {
+-(void) decodeJsonData:(NSData *)data {
     NSError *jsonParsingError;
     self.responseData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&jsonParsingError];
     if (jsonParsingError) {
-        self.jsonParsingError = jsonParsingError;
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"DataGetterDetectedRequestErrorNotification" object:nil];
+        });
     }
     else {
-        self.srvMessageCode = [self.responseData[@"srvMessageCode"] integerValue];
-        self.notesCount = [self.responseData[@"data"] count];
+        NSInteger srvMessageCode = [self.responseData[@"srvMessageCode"] integerValue];
+        if (srvMessageCode != 200) {
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"DataGetterDetectedWrongSrvMessageCodeNotification" object:nil];
+            });
+        }
+        else {
+            self.notesCount = [self.responseData[@"data"] count];
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                NSDictionary *userInfo = @{@"responseData": self.responseData};
+                [[NSNotificationCenter defaultCenter]
+                 postNotificationName:@"DataGetterNotesLoadedNotification"
+                 object:nil
+                 userInfo:userInfo];
+            });
+        }
     }
 }
 

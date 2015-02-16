@@ -7,8 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "DataGetter.h"
-#import "DataPusher.h"
+
 #import "AllDefines.h"
 #import "SADictionaryAddtions.h"
 
@@ -18,9 +17,81 @@
 
 @implementation ViewController
 
+- (id)init {
+    self = [super init];
+    if (self) {
+        //some code
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleRequestError:)
+                                                 name:@"DataGetterDetectedRequestErrorNotification"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleWrongStatusCode:)
+                                                 name:@"DataGetterDetectedWrongStatusCodeNotification"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleErrorEncodingJson:)
+                                                 name:@"DataGetterDetectedErrorEncodingJsonNotification"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleWrongSrvMessageCode:)
+                                                 name:@"DataGetterDetectedWrongSrvMessageCodeNotification"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleNotesLoaded:)
+                                                 name:@"DataGetterNotesLoadedNotification"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleDatabaseExisted:)
+                                                 name:@"DataPusherDatabaseExistedNotification"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleDatabaseDidntExist:)
+                                                 name:@"DataPusherDatabaseDidntExistNotification"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleDatabaseOpened:)
+                                                 name:@"DataPusherDatabaseOpenedNotification"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleDatabaseFailedToOpen:)
+                                                 name:@"DataPusherDatabaseFailedToOpenNotification"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(BeginTransactionFail:)
+                                                 name:@"DataPusherBeginTransactionFailNotification"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleCommitTransactionFail:)
+                                                 name:@"DataPusherCommitTransactionFailNotification"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleRollBackTransactionFail:)
+                                                 name:@"DataPusherRollBackTransactionFailNotification"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleTransactionRollbacked:)
+                                                 name:@"DataPusherTransactionRollbackedNotification"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleCreatedNoteTable:)
+                                                 name:@"DataPusherCreatedNoteTableNotification"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleOldNotesDeleted:)
+                                                 name:@"DataPusherOldNotesDeletedNotification"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleNotesPushed:)
+                                                 name:@"DataPusherNotesPushedNotification"
+                                               object:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -29,113 +100,93 @@
 }
 
 - (IBAction)loadNotes:(id)sender {
-    self.console.text = [self.console.text stringByAppendingString:@"\nПошел запрос"];
+    [self addToConsole:@"Пошел запрос"];
     DataGetter *getter = [[DataGetter alloc] init];
     NSArray *currentTimeStamps = [getter giveMeTS];
     NSString *listUrl = [getter collectUrlForListWithUserID:USER_ID
                           lastTimeStamp:[currentTimeStamps[0] integerValue]
                              notesCount:[NOTES_COUNT integerValue]];
     [getter runRequestWithUrl:listUrl];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-        dispatch_group_wait(getter.requestGroup, DISPATCH_TIME_FOREVER);
-//        NSLog(@"%@", getter.requestError);
-//        NSLog(@"%ld", getter.statusCode);
-//        NSLog(@"%@", getter.jsonParsingError);
-//        NSLog(@"%ld", (long)getter.srvMessageCode);
-//        NSLog(@"%ld", getter.notesCount);
-//        NSLog(@"statusCode: %ld", getter.statusCode);
-        if (getter.requestError) {
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                self.console.text = [self.console.text stringByAppendingString:@"\nНеизвестная ошибка при отправке запроса"];
-            });
-        }
-        else if (getter.statusCode != 200){
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                NSString *incorrectStatusCodeMessage = [NSString stringWithFormat:@"\nНекорректный статус-код ответа. Код %ld", (long)getter.statusCode];
-                self.console.text = [self.console.text stringByAppendingString:incorrectStatusCodeMessage];
-            });
-        }
-        else if (getter.jsonParsingError) {
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                self.console.text = [self.console.text stringByAppendingString:@"\nПроизошла ошибка при сериализации JSON"];
-            });
-        }
-        else if (getter.srvMessageCode && getter.srvMessageCode != 200) {
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                NSString *logicalError = [NSString stringWithFormat:@"\nПроизошла логическая ошибка при отправке запроса на сервер. Код %i.", (int)getter.srvMessageCode];
-                self.console.text = [self.console.text stringByAppendingString:logicalError];
-            });
-        }
-        else {
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                NSString *notesRecievedMessage = [NSString stringWithFormat:@"\nЗапрос вернул корректный ответ. Получено %ld заметок", (long)getter.notesCount];
-                self.console.text = [self.console.text stringByAppendingString:notesRecievedMessage];
-            });
-            self.responseData = getter.responseData;
-        }
-    }
-    );
-}
-
-- (void) addToConsole: (NSString *) message {
-    self.console.text = [self.console.text stringByAppendingString:message];
-}
-
-- (void) transactionPanicDetector: (DataPusher *) pusher {
-    if (pusher.beginTransactionFailPanic) {
-        [self addToConsole:@"Fail begin transaction"];
-    }
-    else if (pusher.commitFailPanic) {
-        [self addToConsole:@"Fail commit transaction"];
-    }
-    else if (pusher.rollbackFailPanic) {
-        [self addToConsole:@"Fail rollback transaction"];
-    }
-    else {
-        [self addToConsole:@"Unknown fail of transaction"];
-    }
 }
 
 - (IBAction)pushNotes:(id)sender {
     if (!self.responseData) {
-        [self addToConsole:@"\nВЫ НЕ НАЖАЛИ КНОПКУ \"Загрузить\"!!!"];
+        [self addToConsole:@"Вы еще не загружали данных. Нажмите на кнопку \"Загрузить\""];
     }
     else {
         DataPusher *pusher = [[DataPusher alloc] init];
-        [pusher createDataBase];
-        if (!pusher.databaseExisted) {
-            [self addToConsole:@"\nБазы не было, создали"];
-        }
-        else {
-            [self addToConsole:@"\nБаза уже была"];
-        }
-        if (pusher.databaseOpened) {
-            [self addToConsole:@"\nУдалось открыть базу"];
-            BOOL noteTableCreated = [pusher createNoteTable];
-            if (!noteTableCreated) {
-                [self addToConsole:@"\nНе удалось создать таблицу note"];
-            }
-            else {
-                [self addToConsole:@"\nТаблица note создана либо уже была"];
-                BOOL oldRowsDeleted = [pusher deleteAllOldNotes];
-                if (!oldRowsDeleted) {
-                    if (pusher.beginTransactionFailPanic || pusher.commitFailPanic || pusher.rollbackFailPanic){
-                        [self transactionPanicDetector:pusher];
-                    }
-                    else {
-                        [self addToConsole:@"\nНе удалось удалить старые записи из таблицы note"];
-                    }
-                }
-                else {
-                    [self addToConsole:@"\nСтарые заметки удалены"];
-                    [pusher pushNotesFromResponse: self.responseData[@"data"]];
-                }
-            }
-        }
-        else {
-            [self addToConsole:@"\nБаза не была открыта"];
-        }
+        [pusher pushNotesFromResponse:self.responseData];
     }
+}
+
+- (void) addToConsole: (NSString *) message {
+    NSString *appendingString = [@"\n" stringByAppendingString:message];
+    self.console.text = [self.console.text stringByAppendingString:appendingString];
+}
+
+- (void) handleRequestError:(NSNotification *)notification {
+    [self addToConsole: @"Произошла ошибка при отправке запроса"];
+}
+
+- (void) handleWrongStatusCode:(NSNotification *)notification {
+    [self addToConsole: @"Запрос пришел с некорректным статус кодом"];
+}
+
+- (void) handleWrongSrvMessageCode:(NSNotification *)notification {
+    [self addToConsole: @"Произошла логическая ошибка при отправке запроса. Неверный srvMessageCode"];
+}
+
+- (void) handleErrorEncodingJson:(NSNotification *)notification {
+    [self addToConsole: @"Произошла ошибка при декодировании JSON-ответа"];
+}
+
+- (void) handleNotesLoaded:(NSNotification *)notification {
+    [self addToConsole: @"Congratulations! Заметки загружены и декодированы"];
+    self.responseData = notification.userInfo[@"responseData"];
+}
+
+- (void) handleDatabaseExisted:(NSNotification *)notification {
+    [self addToConsole: @"База уже была создана"];
+}
+
+- (void) handleDatabaseDidntExist:(NSNotification *)notification {
+    [self addToConsole: @"Базы раньше не было"];
+}
+
+- (void) handleDatabaseOpened:(NSNotification *)notification {
+    [self addToConsole: @"Удалось открыть базу"];
+}
+
+- (void) handleDatabaseFailedToOpen:(NSNotification *)notification {
+    [self addToConsole: @"Не удалось открыть базу"];
+}
+
+- (void) BeginTransactionFail:(NSNotification *)notification {
+    [self addToConsole: @"Не удалось начать транзакцию"];
+}
+
+- (void) handleCommitTransactionFail:(NSNotification *)notification {
+    [self addToConsole: @"Не удалось закоммитить транзакцию"];
+}
+
+- (void) handleRollBackTransactionFail:(NSNotification *)notification {
+    [self addToConsole: @"Не удалось откатить транзакцию"];
+}
+
+- (void) handleTransactionRollbacked:(NSNotification *)notification {
+    [self addToConsole: @"Откатили транзакцию"];
+}
+
+- (void) handleCreatedNoteTable:(NSNotification *)notification {
+    [self addToConsole: @"Таблица note успешно создана"];
+}
+
+- (void) handleOldNotesDeleted:(NSNotification *)notification {
+    [self addToConsole: @"Старые записи в таблице note удалены"];
+}
+
+- (void) handleNotesPushed:(NSNotification *)notification {
+    [self addToConsole: @"Заметки успешно залиты в базу"];
 }
 
 @end
