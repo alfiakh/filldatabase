@@ -15,6 +15,7 @@
 - (void) createNoteTable;
 - (void) deleteAllOldNotes;
 - (void) pushNotesFromResponse: (NSDictionary *) notes;
+- (void) sendErrorNotification: (NSString *) message;
 
 @property FMDatabase *database;
 

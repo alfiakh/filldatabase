@@ -12,80 +12,76 @@
 
 @implementation DataPusher
 
--(id)init {
-    self = [super init];
-    if (self) {
-        [self createDataBase];
-        [self createNoteTable];
-        [self deleteAllOldNotes];
-    }
-    return self;
+- (void) sendErrorNotification:(NSString *)message {
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName: @"DataErrorNotification"
+     object: nil
+     userInfo: @{@"message": message}];
 }
 
--(void) createDataBase {
+- (void) createDataBase {
     NSString *databasePath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:DATABASE_NAME];
     if([[NSFileManager defaultManager] fileExistsAtPath:databasePath]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherDatabaseExistedNotification" object: nil];
+        [self sendErrorNotification:@"База уже существует"];
     }
     else {
-        [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherDatabaseDidntExistNotification" object: nil];
+        [self sendErrorNotification:@"Базы не было будем создавать"];
     }
     self.database = [FMDatabase databaseWithPath:databasePath];
 //    self.database.traceExecution = YES;
-    BOOL opened = [self.database open];
-    if (opened) {
-        [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherDatabaseOpenedNotification" object: nil];
+    if ([self.database open]) {
+        [self sendErrorNotification:@"Удалось открыть базу"];
     }
     else {
-        [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherDatabaseFailedToOpenNotification" object: nil];
+        [self sendErrorNotification:@"Не удалось открыть базу"];
     }
 }
 
--(void) createNoteTable {
-    if (![self.database beginTransaction]) {
+- (void) createNoteTable {
+    if ([self.database beginTransaction]) {
         if ([self.database executeUpdate:CREATE_NOTE_TABLE_QUERY]) {
             if (![self.database commit]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherCommitTransactionFailNotification" object: nil];
+                [self sendErrorNotification:@"Не удалось закоммитить транзакцию после создания таблицы note"];
             }
             else {
-                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherCreatedNoteTableNotification" object: nil];
+                [self sendErrorNotification:@"Таблица note успешно создана"];
             }
         }
         else {
             if (![self.database rollback]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherRollBackTransactionFailNotification" object: nil];
+                [self sendErrorNotification:@"Не удалось откатить транзакцию после неуспешного создания таблицы note"];
             }
             else {
-                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherTransactionRollbackedNotification" object: nil];
+                [self sendErrorNotification:@"Откатили транзакцию после неуспешного создания таблицы note"];
             }
         }
     }
     else {
-        [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherBeginTransactionFailNotification" object: nil];
+        [self sendErrorNotification:@"Не удалось открыть транзакцию для таблицы note"];
     }
 }
 
--(void) deleteAllOldNotes {
-    if (![self.database beginTransaction]) {
+- (void) deleteAllOldNotes {
+    if ([self.database beginTransaction]) {
         if ([self.database executeUpdate:DELETE_NOTES_QUERY]) {
             if (![self.database commit]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherCommitTransactionFailNotification" object: nil];
+                [self sendErrorNotification:@"Не удалось закоммитить транзакцию после удаления старых записей"];
             }
             else {
-                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherOldNotesDeletedNotification" object: nil];
+                [self sendErrorNotification:@"Старые записи успешно удалены"];
             }
         }
         else {
             if (![self.database rollback]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherRollBackTransactionFailNotification" object: nil];
+                [self sendErrorNotification:@"Не удалось откатить транзакцию после неуспешного удаления старых записей"];
             }
             else {
-                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherTransactionRollbackedNotification" object: nil];
+                [self sendErrorNotification:@"Откатили транзакцию после неуспешного удаления старых записей"];
             }
         }
     }
     else {
-        [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherBeginTransactionFailNotification" object: nil];
+        [self sendErrorNotification:@"Не удалось открыть транзакцию для удаления старых записей"];
     }
 }
 
@@ -99,27 +95,39 @@
             if(![self.database executeUpdate:sql]) {
                 rollbacked = YES;
                 if (![self.database rollback]) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherRollBackTransactionFailNotification" object: nil];
+                    [self sendErrorNotification:@"Не удалось откатить транзакцию после неуспешного добавления новой записи"];
+                    break;
                 }
                 else {
-                    [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherTransactionRollbackedNotification" object: nil];
+                    [self sendErrorNotification:@"Откатили транзакцию после неуспешного добавления новой записи"];
                 }
             }
 
         }
         if (!rollbacked) {
             if (![self.database commit]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherCommitTransactionFailNotification" object: nil];
+                [self sendErrorNotification:@"Не удалось закоммитить транзакцию после добавления новых записей"];
             }
             else {
-                [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherNotesPushedNotification" object: nil];
+                [self sendErrorNotification:@"Новые записи успешно добавлены в базу"];
             }
         }
         TACK;
         NSLog(@"pushNotes: %@", tackInfo);
     }
     else {
-        [[NSNotificationCenter defaultCenter] postNotificationName: @"DataPusherBeginTransactionFailNotification" object: nil];
+        [self sendErrorNotification:@"Не удалось открыть транзакцию для пуша новых заметок"];
     }
 }
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        [self createDataBase];
+        [self createNoteTable];
+        [self deleteAllOldNotes];
+    }
+    return self;
+}
+
 @end
