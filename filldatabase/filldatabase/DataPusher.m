@@ -96,11 +96,11 @@
                 rollbacked = YES;
                 if (![self.database rollback]) {
                     [self sendErrorNotification:@"Не удалось откатить транзакцию после неуспешного добавления новой записи"];
-                    break;
                 }
                 else {
                     [self sendErrorNotification:@"Откатили транзакцию после неуспешного добавления новой записи"];
                 }
+                break;
             }
 
         }

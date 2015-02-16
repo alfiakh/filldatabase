@@ -31,10 +31,19 @@
                                              selector:@selector(handleError:)
                                                  name:@"DataErrorNotification"
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleRequestDone:)
+                                                 name:@"RequestDoneNotification"
+                                               object:nil];
 }
 
 - (void) handleError: (NSNotification *) notification {
     [self addToConsole: notification.userInfo[@"message"]];
+}
+
+- (void) handleRequestDone: (NSNotification *) notification {
+    [self addToConsole: notification.userInfo[@"message"]];
+    self.responseData = notification.userInfo[@"data"];
 }
 
 - (void) didReceiveMemoryWarning {

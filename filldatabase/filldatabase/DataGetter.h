@@ -20,7 +20,6 @@
 - (void) runRequestWithUrl: (NSString*) url;
 - (void) decodeJsonData: (NSData*) data;
 - (void) createErrorNotification: (NSString *) message;
-
-@property (weak) NSDictionary *responseData;
+- (void) createDoneRequestNotification: (NSString *) message withResponseData: (NSDictionary *) data;
 
 @end

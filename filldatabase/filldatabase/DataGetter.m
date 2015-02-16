@@ -53,6 +53,15 @@
     });
 }
 
+- (void) createDoneRequestNotification: (NSString *) message withResponseData: (NSDictionary *) data {
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName:@"RequestDoneNotification"
+         object:nil
+         userInfo:@{@"message": message, @"data": data}];
+    });
+}
+
 - (void) runRequestWithUrl: (NSString *) url {
     NSURLSession *session = [NSURLSession sharedSession];
     TICK;
@@ -82,17 +91,18 @@
 
 - (void) decodeJsonData:(NSData *)data {
     NSError *jsonParsingError;
-    self.responseData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&jsonParsingError];
+    NSDictionary *responseData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&jsonParsingError];
     if (jsonParsingError) {
         [self createErrorNotification:@"Произошла ошибка при преобразовании JSON"];
     }
     else {
-        NSInteger srvMessageCode = [self.responseData[@"srvMessageCode"] integerValue];
+        NSInteger srvMessageCode = [responseData[@"srvMessageCode"] integerValue];
         if (srvMessageCode != 200) {
+            NSLog(@"%ld", (long)srvMessageCode);
             [self createErrorNotification:@"Некорректный srvMessageCode"];
         }
         else {
-            [self createErrorNotification:@"JSON успешно перекодирован"];
+            [self createDoneRequestNotification:@"JSON успешно перекодирован" withResponseData:responseData];
         }
     }
 }
