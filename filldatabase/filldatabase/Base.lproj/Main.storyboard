@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -18,96 +17,129 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rxe-Lp-AUZ">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4z-AI-BhO">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="Загрузить">
+                                <state key="normal" title="Загрузить данные">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="loadNotes:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ceZ-EX-thN"/>
+                                    <action selector="loadNotes:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="IJF-LR-fPm"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wxi-Ko-IC0">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tVF-oi-okA">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="SQLite">
+                                <state key="normal" title="SQLite: заполнить базу">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="pushNotes:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="tUZ-1X-V2A"/>
+                                    <action selector="pushNotes:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="WBM-oa-1Eo"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Записи еще не загружены." selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zz6-ky-SVf">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="taA-ij-tyq">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="PList: записать в 1 файл бинарный">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pushBinaryToSinglePList:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="7h2-Id-qKJ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWw-eC-zSj">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="PList: записать в 1 файл из dictionary">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="16" y="134" width="268" height="30"/>
+                                </variation>
+                                <connections>
+                                    <action selector="pushArrayToSinglePList:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="MrM-ps-CnB"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u7M-1M-8X3">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="PList: Записать в неск файлов бинарных">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="16" y="172" width="294" height="30"/>
+                                </variation>
+                                <connections>
+                                    <action selector="pushBinaryToMultiplePList:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="qNi-bo-Grg"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UFp-ml-lsu">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="PList: Записать в неск файлов из dictionary">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="16" y="210" width="312" height="30"/>
+                                </variation>
+                                <connections>
+                                    <action selector="pushDictionaryToMultiplePList:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="9Av-Uf-F2R"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Записи еще не загружены" translatesAutoresizingMaskIntoConstraints="NO" id="I0m-1W-isb">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="16" y="248" width="368" height="332"/>
+                                </variation>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VGF-eX-sIN">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="PList">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="pushToPList:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="phX-VF-sE1"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Zz6-ky-SVf" firstAttribute="trailing" secondItem="Wxi-Ko-IC0" secondAttribute="trailing" id="3Yt-Sw-0M3"/>
-                            <constraint firstItem="Wxi-Ko-IC0" firstAttribute="baseline" secondItem="Rxe-Lp-AUZ" secondAttribute="baseline" id="5bn-T1-1yv"/>
-                            <constraint firstItem="Rxe-Lp-AUZ" firstAttribute="leading" secondItem="Zz6-ky-SVf" secondAttribute="leading" id="EhH-EZ-55W"/>
-                            <constraint firstItem="Zz6-ky-SVf" firstAttribute="top" secondItem="Rxe-Lp-AUZ" secondAttribute="bottom" constant="8" symbolic="YES" id="IqI-dY-Q2U"/>
-                            <constraint firstItem="Wxi-Ko-IC0" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="YgW-RC-P7G"/>
-                            <constraint firstAttribute="bottom" secondItem="Zz6-ky-SVf" secondAttribute="bottom" constant="20" symbolic="YES" id="azt-Am-ut0"/>
-                            <constraint firstItem="Rxe-Lp-AUZ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="enb-C9-Wqb"/>
-                            <constraint firstItem="Wxi-Ko-IC0" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="ewb-mB-0yV"/>
-                            <constraint firstItem="Wxi-Ko-IC0" firstAttribute="leading" secondItem="VGF-eX-sIN" secondAttribute="trailing" constant="19" id="g7e-jH-9SF"/>
-                            <constraint firstItem="VGF-eX-sIN" firstAttribute="baseline" secondItem="Wxi-Ko-IC0" secondAttribute="baseline" id="qab-bw-Krk"/>
+                            <constraint firstItem="taA-ij-tyq" firstAttribute="top" secondItem="tVF-oi-okA" secondAttribute="bottom" constant="8" symbolic="YES" id="25j-r5-zae"/>
+                            <constraint firstItem="tVF-oi-okA" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="7VK-f5-xko"/>
+                            <constraint firstItem="Y4z-AI-BhO" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="GGB-wz-xnL"/>
+                            <constraint firstItem="tVF-oi-okA" firstAttribute="top" secondItem="Y4z-AI-BhO" secondAttribute="bottom" constant="8" symbolic="YES" id="SW3-f5-mId"/>
+                            <constraint firstItem="tVF-oi-okA" firstAttribute="leading" secondItem="Y4z-AI-BhO" secondAttribute="leading" id="xUH-WG-4QT"/>
+                            <constraint firstItem="tVF-oi-okA" firstAttribute="leading" secondItem="taA-ij-tyq" secondAttribute="leading" id="zAn-b1-7iK"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
-                                <exclude reference="Rxe-Lp-AUZ"/>
-                                <exclude reference="Wxi-Ko-IC0"/>
-                                <exclude reference="Zz6-ky-SVf"/>
-                                <exclude reference="VGF-eX-sIN"/>
+                                <exclude reference="Y4z-AI-BhO"/>
+                                <exclude reference="tVF-oi-okA"/>
+                                <exclude reference="taA-ij-tyq"/>
+                                <exclude reference="oWw-eC-zSj"/>
+                                <exclude reference="u7M-1M-8X3"/>
+                                <exclude reference="UFp-ml-lsu"/>
+                                <exclude reference="I0m-1W-isb"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="EhH-EZ-55W"/>
-                                <exclude reference="enb-C9-Wqb"/>
-                                <exclude reference="3Yt-Sw-0M3"/>
-                                <exclude reference="IqI-dY-Q2U"/>
-                                <exclude reference="azt-Am-ut0"/>
-                                <exclude reference="qab-bw-Krk"/>
-                                <exclude reference="5bn-T1-1yv"/>
-                                <exclude reference="YgW-RC-P7G"/>
-                                <exclude reference="ewb-mB-0yV"/>
-                                <exclude reference="g7e-jH-9SF"/>
+                                <exclude reference="GGB-wz-xnL"/>
+                                <exclude reference="7VK-f5-xko"/>
+                                <exclude reference="SW3-f5-mId"/>
+                                <exclude reference="xUH-WG-4QT"/>
+                                <exclude reference="zAn-b1-7iK"/>
+                                <exclude reference="25j-r5-zae"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
-                                <include reference="Rxe-Lp-AUZ"/>
-                                <include reference="Wxi-Ko-IC0"/>
-                                <include reference="Zz6-ky-SVf"/>
-                                <include reference="VGF-eX-sIN"/>
+                                <include reference="Y4z-AI-BhO"/>
+                                <include reference="tVF-oi-okA"/>
+                                <include reference="taA-ij-tyq"/>
+                                <include reference="oWw-eC-zSj"/>
+                                <include reference="u7M-1M-8X3"/>
+                                <include reference="UFp-ml-lsu"/>
+                                <include reference="I0m-1W-isb"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="EhH-EZ-55W"/>
-                                <include reference="enb-C9-Wqb"/>
-                                <include reference="3Yt-Sw-0M3"/>
-                                <include reference="IqI-dY-Q2U"/>
-                                <include reference="azt-Am-ut0"/>
-                                <include reference="qab-bw-Krk"/>
-                                <include reference="5bn-T1-1yv"/>
-                                <include reference="YgW-RC-P7G"/>
-                                <include reference="ewb-mB-0yV"/>
-                                <include reference="g7e-jH-9SF"/>
+                                <include reference="GGB-wz-xnL"/>
+                                <include reference="7VK-f5-xko"/>
+                                <include reference="SW3-f5-mId"/>
+                                <include reference="xUH-WG-4QT"/>
+                                <include reference="zAn-b1-7iK"/>
+                                <include reference="25j-r5-zae"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="console" destination="Zz6-ky-SVf" id="DQk-3G-aeN"/>
+                        <outlet property="console" destination="I0m-1W-isb" id="fF5-mM-S9i"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

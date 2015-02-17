@@ -72,9 +72,44 @@
     }
 }
 
-- (IBAction)pushToPList:(id)sender {
-    PlistPusher *pusher = [[PlistPusher alloc] init];
-    [pusher writeToPlistFile:self.responseData];
+- (IBAction)pushBinaryToSinglePList:(id)sender {
+    if (!self.responseData) {
+        [self addToConsole:@"Вы еще не загружали данных. Нажмите на кнопку \"Загрузить\""];
+    }
+    else {
+        PlistPusher *pusher = [[PlistPusher alloc] init];
+        [pusher writeBinaryToSinglePlistFile:self.responseData[@"data"]];
+    }
+}
+
+- (IBAction)pushArrayToSinglePList:(id)sender {
+    if (!self.responseData) {
+        [self addToConsole:@"Вы еще не загружали данных. Нажмите на кнопку \"Загрузить\""];
+    }
+    else {
+        PlistPusher *pusher = [[PlistPusher alloc] init];
+        [pusher writeArrayToSinglePlistFile:self.responseData[@"data"]];
+    }
+}
+
+- (IBAction)pushBinaryToMultiplePList:(id)sender {
+    if (!self.responseData) {
+        [self addToConsole:@"Вы еще не загружали данных. Нажмите на кнопку \"Загрузить\""];
+    }
+    else {
+        PlistPusher *pusher = [[PlistPusher alloc] init];
+        [pusher writeBinaryToMultiplePlistFile:self.responseData[@"data"]];
+    }
+}
+
+- (IBAction)pushDictionaryToMultiplePList:(id)sender {
+    if (!self.responseData) {
+        [self addToConsole:@"Вы еще не загружали данных. Нажмите на кнопку \"Загрузить\""];
+    }
+    else {
+        PlistPusher *pusher = [[PlistPusher alloc] init];
+        [pusher writeDictionaryToMultiplePlistFile:self.responseData[@"data"]];
+    }
 }
 
 - (void) addToConsole: (NSString *) message {
