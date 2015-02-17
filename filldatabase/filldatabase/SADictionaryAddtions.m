@@ -38,37 +38,31 @@
 
 
 - (NSDictionary* ) flat:(NSString *) rootKey{
-
+    
     __block NSMutableDictionary * newDict;
     
-        dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        
+        NSString * keyFormat = (rootKey)?[NSString stringWithFormat:@"%@%@%%@",rootKey,DICTLEVELDIVIDER]: @"%@";
+        
+        
+        newDict = [NSMutableDictionary dictionaryWithCapacity:self.count];
+        
+        for (id key in self) {
             
-    NSString * keyFormat = (rootKey)?[NSString stringWithFormat:@"%@%@%%@",rootKey,DICTLEVELDIVIDER]: @"%@";
-
-    
-    newDict = [NSMutableDictionary dictionaryWithCapacity:self.count];
-    
-    for (id key in self) {
-
-        id value = self[ key ];
-
-//        if( [value isKindOfClass: [NSArray class] ] && [value count] > 0)
-//        { int i=0;
-//            for (id item in value) {
-//                newDict[ [[NSString stringWithFormat:keyFormat,key] stringByAppendingFormat:@"%@%i",DICTLEVELDIVIDER,i] ] = item;
-//                i++;
-//            }
-//            
-//        }
-//        else
-        if( [value isKindOfClass: [NSDictionary class] ] && [value count] > 0 )
-            [newDict addEntriesFromDictionary: [value flat: [NSString stringWithFormat:keyFormat,[key description]] ] ];
-        
-        else
-            newDict[ [NSString stringWithFormat:keyFormat,key] ] = value;
-        
-    }
-        });
+            id value = self[ key ];
+            
+            if( [value isKindOfClass: [NSArray class] ] && [value count] > 0){
+                newDict[ [NSString stringWithFormat:keyFormat,key] ] = [NSString stringWithFormat:@"%@", value];
+            }
+            else if( [value isKindOfClass: [NSDictionary class] ] && [value count] > 0 )
+                [newDict addEntriesFromDictionary: [value flat: [NSString stringWithFormat:keyFormat,[key description]] ] ];
+            
+            else
+                newDict[ [NSString stringWithFormat:keyFormat,key] ] = value;
+            
+        }
+    });
     
     return  [newDict copy];
 }
@@ -76,15 +70,15 @@
 - (NSDictionary *) renameKeysByPrefix:(NSString *) prefix{
     
     __block NSMutableDictionary * newDict;
-//    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSString * keyFormat = (prefix)?[NSString stringWithFormat:@"%@%@%%@",prefix,DICTLEVELDIVIDER]: @"%@";
-        newDict = [NSMutableDictionary dictionaryWithCapacity:self.count];
-        
-        for (id key in self) {
-            id value = self[ key ];
-            newDict[ [NSString stringWithFormat:keyFormat,key] ] = value;
-        }
-//    });
+    //    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    NSString * keyFormat = (prefix)?[NSString stringWithFormat:@"%@%@%%@",prefix,DICTLEVELDIVIDER]: @"%@";
+    newDict = [NSMutableDictionary dictionaryWithCapacity:self.count];
+    
+    for (id key in self) {
+        id value = self[ key ];
+        newDict[ [NSString stringWithFormat:keyFormat,key] ] = value;
+    }
+    //    });
     
     return  [newDict copy];
     
@@ -112,18 +106,18 @@
     m = [NSMutableDictionary dictionary];
     
     for (id key in self ) {
-     
+        
         if( [self[ key ] isKindOfClass:[NSMutableDictionary class] ] || [self[ key ] isKindOfClass:[NSDictionary class] ] )
             m[ key ] = [self[key] nullReplace];
-
+        
         else
-        if( self [ key ] == [NSNull null])
-        {
-            m[ key ]=@"";
-        }
-        else{
-            m[ key ] = self [ key ];
-        }
+            if( self [ key ] == [NSNull null])
+            {
+                m[ key ]=@"";
+            }
+            else{
+                m[ key ] = self [ key ];
+            }
     }
     
     return [m copy];
@@ -136,28 +130,28 @@
     
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         
-    m = [model mutableCopy];
+        m = [model mutableCopy];
         
-    for (id key in model) {
-        
-        id modelValue = model[ key ];
-        id selfValue  = self [ key ];
-
-        
-        if( ! [modelValue isKindOfClass: [NSDictionary class] ] && ![modelValue isKindOfClass: [NSMutableDictionary class] ] && selfValue  )
-  
-            m[ key ] = (selfValue != [NSNull null])?selfValue:@"";
-
-        
-        else
-        if( selfValue && ([selfValue isKindOfClass: [NSDictionary class] ] || [selfValue isKindOfClass: [NSMutableDictionary class] ]) )
-        {
-            if([modelValue count]>0 )
-                m[ key ] = [selfValue merge:modelValue];
+        for (id key in model) {
+            
+            id modelValue = model[ key ];
+            id selfValue  = self [ key ];
+            
+            
+            if( ! [modelValue isKindOfClass: [NSDictionary class] ] && ![modelValue isKindOfClass: [NSMutableDictionary class] ] && selfValue  )
+                
+                m[ key ] = (selfValue != [NSNull null])?selfValue:@"";
+            
+            
             else
-                m[ key ] = [selfValue nullReplace];
+                if( selfValue && ([selfValue isKindOfClass: [NSDictionary class] ] || [selfValue isKindOfClass: [NSMutableDictionary class] ]) )
+                {
+                    if([modelValue count]>0 )
+                        m[ key ] = [selfValue merge:modelValue];
+                    else
+                        m[ key ] = [selfValue nullReplace];
+                }
         }
-    }
         
     });
     
@@ -186,7 +180,7 @@
                 diff[ key ] = @{ @"from":selfValue, @"to":@"NULL"};
             
             else{
-
+                
                 if(
                    ([selfValue isKindOfClass:[NSDictionary class]] ||
                     [selfValue isKindOfClass:[NSMutableDictionary class]] ) &&
@@ -196,7 +190,7 @@
                     )
                    )
                     
-                    {
+                {
                     // both values is Arrays
                     
                     NSDictionary * diffDict = [(NSDictionary *)selfValue diff:(NSDictionary*) compValue];
@@ -205,11 +199,11 @@
                         diff[ key ] = diffDict;
                     
                 }
-
+                
                 
                 else
                     if( ![selfValue isEqual: compValue] )
-                    diff[ key ] = @{ @"from":selfValue, @"to":compValue};
+                        diff[ key ] = @{ @"from":selfValue, @"to":compValue};
                 
             }
         }
@@ -225,18 +219,18 @@
             
             if( !selfValue )
                 diff[ key ] = @{ @"from":@"NULL", @"to":compValue};
-
-        }
-
-        
-        
-        
-        
             
+        }
+        
+        
+        
+        
+        
+        
     });
     
     return  [diff copy];
- 
+    
     
 }
 
@@ -257,76 +251,76 @@
         
         
         if([value isKindOfClass:[NSString class]] && [value isEqualToString:@"PK"])
-                [sql appendFormat:@" %@ uniqueidentifier PRIMARY KEY NOT NULL,\n", key ];
-
+            [sql appendFormat:@" %@ uniqueidentifier PRIMARY KEY NOT NULL,\n", key ];
+        
         else
             if([value isKindOfClass:[NSNumber class]])
                 [sql appendFormat:@" %@ NUMERIC DEFAULT %@,\n", key, value ];
-
-        else
+        
+            else
                 [sql appendFormat:@" %@ TEXT DEFAULT '%@',\n", key, value ];
-
-
+        
+        
     }
     
     [sql deleteCharactersInRange:NSMakeRange( sql.length-2 , 1)];
     [sql appendString:@");"];
     
     return sql;
-
+    
 }
 
 
 -(NSString *) sqlInsert:(NSString*) table With:(NSArray *) rows;
 {
-
-   __block NSMutableString *  sql = [NSMutableString stringWithFormat:@"INSERT OR REPLACE INTO %@ \n(", table];
-
+    
+    __block NSMutableString *  sql = [NSMutableString stringWithFormat:@"INSERT OR REPLACE INTO %@ \n(", table];
+    
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-    
-    NSDictionary * sqlD =[self flat:nil];
-    
-    NSArray * fields = [sqlD allKeys];
-    
-    
-    for (NSString * key in fields)
-        [sql appendFormat:@" %@,",key];
-    
-    [sql deleteCharactersInRange:NSMakeRange( sql.length-1, 1)];
-    
-    [sql appendFormat:@" )\n\nVALUES "];
-    
-    for ( NSDictionary * rowD in rows)
-    {
-      NSDictionary * row = [rowD flat:nil];
-      [sql appendFormat:@"\n("];
+        
+        NSDictionary * sqlD =[self flat:nil];
+        
+        NSArray * fields = [sqlD allKeys];
+        
         
         for (NSString * key in fields)
+            [sql appendFormat:@" %@,",key];
+        
+        [sql deleteCharactersInRange:NSMakeRange( sql.length-1, 1)];
+        
+        [sql appendFormat:@" )\n\nVALUES "];
+        
+        for ( NSDictionary * rowD in rows)
         {
-            id value = row[ key ];
+            NSDictionary * row = [rowD flat:nil];
+            [sql appendFormat:@"\n("];
             
-            if(value == nil)
+            for (NSString * key in fields)
             {
-              [sql appendFormat:@"0,"];
+                id value = row[ key ];
+                
+                if(value == nil)
+                {
+                    [sql appendFormat:@"0,"];
+                }
+                else
+                    if([value isKindOfClass:[NSNumber class]])
+                        [sql appendFormat:@"%@,",value];
+                
+                    else
+                        if([value isKindOfClass:[NSDictionary class]])
+                            [sql appendFormat:@"'%@',",[value description]];
+                
+                        else
+                            [sql appendFormat:@" '%@',",[value stringByReplacingOccurrencesOfString:@"'" withString:@"\\'"]];
             }
-            else
-            if([value isKindOfClass:[NSNumber class]])
-                [sql appendFormat:@"%@,",value];
-            
-            else
-                if([value isKindOfClass:[NSDictionary class]])
-                    [sql appendFormat:@"'%@',",[value description]];
-            
-            else
-                [sql appendFormat:@" '%@',",[value stringByReplacingOccurrencesOfString:@"'" withString:@"\\'"]];
+            [sql deleteCharactersInRange:NSMakeRange( sql.length-1, 1)];
+            [sql appendFormat:@"),"];
         }
-      [sql deleteCharactersInRange:NSMakeRange( sql.length-1, 1)];
-      [sql appendFormat:@"),"];
-    }
         
         
-    [sql deleteCharactersInRange:NSMakeRange( sql.length-1, 1)];
-    [sql appendFormat:@";"];
+        [sql deleteCharactersInRange:NSMakeRange( sql.length-1, 1)];
+        [sql appendFormat:@";"];
     });
     
     rows = nil;
@@ -412,6 +406,12 @@
         {
             [valSQL appendFormat:@" '%@',",[value stringByReplacingOccurrencesOfString:@"'" withString:@"''"]];
             
+        }
+        else if([value isKindOfClass:[NSArray class]]) {
+            [valSQL appendFormat:@" '%@',", value];
+        }
+        else {
+            NSLog(@"UNDEFINED TYPE: %@", NSStringFromClass([value class]));
         }
         //        else if([value isKindOfClass:[NSDate class]])
         //        {

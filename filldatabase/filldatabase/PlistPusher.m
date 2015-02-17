@@ -94,12 +94,7 @@
             if (!error)
             {
                 BOOL ok = [representation writeToFile:newPath atomically:YES];
-                if (ok)
-                {
-                    [self sendErrorNotification:@"Удалось записать заметку в файл PList"];
-                }
-                else
-                {
+                if (!ok) {
                     [self sendErrorNotification:@"Не удалось записать заметку в файл PList"];
                 }
             }
@@ -119,12 +114,7 @@
         for (NSDictionary *note in notes) {
             NSString *newPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:note[@"ID"]];
             BOOL ok = [note writeToFile:newPath atomically:YES];
-            if (ok)
-            {
-                [self sendErrorNotification:@"Удалось записать заметку в файл PList"];
-            }
-            else
-            {
+            if (!ok){
                 [self sendErrorNotification:@"Не удалось записать заметку в файл PList"];
             }
         }

@@ -100,7 +100,7 @@
         BOOL rollbacked = NO;
         TICK;
         for (NSDictionary *note in notes[@"data"]) {
-            NSDictionary *updatedDict = [note flat:nil];
+            NSDictionary *updatedDict = [[note nullReplace] flat:nil];
             NSString *sql = [updatedDict makeSQLinsTable:@"note"];
             if(![self.database executeUpdate:sql]) {
                 rollbacked = YES;
