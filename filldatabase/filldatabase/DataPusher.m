@@ -12,6 +12,16 @@
 
 @implementation DataPusher
 
+- (id)init {
+    self = [super init];
+    if (self) {
+        [self createDataBase];
+        [self createNoteTable];
+        [self deleteAllOldNotes];
+    }
+    return self;
+}
+
 - (void) sendErrorNotification:(NSString *)message {
     [[NSNotificationCenter defaultCenter]
      postNotificationName: @"DataErrorNotification"
@@ -118,16 +128,6 @@
     else {
         [self sendErrorNotification:@"Не удалось открыть транзакцию для пуша новых заметок"];
     }
-}
-
-- (id)init {
-    self = [super init];
-    if (self) {
-        [self createDataBase];
-        [self createNoteTable];
-        [self deleteAllOldNotes];
-    }
-    return self;
 }
 
 @end

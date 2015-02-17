@@ -23,6 +23,7 @@
 		F0B2DBD11A8C90C700E8655D /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBCA1A8C90C700E8655D /* FMDatabaseQueue.m */; };
 		F0B2DBD21A8C90C700E8655D /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBCD1A8C90C700E8655D /* FMResultSet.m */; };
 		F0B2DBD51A8CECCA00E8655D /* SADictionaryAddtions.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBD41A8CECCA00E8655D /* SADictionaryAddtions.m */; };
+		F0B2DBD91A933DCF00E8655D /* PlistPusher.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBD81A933DCF00E8655D /* PlistPusher.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,8 @@
 		F0B2DBCD1A8C90C700E8655D /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = filldatabase/FMResultSet.m; sourceTree = "<group>"; };
 		F0B2DBD31A8CECCA00E8655D /* SADictionaryAddtions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SADictionaryAddtions.h; sourceTree = "<group>"; };
 		F0B2DBD41A8CECCA00E8655D /* SADictionaryAddtions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SADictionaryAddtions.m; sourceTree = "<group>"; };
+		F0B2DBD71A933DCF00E8655D /* PlistPusher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlistPusher.h; sourceTree = "<group>"; };
+		F0B2DBD81A933DCF00E8655D /* PlistPusher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlistPusher.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +137,8 @@
 				F009E2D01A8BABD400271245 /* DataGetter.m */,
 				F0B2DBAC1A8C8B4000E8655D /* DataPusher.h */,
 				F0B2DBAD1A8C8B4000E8655D /* DataPusher.m */,
+				F0B2DBD71A933DCF00E8655D /* PlistPusher.h */,
+				F0B2DBD81A933DCF00E8655D /* PlistPusher.m */,
 				F009E2B61A8BA9E600271245 /* Images.xcassets */,
 				F009E2B81A8BA9E600271245 /* LaunchScreen.xib */,
 				F009E2A91A8BA9E600271245 /* Supporting Files */,
@@ -270,6 +275,7 @@
 				F009E2D11A8BABD400271245 /* DataGetter.m in Sources */,
 				F009E2B21A8BA9E600271245 /* ViewController.m in Sources */,
 				F0B2DBD01A8C90C700E8655D /* FMDatabasePool.m in Sources */,
+				F0B2DBD91A933DCF00E8655D /* PlistPusher.m in Sources */,
 				F0B2DBD11A8C90C700E8655D /* FMDatabaseQueue.m in Sources */,
 				F009E2AF1A8BA9E600271245 /* AppDelegate.m in Sources */,
 				F0B2DBAE1A8C8B4000E8655D /* DataPusher.m in Sources */,

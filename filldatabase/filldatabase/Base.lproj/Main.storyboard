@@ -29,7 +29,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wxi-Ko-IC0">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="Запушить">
+                                <state key="normal" title="SQLite">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -42,6 +42,15 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VGF-eX-sIN">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="PList">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pushToPList:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="phX-VF-sE1"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -53,22 +62,27 @@
                             <constraint firstAttribute="bottom" secondItem="Zz6-ky-SVf" secondAttribute="bottom" constant="20" symbolic="YES" id="azt-Am-ut0"/>
                             <constraint firstItem="Rxe-Lp-AUZ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="enb-C9-Wqb"/>
                             <constraint firstItem="Wxi-Ko-IC0" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="ewb-mB-0yV"/>
+                            <constraint firstItem="Wxi-Ko-IC0" firstAttribute="leading" secondItem="VGF-eX-sIN" secondAttribute="trailing" constant="19" id="g7e-jH-9SF"/>
+                            <constraint firstItem="VGF-eX-sIN" firstAttribute="baseline" secondItem="Wxi-Ko-IC0" secondAttribute="baseline" id="qab-bw-Krk"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="Rxe-Lp-AUZ"/>
                                 <exclude reference="Wxi-Ko-IC0"/>
                                 <exclude reference="Zz6-ky-SVf"/>
+                                <exclude reference="VGF-eX-sIN"/>
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="EhH-EZ-55W"/>
                                 <exclude reference="enb-C9-Wqb"/>
-                                <exclude reference="5bn-T1-1yv"/>
-                                <exclude reference="YgW-RC-P7G"/>
-                                <exclude reference="ewb-mB-0yV"/>
                                 <exclude reference="3Yt-Sw-0M3"/>
                                 <exclude reference="IqI-dY-Q2U"/>
                                 <exclude reference="azt-Am-ut0"/>
+                                <exclude reference="qab-bw-Krk"/>
+                                <exclude reference="5bn-T1-1yv"/>
+                                <exclude reference="YgW-RC-P7G"/>
+                                <exclude reference="ewb-mB-0yV"/>
+                                <exclude reference="g7e-jH-9SF"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -76,16 +90,19 @@
                                 <include reference="Rxe-Lp-AUZ"/>
                                 <include reference="Wxi-Ko-IC0"/>
                                 <include reference="Zz6-ky-SVf"/>
+                                <include reference="VGF-eX-sIN"/>
                             </mask>
                             <mask key="constraints">
                                 <include reference="EhH-EZ-55W"/>
                                 <include reference="enb-C9-Wqb"/>
-                                <include reference="5bn-T1-1yv"/>
-                                <include reference="YgW-RC-P7G"/>
-                                <include reference="ewb-mB-0yV"/>
                                 <include reference="3Yt-Sw-0M3"/>
                                 <include reference="IqI-dY-Q2U"/>
                                 <include reference="azt-Am-ut0"/>
+                                <include reference="qab-bw-Krk"/>
+                                <include reference="5bn-T1-1yv"/>
+                                <include reference="YgW-RC-P7G"/>
+                                <include reference="ewb-mB-0yV"/>
+                                <include reference="g7e-jH-9SF"/>
                             </mask>
                         </variation>
                     </view>

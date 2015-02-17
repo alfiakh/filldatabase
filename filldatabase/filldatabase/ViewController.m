@@ -10,6 +10,7 @@
 
 #import "AllDefines.h"
 #import "SADictionaryAddtions.h"
+#import "PlistPusher.h"
 
 @interface ViewController ()
 
@@ -69,6 +70,11 @@
         DataPusher *pusher = [[DataPusher alloc] init];
         [pusher pushNotesFromResponse:self.responseData];
     }
+}
+
+- (IBAction)pushToPList:(id)sender {
+    PlistPusher *pusher = [[PlistPusher alloc] init];
+    [pusher writeToPlistFile:self.responseData];
 }
 
 - (void) addToConsole: (NSString *) message {
