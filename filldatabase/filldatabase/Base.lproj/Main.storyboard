@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -49,9 +50,6 @@
                                 <state key="normal" title="PList: записать в 1 файл из dictionary">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="16" y="134" width="268" height="30"/>
-                                </variation>
                                 <connections>
                                     <action selector="pushArrayToSinglePList:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="MrM-ps-CnB"/>
                                 </connections>
@@ -61,9 +59,6 @@
                                 <state key="normal" title="PList: Записать в неск файлов бинарных">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="16" y="172" width="294" height="30"/>
-                                </variation>
                                 <connections>
                                     <action selector="pushBinaryToMultiplePList:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="qNi-bo-Grg"/>
                                 </connections>
@@ -73,31 +68,35 @@
                                 <state key="normal" title="PList: Записать в неск файлов из dictionary">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="16" y="210" width="312" height="30"/>
-                                </variation>
                                 <connections>
                                     <action selector="pushDictionaryToMultiplePList:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="9Av-Uf-F2R"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Записи еще не загружены" translatesAutoresizingMaskIntoConstraints="NO" id="I0m-1W-isb">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Записи еще не загружены" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I0m-1W-isb">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="16" y="248" width="368" height="332"/>
-                                </variation>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="taA-ij-tyq" firstAttribute="top" secondItem="tVF-oi-okA" secondAttribute="bottom" constant="8" symbolic="YES" id="25j-r5-zae"/>
+                            <constraint firstItem="u7M-1M-8X3" firstAttribute="top" secondItem="oWw-eC-zSj" secondAttribute="bottom" constant="8" symbolic="YES" id="4G2-TV-RDs"/>
                             <constraint firstItem="tVF-oi-okA" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="7VK-f5-xko"/>
+                            <constraint firstItem="I0m-1W-isb" firstAttribute="top" secondItem="UFp-ml-lsu" secondAttribute="bottom" constant="8" symbolic="YES" id="ADx-Pt-IKv"/>
                             <constraint firstItem="Y4z-AI-BhO" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="GGB-wz-xnL"/>
+                            <constraint firstItem="u7M-1M-8X3" firstAttribute="leading" secondItem="UFp-ml-lsu" secondAttribute="leading" id="GvK-Sb-quH"/>
                             <constraint firstItem="tVF-oi-okA" firstAttribute="top" secondItem="Y4z-AI-BhO" secondAttribute="bottom" constant="8" symbolic="YES" id="SW3-f5-mId"/>
+                            <constraint firstItem="oWw-eC-zSj" firstAttribute="leading" secondItem="u7M-1M-8X3" secondAttribute="leading" id="XtL-sr-gVp"/>
+                            <constraint firstItem="I0m-1W-isb" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="ZyE-qy-Ndz"/>
+                            <constraint firstItem="oWw-eC-zSj" firstAttribute="leading" secondItem="taA-ij-tyq" secondAttribute="leading" id="eNv-Xr-cmm"/>
+                            <constraint firstAttribute="bottom" secondItem="I0m-1W-isb" secondAttribute="bottom" constant="20" symbolic="YES" id="exZ-HG-4WH"/>
+                            <constraint firstItem="UFp-ml-lsu" firstAttribute="top" secondItem="u7M-1M-8X3" secondAttribute="bottom" constant="8" symbolic="YES" id="oTG-DY-rzm"/>
+                            <constraint firstItem="oWw-eC-zSj" firstAttribute="top" secondItem="taA-ij-tyq" secondAttribute="bottom" constant="8" symbolic="YES" id="tL6-m7-2lT"/>
                             <constraint firstItem="tVF-oi-okA" firstAttribute="leading" secondItem="Y4z-AI-BhO" secondAttribute="leading" id="xUH-WG-4QT"/>
                             <constraint firstItem="tVF-oi-okA" firstAttribute="leading" secondItem="taA-ij-tyq" secondAttribute="leading" id="zAn-b1-7iK"/>
+                            <constraint firstItem="UFp-ml-lsu" firstAttribute="leading" secondItem="I0m-1W-isb" secondAttribute="leading" id="zOD-fB-yhl"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
@@ -110,12 +109,22 @@
                                 <exclude reference="I0m-1W-isb"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="oTG-DY-rzm"/>
+                                <exclude reference="zOD-fB-yhl"/>
                                 <exclude reference="GGB-wz-xnL"/>
+                                <exclude reference="XtL-sr-gVp"/>
+                                <exclude reference="eNv-Xr-cmm"/>
+                                <exclude reference="tL6-m7-2lT"/>
                                 <exclude reference="7VK-f5-xko"/>
                                 <exclude reference="SW3-f5-mId"/>
                                 <exclude reference="xUH-WG-4QT"/>
                                 <exclude reference="zAn-b1-7iK"/>
                                 <exclude reference="25j-r5-zae"/>
+                                <exclude reference="4G2-TV-RDs"/>
+                                <exclude reference="GvK-Sb-quH"/>
+                                <exclude reference="ADx-Pt-IKv"/>
+                                <exclude reference="ZyE-qy-Ndz"/>
+                                <exclude reference="exZ-HG-4WH"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -129,12 +138,22 @@
                                 <include reference="I0m-1W-isb"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="oTG-DY-rzm"/>
+                                <include reference="zOD-fB-yhl"/>
                                 <include reference="GGB-wz-xnL"/>
+                                <include reference="XtL-sr-gVp"/>
+                                <include reference="eNv-Xr-cmm"/>
+                                <include reference="tL6-m7-2lT"/>
                                 <include reference="7VK-f5-xko"/>
                                 <include reference="SW3-f5-mId"/>
                                 <include reference="xUH-WG-4QT"/>
                                 <include reference="zAn-b1-7iK"/>
                                 <include reference="25j-r5-zae"/>
+                                <include reference="4G2-TV-RDs"/>
+                                <include reference="GvK-Sb-quH"/>
+                                <include reference="ADx-Pt-IKv"/>
+                                <include reference="ZyE-qy-Ndz"/>
+                                <include reference="exZ-HG-4WH"/>
                             </mask>
                         </variation>
                     </view>

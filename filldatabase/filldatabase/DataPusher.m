@@ -128,6 +128,7 @@
     else {
         [self sendErrorNotification:@"Не удалось открыть транзакцию для пуша новых заметок"];
     }
+    [self.database close];
 }
 
 @end

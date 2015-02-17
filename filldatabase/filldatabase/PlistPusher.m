@@ -20,10 +20,12 @@
 }
 
 - (void) sendErrorNotification:(NSString *)message {
+    dispatch_async(dispatch_get_main_queue(), ^(void){
     [[NSNotificationCenter defaultCenter]
      postNotificationName: @"DataErrorNotification"
      object: nil
      userInfo: @{@"message": message}];
+    });
 }
 
 - (void) collectPlistFileInfo {
@@ -36,13 +38,39 @@
 }
 
 - (void) writeBinaryToSinglePlistFile:(NSArray *)notes {
-    NSError *error = nil;
-    TICK;
-    NSData *representation = [NSPropertyListSerialization dataWithPropertyList:notes format:NSPropertyListXMLFormat_v1_0 options:0 error:&error];
-    if (!error)
-    {
-        
-        BOOL ok = [representation writeToFile:self.plistPath atomically:YES];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        NSError *error = nil;
+        TICK;
+        NSData *representation = [NSPropertyListSerialization dataWithPropertyList:notes
+                                                                            format:NSPropertyListXMLFormat_v1_0 options:0
+                                                                             error:&error];
+        if (!error)
+        {
+            BOOL ok = [representation writeToFile:self.plistPath
+                                       atomically:YES];
+            if (ok)
+            {
+                [self sendErrorNotification:@"Удалось записать данные в файл PList"];
+            }
+            else
+            {
+                [self sendErrorNotification:@"Не удалось записать данные в файл PList"];
+            }
+        }
+        else
+        {
+            [self sendErrorNotification:@"Пичаль=((( Не удалось сериализовать данные для PList"];
+        }
+        TACK;
+        NSLog(@"Push to single PList binary: %@", tackInfo);
+    });
+}
+
+- (void) writeArrayToSinglePlistFile:(NSArray *)notes {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        TICK;
+        BOOL ok = [notes writeToFile:self.plistPath
+                          atomically:YES];
         if (ok)
         {
             [self sendErrorNotification:@"Удалось записать данные в файл PList"];
@@ -51,39 +79,46 @@
         {
             [self sendErrorNotification:@"Не удалось записать данные в файл PList"];
         }
-    }
-    else
-    {
-        [self sendErrorNotification:@"Пичаль=((( Не удалось сериализовать данные для PList"];
-    }
-    TACK;
-    NSLog(@"Push to single PList binary: %@", tackInfo);
-}
-
-- (void) writeArrayToSinglePlistFile:(NSArray *)notes {
-    TICK;
-    BOOL ok = [notes writeToFile:self.plistPath atomically:YES];
-    if (ok)
-    {
-        [self sendErrorNotification:@"Удалось записать данные в файл PList"];
-    }
-    else
-    {
-        [self sendErrorNotification:@"Не удалось записать данные в файл PList"];
-    }
-    TACK;
-    NSLog(@"Push to single PList from array: %@", tackInfo);
+        TACK;
+        NSLog(@"Push to single PList from array: %@", tackInfo);
+    });
 }
 
 - (void) writeBinaryToMultiplePlistFile:(NSArray *)notes {
-    TICK;
-    for (NSDictionary *note in notes) {
-        NSError *error = nil;
-        NSString *newPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:note[@"id"]];
-        NSData *representation = [NSPropertyListSerialization dataWithPropertyList:note format:NSPropertyListXMLFormat_v1_0 options:0 error:&error];
-        if (!error)
-        {
-            BOOL ok = [representation writeToFile:newPath atomically:YES];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        TICK;
+        for (NSDictionary *note in notes) {
+            NSError *error = nil;
+            NSString *newPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:note[@"ID"]];
+            NSData *representation = [NSPropertyListSerialization dataWithPropertyList:note format:NSPropertyListXMLFormat_v1_0 options:0 error:&error];
+            if (!error)
+            {
+                BOOL ok = [representation writeToFile:newPath atomically:YES];
+                if (ok)
+                {
+                    [self sendErrorNotification:@"Удалось записать заметку в файл PList"];
+                }
+                else
+                {
+                    [self sendErrorNotification:@"Не удалось записать заметку в файл PList"];
+                }
+            }
+            else
+            {
+                [self sendErrorNotification:@"Пичаль=((( Не удалось сериализовать данные для PList"];
+            }
+        }
+        TACK;
+        NSLog(@"Push to multiple PList binary: %@", tackInfo);
+    });
+}
+
+- (void) writeDictionaryToMultiplePlistFile:(NSArray *)notes {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        TICK;
+        for (NSDictionary *note in notes) {
+            NSString *newPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:note[@"ID"]];
+            BOOL ok = [note writeToFile:newPath atomically:YES];
             if (ok)
             {
                 [self sendErrorNotification:@"Удалось записать заметку в файл PList"];
@@ -93,30 +128,8 @@
                 [self sendErrorNotification:@"Не удалось записать заметку в файл PList"];
             }
         }
-        else
-        {
-            [self sendErrorNotification:@"Пичаль=((( Не удалось сериализовать данные для PList"];
-        }
-    }
-    TACK;
-    NSLog(@"Push to multiple PList binary: %@", tackInfo);
-}
-
-- (void) writeDictionaryToMultiplePlistFile:(NSArray *)notes {
-    TICK;
-    for (NSDictionary *note in notes) {
-        NSString *newPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:note[@"id"]];
-        BOOL ok = [note writeToFile:newPath atomically:YES];
-        if (ok)
-        {
-            [self sendErrorNotification:@"Удалось записать заметку в файл PList"];
-        }
-        else
-        {
-            [self sendErrorNotification:@"Не удалось записать заметку в файл PList"];
-        }
-    }
-    TACK;
-    NSLog(@"Push to multiple PList binary: %@", tackInfo);
+        TACK;
+        NSLog(@"Push to multiple PList binary: %@", tackInfo);
+    });
 }
 @end
