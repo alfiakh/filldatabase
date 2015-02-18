@@ -99,9 +99,11 @@
     if ([self.database beginTransaction]) {
         BOOL rollbacked = NO;
         TICK;
-        for (NSDictionary *note in notes[@"data"]) {
-            NSDictionary *updatedDict = [[note nullReplace] flat:nil];
-            NSLog(@"note: %@", updatedDict);
+        for (NSMutableDictionary *note in notes[@"data"]) {
+            NSMutableDictionary *mutableNote = [note mutableCopy];
+            NSString *history = [NSString stringWithFormat:@"%@", mutableNote[@"history"]];
+            [mutableNote setObject:history forKey:@"history"];
+            NSDictionary *updatedDict = [[mutableNote nullReplace] flat:nil];
             NSString *sql = [updatedDict makeSQLinsTable:@"note"];
             if(![self.database executeUpdate:sql]) {
                 rollbacked = YES;
