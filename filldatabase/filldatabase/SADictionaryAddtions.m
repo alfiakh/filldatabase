@@ -59,7 +59,7 @@
                 [newDict addEntriesFromDictionary: [value flat: [NSString stringWithFormat:keyFormat,[key description]] ] ];
             
             else
-                newDict[ [NSString stringWithFormat:keyFormat,key] ] = value;
+                newDict[ [NSString stringWithFormat:keyFormat,key] ] = [NSString stringWithFormat:@"%@", value];
             
         }
     });

@@ -101,6 +101,7 @@
         TICK;
         for (NSDictionary *note in notes[@"data"]) {
             NSDictionary *updatedDict = [[note nullReplace] flat:nil];
+            NSLog(@"note: %@", updatedDict);
             NSString *sql = [updatedDict makeSQLinsTable:@"note"];
             if(![self.database executeUpdate:sql]) {
                 rollbacked = YES;
