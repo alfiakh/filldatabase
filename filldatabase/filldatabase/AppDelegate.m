@@ -19,9 +19,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     NotesDataStorage *storage = [[NotesDataStorage alloc]
-                                   initWithOrder: @"created"
-                                   withNotes: YES
-                                   withFutureEvents: YES
+                                   initWithOrder: @"create_TS"
+                                   withNotes: NO
+                                   withFutureEvents: NO
                                    withPastEvents: YES];
     NSString *query = [storage buildQuery];
     NSLog(@"%@", query);
