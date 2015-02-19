@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "NotesDataStorage.h"
+#import "NotepadDataStorage.h"
 
 @interface AppDelegate ()
 
@@ -18,13 +18,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    NotesDataStorage *storage = [[NotesDataStorage alloc]
+    NotepadDataStorage *storage = [[NotepadDataStorage alloc]
                                    initWithOrder: @"create_TS"
                                    withNotes: NO
                                    withFutureEvents: NO
                                    withPastEvents: YES];
-    NSString *query = [storage buildQuery];
-    NSLog(@"%@", query);
+    [storage executeNotesForNotepad];
     return YES;
 }
 

@@ -8,18 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NotesDataStorage : NSObject
+@interface NotepadDataStorage : NSObject
 
 - (id) initWithOrder: (NSString *) order
             withNotes: (BOOL) displayNotes
      withFutureEvents: (BOOL) displayFutureEvents
        withPastEvents: (BOOL) displayPastEvents;
+- (NSString *) buildQuery;
+- (void) executeNotesForNotepad;
 
 @property NSString *order;
 @property BOOL displayNotes;
 @property BOOL displayFutureEvents;
 @property BOOL displayPastEvents;
-
-- (NSString *) buildQuery;
 
 @end

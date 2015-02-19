@@ -6,13 +6,13 @@
 //  Copyright (c) 2015 Alfiya Khairetdinova. All rights reserved.
 //
 
-#import "NotesDataStorage.h"
+#import "NotepadDataStorage.h"
 #import "AllDefines.h"
 #import "FMDatabase.h"
 
 #define COLUMNS @"ID, message, event_enable, event_start_TS, event_end_TS, event_alarms, create_TS, modify_TS, modify_devID, create_devID"
 
-@implementation NotesDataStorage
+@implementation NotepadDataStorage
 
 - (id) initWithOrder: (NSString *)order
            withNotes: (BOOL)displayNotes
@@ -25,6 +25,13 @@
         self.displayPastEvents = displayPastEvents;
     }
     return self;
+}
+
+- (void) sendErrorNotification:(NSString *)message {
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName: @"NotepadDataStorageErrorNotification"
+     object: nil
+     userInfo: @{@"message": message}];
 }
 
 - (NSString *) buildQuery {
@@ -53,12 +60,26 @@
     [query appendString:finalCondition];
     [query appendString:[NSString stringWithFormat:@" ORDER BY %@", self.order]];
     [query appendString:@";"];
-    NSString *path = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:DATABASE_NAME];
-    FMDatabase *database = [FMDatabase databaseWithPath:path];
-    [database open];
-    database.traceExecution = YES;
-    [database executeQuery:query];
     return query;
 }
 
+- (void) executeNotesForNotepad {
+    NSString *query = [self buildQuery];
+    NSString *databasePath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:DATABASE_NAME];
+    if([[NSFileManager defaultManager] fileExistsAtPath:databasePath]) {
+        FMDatabase *database = [FMDatabase databaseWithPath:databasePath];
+        BOOL databaseOpened = [database open];
+        if (databaseOpened) {
+            database.traceExecution = YES;
+            FMResultSet *resultNotes = [database executeQuery:query];
+            NSLog(@"%@", resultNotes);
+        }
+        else {
+            [self sendErrorNotification:@"Сорь, не удалось открыть базу"];
+        }
+    }
+    else {
+        [self sendErrorNotification:@"Сорь, базы нет"];
+    }
+}
 @end
