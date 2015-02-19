@@ -25,6 +25,7 @@
 		F0B2DBD51A8CECCA00E8655D /* SADictionaryAddtions.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBD41A8CECCA00E8655D /* SADictionaryAddtions.m */; };
 		F0B2DBD91A933DCF00E8655D /* PlistPusher.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBD81A933DCF00E8655D /* PlistPusher.m */; };
 		F0FDEF551A9656A500725F3A /* NotepadDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF541A9656A500725F3A /* NotepadDataStorage.m */; };
+		F0FDEF581A96911100725F3A /* CalendarDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF571A96911100725F3A /* CalendarDataStorage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,8 @@
 		F0B2DBD81A933DCF00E8655D /* PlistPusher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlistPusher.m; sourceTree = "<group>"; };
 		F0FDEF531A9656A500725F3A /* NotepadDataStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotepadDataStorage.h; path = filldatabase/NotepadDataStorage.h; sourceTree = "<group>"; };
 		F0FDEF541A9656A500725F3A /* NotepadDataStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NotepadDataStorage.m; path = filldatabase/NotepadDataStorage.m; sourceTree = "<group>"; };
+		F0FDEF561A96911100725F3A /* CalendarDataStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CalendarDataStorage.h; path = filldatabase/CalendarDataStorage.h; sourceTree = "<group>"; };
+		F0FDEF571A96911100725F3A /* CalendarDataStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CalendarDataStorage.m; path = filldatabase/CalendarDataStorage.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +184,8 @@
 			children = (
 				F0FDEF531A9656A500725F3A /* NotepadDataStorage.h */,
 				F0FDEF541A9656A500725F3A /* NotepadDataStorage.m */,
+				F0FDEF561A96911100725F3A /* CalendarDataStorage.h */,
+				F0FDEF571A96911100725F3A /* CalendarDataStorage.m */,
 			);
 			name = storage;
 			path = ..;
@@ -294,6 +299,7 @@
 				F0B2DBD11A8C90C700E8655D /* FMDatabaseQueue.m in Sources */,
 				F009E2AF1A8BA9E600271245 /* AppDelegate.m in Sources */,
 				F0B2DBAE1A8C8B4000E8655D /* DataPusher.m in Sources */,
+				F0FDEF581A96911100725F3A /* CalendarDataStorage.m in Sources */,
 				F0B2DBD21A8C90C700E8655D /* FMResultSet.m in Sources */,
 				F009E2AC1A8BA9E600271245 /* main.m in Sources */,
 				F0B2DBCE1A8C90C700E8655D /* FMDatabase.m in Sources */,

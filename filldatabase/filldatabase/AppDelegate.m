@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "NotepadDataStorage.h"
+#import "CalendarDataStorage.h"
 
 @interface AppDelegate ()
 
@@ -18,12 +18,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    NotepadDataStorage *storage = [[NotepadDataStorage alloc]
-                                   initWithOrder: @"create_TS"
-                                   withNotes: NO
-                                   withFutureEvents: NO
-                                   withPastEvents: YES];
-    [storage executeNotesForNotepad];
+    CalendarDataStorage *storage = [[CalendarDataStorage alloc]
+                                   initWithDate:[NSDate date]];
+    [storage executeNotesForCalendar];
     return YES;
 }
 
