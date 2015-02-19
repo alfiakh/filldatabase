@@ -24,6 +24,7 @@
 		F0B2DBD21A8C90C700E8655D /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBCD1A8C90C700E8655D /* FMResultSet.m */; };
 		F0B2DBD51A8CECCA00E8655D /* SADictionaryAddtions.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBD41A8CECCA00E8655D /* SADictionaryAddtions.m */; };
 		F0B2DBD91A933DCF00E8655D /* PlistPusher.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBD81A933DCF00E8655D /* PlistPusher.m */; };
+		F0FDEF551A9656A500725F3A /* NotesDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF541A9656A500725F3A /* NotesDataStorage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,8 @@
 		F0B2DBD41A8CECCA00E8655D /* SADictionaryAddtions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SADictionaryAddtions.m; sourceTree = "<group>"; };
 		F0B2DBD71A933DCF00E8655D /* PlistPusher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlistPusher.h; sourceTree = "<group>"; };
 		F0B2DBD81A933DCF00E8655D /* PlistPusher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlistPusher.m; sourceTree = "<group>"; };
+		F0FDEF531A9656A500725F3A /* NotesDataStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotesDataStorage.h; path = filldatabase/NotesDataStorage.h; sourceTree = "<group>"; };
+		F0FDEF541A9656A500725F3A /* NotesDataStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NotesDataStorage.m; path = filldatabase/NotesDataStorage.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +128,7 @@
 		F009E2A81A8BA9E600271245 /* filldatabase */ = {
 			isa = PBXGroup;
 			children = (
+				F0FDEF4F1A96562500725F3A /* storage */,
 				F0B2DBD31A8CECCA00E8655D /* SADictionaryAddtions.h */,
 				F0B2DBD41A8CECCA00E8655D /* SADictionaryAddtions.m */,
 				F009E2D21A8BB20F00271245 /* AllDefines.h */,
@@ -170,6 +174,16 @@
 				F009E2C41A8BA9E600271245 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F0FDEF4F1A96562500725F3A /* storage */ = {
+			isa = PBXGroup;
+			children = (
+				F0FDEF531A9656A500725F3A /* NotesDataStorage.h */,
+				F0FDEF541A9656A500725F3A /* NotesDataStorage.m */,
+			);
+			name = storage;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -284,6 +298,7 @@
 				F009E2AC1A8BA9E600271245 /* main.m in Sources */,
 				F0B2DBCE1A8C90C700E8655D /* FMDatabase.m in Sources */,
 				F0B2DBD51A8CECCA00E8655D /* SADictionaryAddtions.m in Sources */,
+				F0FDEF551A9656A500725F3A /* NotesDataStorage.m in Sources */,
 				F0B2DBCF1A8C90C700E8655D /* FMDatabaseAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -409,6 +424,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = filldatabase/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -422,6 +438,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = filldatabase/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

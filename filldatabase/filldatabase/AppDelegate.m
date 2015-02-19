@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "NotesDataStorage.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +18,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    NotesDataStorage *storage = [[NotesDataStorage alloc]
+                                   initWithOrder: @"created"
+                                   withNotes: YES
+                                   withFutureEvents: YES
+                                   withPastEvents: YES];
+    NSString *query = [storage buildQuery];
+    NSLog(@"%@", query);
     return YES;
 }
 

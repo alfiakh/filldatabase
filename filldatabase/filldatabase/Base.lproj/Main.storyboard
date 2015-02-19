@@ -1,11 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
+        <!--Item 2-->
+        <scene sceneID="pWM-Bx-EHg">
+            <objects>
+                <viewController id="wwk-xU-jM2" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="eQz-At-QRi"/>
+                        <viewControllerLayoutGuide type="bottom" id="pT1-eO-K00"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="4hp-ed-rgx">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 2" id="YgI-j7-bVT"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Inq-HB-vzY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2503.5" y="412"/>
+        </scene>
+        <!--Item 1-->
+        <scene sceneID="QEa-nZ-2Xy">
+            <objects>
+                <viewController id="tUs-ua-7FB" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Cfz-am-rYK"/>
+                        <viewControllerLayoutGuide type="bottom" id="qR3-h6-Gwa"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="P3Y-wc-fSW">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 1" id="cJM-nd-DgY"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KLw-zZ-bjO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2503.5" y="-250"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
@@ -20,7 +57,9 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4z-AI-BhO">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <color key="backgroundColor" red="0.87198153409090906" green="0.87198153409090906" blue="0.87198153409090906" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Загрузить данные">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -29,6 +68,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tVF-oi-okA">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <color key="backgroundColor" red="0.83921568627450982" green="0.83921568627450982" blue="0.83921568627450982" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="SQLite: заполнить базу">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -38,6 +78,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="taA-ij-tyq">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <color key="backgroundColor" red="0.83921568627450982" green="0.83921568627450982" blue="0.83921568627450982" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="PList: записать в 1 файл бинарный">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -47,6 +88,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWw-eC-zSj">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <color key="backgroundColor" red="0.83921568627450982" green="0.83921568627450982" blue="0.83921568627450982" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="PList: записать в 1 файл из dictionary">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -56,6 +98,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u7M-1M-8X3">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <color key="backgroundColor" red="0.80392156862745101" green="0.80392156862745101" blue="0.80392156862745101" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="PList: Записать в неск файлов бинарных">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -65,6 +108,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UFp-ml-lsu">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <color key="backgroundColor" red="0.83921568627450982" green="0.83921568627450982" blue="0.83921568627450982" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="PList: Записать в неск файлов из dictionary">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -87,13 +131,13 @@
                             <constraint firstItem="I0m-1W-isb" firstAttribute="top" secondItem="UFp-ml-lsu" secondAttribute="bottom" constant="8" symbolic="YES" id="ADx-Pt-IKv"/>
                             <constraint firstItem="Y4z-AI-BhO" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="GGB-wz-xnL"/>
                             <constraint firstItem="u7M-1M-8X3" firstAttribute="leading" secondItem="UFp-ml-lsu" secondAttribute="leading" id="GvK-Sb-quH"/>
+                            <constraint firstAttribute="bottom" secondItem="I0m-1W-isb" secondAttribute="bottom" constant="20" symbolic="YES" id="KYf-6V-lRV"/>
                             <constraint firstItem="tVF-oi-okA" firstAttribute="top" secondItem="Y4z-AI-BhO" secondAttribute="bottom" constant="8" symbolic="YES" id="SW3-f5-mId"/>
                             <constraint firstItem="oWw-eC-zSj" firstAttribute="leading" secondItem="u7M-1M-8X3" secondAttribute="leading" id="XtL-sr-gVp"/>
-                            <constraint firstItem="I0m-1W-isb" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="ZyE-qy-Ndz"/>
                             <constraint firstItem="oWw-eC-zSj" firstAttribute="leading" secondItem="taA-ij-tyq" secondAttribute="leading" id="eNv-Xr-cmm"/>
-                            <constraint firstAttribute="bottom" secondItem="I0m-1W-isb" secondAttribute="bottom" constant="20" symbolic="YES" id="exZ-HG-4WH"/>
                             <constraint firstItem="UFp-ml-lsu" firstAttribute="top" secondItem="u7M-1M-8X3" secondAttribute="bottom" constant="8" symbolic="YES" id="oTG-DY-rzm"/>
                             <constraint firstItem="oWw-eC-zSj" firstAttribute="top" secondItem="taA-ij-tyq" secondAttribute="bottom" constant="8" symbolic="YES" id="tL6-m7-2lT"/>
+                            <constraint firstItem="I0m-1W-isb" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="vE9-au-dtQ"/>
                             <constraint firstItem="tVF-oi-okA" firstAttribute="leading" secondItem="Y4z-AI-BhO" secondAttribute="leading" id="xUH-WG-4QT"/>
                             <constraint firstItem="tVF-oi-okA" firstAttribute="leading" secondItem="taA-ij-tyq" secondAttribute="leading" id="zAn-b1-7iK"/>
                             <constraint firstItem="UFp-ml-lsu" firstAttribute="leading" secondItem="I0m-1W-isb" secondAttribute="leading" id="zOD-fB-yhl"/>
@@ -109,22 +153,22 @@
                                 <exclude reference="I0m-1W-isb"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="oTG-DY-rzm"/>
-                                <exclude reference="zOD-fB-yhl"/>
                                 <exclude reference="GGB-wz-xnL"/>
-                                <exclude reference="XtL-sr-gVp"/>
-                                <exclude reference="eNv-Xr-cmm"/>
-                                <exclude reference="tL6-m7-2lT"/>
                                 <exclude reference="7VK-f5-xko"/>
                                 <exclude reference="SW3-f5-mId"/>
                                 <exclude reference="xUH-WG-4QT"/>
                                 <exclude reference="zAn-b1-7iK"/>
                                 <exclude reference="25j-r5-zae"/>
+                                <exclude reference="XtL-sr-gVp"/>
+                                <exclude reference="eNv-Xr-cmm"/>
+                                <exclude reference="tL6-m7-2lT"/>
                                 <exclude reference="4G2-TV-RDs"/>
                                 <exclude reference="GvK-Sb-quH"/>
+                                <exclude reference="oTG-DY-rzm"/>
+                                <exclude reference="zOD-fB-yhl"/>
                                 <exclude reference="ADx-Pt-IKv"/>
-                                <exclude reference="ZyE-qy-Ndz"/>
-                                <exclude reference="exZ-HG-4WH"/>
+                                <exclude reference="KYf-6V-lRV"/>
+                                <exclude reference="vE9-au-dtQ"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -138,22 +182,22 @@
                                 <include reference="I0m-1W-isb"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="oTG-DY-rzm"/>
-                                <include reference="zOD-fB-yhl"/>
                                 <include reference="GGB-wz-xnL"/>
-                                <include reference="XtL-sr-gVp"/>
-                                <include reference="eNv-Xr-cmm"/>
-                                <include reference="tL6-m7-2lT"/>
                                 <include reference="7VK-f5-xko"/>
                                 <include reference="SW3-f5-mId"/>
                                 <include reference="xUH-WG-4QT"/>
                                 <include reference="zAn-b1-7iK"/>
                                 <include reference="25j-r5-zae"/>
+                                <include reference="XtL-sr-gVp"/>
+                                <include reference="eNv-Xr-cmm"/>
+                                <include reference="tL6-m7-2lT"/>
                                 <include reference="4G2-TV-RDs"/>
                                 <include reference="GvK-Sb-quH"/>
+                                <include reference="oTG-DY-rzm"/>
+                                <include reference="zOD-fB-yhl"/>
                                 <include reference="ADx-Pt-IKv"/>
-                                <include reference="ZyE-qy-Ndz"/>
-                                <include reference="exZ-HG-4WH"/>
+                                <include reference="KYf-6V-lRV"/>
+                                <include reference="vE9-au-dtQ"/>
                             </mask>
                         </variation>
                     </view>
@@ -163,6 +207,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="78" y="180"/>
         </scene>
     </scenes>
 </document>

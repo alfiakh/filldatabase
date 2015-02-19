@@ -77,7 +77,8 @@
                                                   [self decodeJsonData:data];
                                               }
                                               else {
-                                                  [self createErrorNotification:@"Получен некорректный статус код"];
+                                                  NSString *errorMessage = [NSString stringWithFormat:@"Получен некорректный статус код %ld", (long)[httpResponse statusCode]];
+                                                  [self createErrorNotification:errorMessage];
                                               }
                                           }
                                           else {
