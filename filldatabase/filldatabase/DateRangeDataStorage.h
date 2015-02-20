@@ -9,15 +9,18 @@
 #import <Foundation/Foundation.h>
 #import "FMDatabase.h"
 
-@interface CalendarDataStorage : NSObject
+@interface DateRangeDataStorage : NSObject
 
 - (id) initWithDate: (NSDate *)dateStart
-          withNotes: (BOOL) displayNotes;
+          withNotes: (BOOL) displayNotes
+          countDays: (NSNumber *)count;
 - (NSString *) buildQuery;
 - (void) executeNotesForCalendar;
 - (void) sendErrorNotification:(NSString *)message;
 
 @property NSDate *dateStart;
 @property BOOL displayNotes;
+@property NSNumber *daysCount;
+@property NSString *columns;
 
 @end

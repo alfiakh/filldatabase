@@ -6,18 +6,40 @@
 //  Copyright (c) 2015 Alfiya Khairetdinova. All rights reserved.
 //
 
-#import "CalendarDataStorage.h"
+#import "DateRangeDataStorage.h"
 #import "AllDefines.h"
-#define COLUMNS @"ID, message, event_enable, event_start_TS, event_end_TS, event_alarms, create_TS, modify_TS, modify_devID, create_devID"
+#define CALENDAR_COLUMNS @"ID, message, event_enable, event_start_TS, event_end_TS"
+#define INDICATOR_COLUMNS @"event_start_TS, event_end_TS"
+#define DIARY_COLUMNS @"ID, message, event_enable, event_start_TS, event_end_TS, event_alarms, create_TS, modify_TS, modify_devID, create_devID"
 
-@implementation CalendarDataStorage
+@implementation DateRangeDataStorage
 
-- (id) initWithDate:(NSDate *)dateStart
-          withNotes:(BOOL)displayNotes {
+- (id) initWithDate: (NSDate *)dateStart
+          withNotes: (BOOL) displayNotes
+          countDays: (NSNumber *)count {
     self = [super init];
     if (self) {
         self.dateStart = dateStart;
         self.displayNotes = displayNotes;
+        self.daysCount = count;
+        if ([count isEqualToNumber: @7]){
+            // для календаря
+            // назначаем колонки
+            self.columns = CALENDAR_COLUMNS;
+        }
+        else if ([count isEqualToNumber: @1]) {
+            // для ежедневника
+            // назначаем колонки
+            self.columns = DIARY_COLUMNS;
+        }
+        else if ([count isEqualToNumber:@42]) {
+            // для месячного календаря
+            // назначаем колонки
+            self.columns = INDICATOR_COLUMNS;
+        }
+        else {
+            return nil;
+        }
     }
     return self;
 }
@@ -32,10 +54,10 @@
 - (NSString *) buildQuery {
     NSMutableString *query = [NSMutableString
                               stringWithFormat:@"SELECT %@ FROM note",
-                              COLUMNS];
+                              self.columns];
     NSMutableArray *conditions = [NSMutableArray arrayWithArray:@[]];
     int tsStart = [self.dateStart timeIntervalSince1970];
-    int tsEnd = tsStart + 60 * 60 * 24 * 7;
+    int tsEnd = tsStart + 60 * 60 * 24 * (long)[self.daysCount integerValue];
     [query appendString:@" WHERE"];
     if (!self.displayNotes) {
         NSString *notesDisplayCondition = [NSString stringWithFormat: @" event_enable <> \"0\" AND modify_TS BETWEEN %i AND %i", tsStart, tsEnd];

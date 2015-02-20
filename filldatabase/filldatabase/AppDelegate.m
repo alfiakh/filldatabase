@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "CalendarDataStorage.h"
+#import "DateRangeDataStorage.h"
 
 @interface AppDelegate ()
 
@@ -18,9 +18,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    CalendarDataStorage *storage = [[CalendarDataStorage alloc]
+    DateRangeDataStorage *storage = [[DateRangeDataStorage alloc]
                                    initWithDate:[NSDate date]
-                                    withNotes:NO];
+                                    withNotes:NO countDays:@7];
     [storage executeNotesForCalendar];
     return YES;
 }
