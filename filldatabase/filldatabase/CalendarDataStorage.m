@@ -33,10 +33,17 @@
     NSMutableString *query = [NSMutableString
                               stringWithFormat:@"SELECT %@ FROM note",
                               COLUMNS];
+    NSMutableArray *conditions = [NSMutableArray arrayWithArray:@[]];
+    int tsStart = [self.dateStart timeIntervalSince1970];
+    int tsEnd = tsStart + 60 * 60 * 24 * 7;
+    [query appendString:@" WHERE"];
     if (!self.displayNotes) {
-        NSString *notesDisplayCondition = @" event_enable <> \"0\"";
-        [query appendString: notesDisplayCondition];
+        NSString *notesDisplayCondition = [NSString stringWithFormat: @" event_enable <> \"0\" AND modify_TS BETWEEN %i AND %i", tsStart, tsEnd];
+        [conditions addObject:notesDisplayCondition];
     }
+    NSString *eventDisplayCondition = [NSString stringWithFormat: @" event_enable <> \"1\" AND event_start_TS BETWEEN %i AND %i OR event_enable <> \"1\" AND event_end_TS BETWEEN %i AND %i", tsStart, tsEnd, tsStart, tsEnd];
+    [conditions addObject:eventDisplayCondition];
+    [query appendString:[conditions componentsJoinedByString:@" OR "]];
     [query appendString:@";"];
     NSLog(@"%@", query);
     return query;
