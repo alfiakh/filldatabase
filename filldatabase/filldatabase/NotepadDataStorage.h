@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "FMDatabase.h"
 
 @interface NotepadDataStorage : NSObject
 
@@ -16,6 +17,7 @@
        withPastEvents: (BOOL) displayPastEvents;
 - (NSString *) buildQuery;
 - (void) executeNotesForNotepad;
+- (void) sendErrorNotification:(NSString *)message;
 
 @property NSString *order;
 @property BOOL displayNotes;

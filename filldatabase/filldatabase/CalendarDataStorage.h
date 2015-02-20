@@ -7,13 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "FMDatabase.h"
 
 @interface CalendarDataStorage : NSObject
 
-- (id) initWithDate: (NSDate *)dateStart;
+- (id) initWithDate: (NSDate *)dateStart
+          withNotes: (BOOL) displayNotes;
 - (NSString *) buildQuery;
 - (void) executeNotesForCalendar;
+- (void) sendErrorNotification:(NSString *)message;
 
 @property NSDate *dateStart;
+@property BOOL displayNotes;
 
 @end

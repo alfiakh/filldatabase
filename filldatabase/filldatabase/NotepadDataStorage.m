@@ -8,9 +8,8 @@
 
 #import "NotepadDataStorage.h"
 #import "AllDefines.h"
-#import "FMDatabase.h"
 
-#define COLUMNS @"ID, message, event_enable, event_start_TS, event_end_TS, event_alarms, create_TS, modify_TS, modify_devID, create_devID"
+#define COLUMNS @"ID, message, event_enable, event_start_TS, event_end_TS"
 
 @implementation NotepadDataStorage
 
@@ -82,4 +81,5 @@
         [self sendErrorNotification:@"Сорь, базы нет"];
     }
 }
+
 @end

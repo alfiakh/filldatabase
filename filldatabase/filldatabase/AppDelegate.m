@@ -19,7 +19,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     CalendarDataStorage *storage = [[CalendarDataStorage alloc]
-                                   initWithDate:[NSDate date]];
+                                   initWithDate:[NSDate date]
+                                    withNotes:NO];
     [storage executeNotesForCalendar];
     return YES;
 }
