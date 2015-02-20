@@ -9,15 +9,10 @@
 #import "PlistPusher.h"
 #import "AllDefines.h"
 
-@implementation PlistPusher
 
-- (instancetype) init {
-    self = [super init];
-    if (self) {
-        self.plistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:PLIST_NAME];
-    }
-    return self;
-}
+#define PLIST_PATH [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:PLIST_NAME]
+#define PLIST_BINARY_PATH [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:PLIST_BINARY_NAME]
+@implementation PlistPusher
 
 - (void) sendErrorNotification:(NSString *)message {
     dispatch_async(dispatch_get_main_queue(), ^(void){
@@ -29,7 +24,7 @@
 }
 
 - (void) collectPlistFileInfo {
-    if([[NSFileManager defaultManager] fileExistsAtPath:self.plistPath]) {
+    if([[NSFileManager defaultManager] fileExistsAtPath:PLIST_PATH]) {
         [self sendErrorNotification:@"PList уже существует"];
     }
     else {
@@ -37,8 +32,18 @@
     }
 }
 
+- (void) collectBinaryPlistFileInfo {
+    if([[NSFileManager defaultManager] fileExistsAtPath:PLIST_BINARY_PATH]) {
+        [self sendErrorNotification:@"Бинарный PList уже существует"];
+    }
+    else {
+        [self sendErrorNotification:@"Бинарный PList'а не было будем создавать"];
+    }
+}
+
 - (void) writeBinaryToSinglePlistFile:(NSArray *)notes {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        [self collectBinaryPlistFileInfo];
         NSError *error = nil;
         TICK;
         NSData *representation = [NSPropertyListSerialization dataWithPropertyList:notes
@@ -46,7 +51,7 @@
                                                                              error:&error];
         if (!error)
         {
-            BOOL ok = [representation writeToFile:self.plistPath
+            BOOL ok = [representation writeToFile:PLIST_BINARY_PATH
                                        atomically:YES];
             if (ok)
             {
@@ -68,8 +73,9 @@
 
 - (void) writeArrayToSinglePlistFile:(NSArray *)notes {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        [self collectPlistFileInfo];
         TICK;
-        BOOL ok = [notes writeToFile:self.plistPath
+        BOOL ok = [notes writeToFile:PLIST_PATH
                           atomically:YES];
         if (ok)
         {
@@ -122,4 +128,5 @@
         NSLog(@"Push to multiple PList binary: %@", tackInfo);
     });
 }
+
 @end

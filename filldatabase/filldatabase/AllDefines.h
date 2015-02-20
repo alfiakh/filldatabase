@@ -9,6 +9,7 @@
 #define DOCUMENTS_DIRECTORY NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0]
 #define DATABASE_NAME @"notes.sqlite"
 #define PLIST_NAME @"notes.plist"
+#define PLIST_BINARY_NAME @"notesBinary.plish"
 #define NOTES_COUNT @500
 #define USER_ID @"15ff1ce5-d2f7-4bf9-828a-dc3f3913655e"
 #define TESTER_SIGNATURE @"050703fb81f5f43a8d77c63fe261d804"

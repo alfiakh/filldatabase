@@ -12,11 +12,10 @@
 
 - (void) sendErrorNotification:(NSString *)message;
 - (void) collectPlistFileInfo;
+- (void) collectBinaryPlistFileInfo;
 - (void) writeBinaryToSinglePlistFile: (NSArray *)notes;
 - (void) writeArrayToSinglePlistFile: (NSArray *)notes;
 - (void) writeBinaryToMultiplePlistFile: (NSArray *)notes;
 - (void) writeDictionaryToMultiplePlistFile: (NSArray *)notes;
-
-@property NSString *plistPath;
 
 @end
