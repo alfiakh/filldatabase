@@ -99,6 +99,17 @@
     return filteredNotes;
 }
 
+-(NSArray *) collectMultipleNotesWithPath: (NSString *) notesFolder
+                                  withIDs: (NSArray *) IDs {
+    NSMutableArray *notes = [NSMutableArray array];
+    for (NSString *ID in IDs) {
+        NSString *plistPath = [notesFolder stringByAppendingPathComponent:ID];
+        NSDictionary *note = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+        [notes addObject:note];
+    }
+    return notes;
+}
+
 - (void) getNotesForNotepadFromSinglePList {
     TICK;
     NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:PLIST_NAME];
@@ -119,6 +130,7 @@
     TICK;
     NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:HELPER_PLIST];
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
+    [self collectMultipleNotesWithPath:MULTIPLE_NOTES_FOLDER withIDs:helperfilteredNotes];
     TACK;
     NSLog(@"%@", tackInfo);
 }
@@ -127,6 +139,7 @@
     TICK;
     NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:HELPER_BINARY_PLIST];
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
+    [self collectMultipleNotesWithPath:MULTIPLE_BINARY_NOTES_FOLDER withIDs:helperfilteredNotes];
     TACK;
     NSLog(@"%@", tackInfo);
 }

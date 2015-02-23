@@ -12,6 +12,8 @@
 #define PLIST_BINARY_NAME @"notesBinary.plist"
 #define HELPER_PLIST @"selectionHelper.plist"
 #define HELPER_BINARY_PLIST @"selectionBinaryHelper.plist"
+#define MULTIPLE_NOTES_FOLDER [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:@"Notes"]
+#define MULTIPLE_BINARY_NOTES_FOLDER [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:@"BinaryNotes"]
 #define NOTES_COUNT @500
 #define USER_ID @"15ff1ce5-d2f7-4bf9-828a-dc3f3913655e"
 //#define USER_ID @"5cbce5fc-6c4a-4ad6-bb6f-c294eb2e91f6"
