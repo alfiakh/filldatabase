@@ -33,13 +33,7 @@
      userInfo: @{@"message": message}];
 }
 
-- (NSString *) buildSqlQuery {
-    NSMutableString *query = [NSMutableString
-                       stringWithFormat:@"SELECT %@ FROM note ",
-                       COLUMNS];
-    if (!self.displayNotes || !self.displayFutureEvents || !self.displayPastEvents) {
-        [query appendString: @" WHERE "];
-    }
+- (NSMutableString *) addNotepadConditionsToQuery: (NSMutableString *) query {
     NSMutableArray *conditions = [NSMutableArray arrayWithArray:@[]];
     if (!self.displayNotes) {
         [conditions addObject:@"event_enable <> \"0\""];
@@ -57,6 +51,17 @@
     NSString *finalCondition = [conditions componentsJoinedByString:@" AND "];
     [query appendString:@" "];
     [query appendString:finalCondition];
+    return query;
+}
+
+- (NSString *) buildSqlQuery {
+    NSMutableString *query = [NSMutableString
+                       stringWithFormat:@"SELECT %@ FROM note ",
+                       COLUMNS];
+    if (!self.displayNotes || !self.displayFutureEvents || !self.displayPastEvents) {
+        [query appendString: @" WHERE "];
+    }
+    query = [self addNotepadConditionsToQuery:query];
     [query appendString:[NSString stringWithFormat:@" ORDER BY %@", self.order]];
     [query appendString:@";"];
     return query;
@@ -70,7 +75,7 @@
         BOOL databaseOpened = [database open];
         if (databaseOpened) {
             database.traceExecution = YES;
-            FMResultSet *resultNotes = [database executeQuery:query];
+            [database executeQuery:query];
         }
         else {
             [self sendErrorNotification:@"Сорь, не удалось открыть базу"];
@@ -79,6 +84,18 @@
     else {
         [self sendErrorNotification:@"Сорь, базы нет"];
     }
+}
+
+- (NSPredicate *) buildPredicate {
+    NSMutableString *predicateBaseString = [self addNotepadConditionsToQuery:[NSMutableString string]];
+    NSPredicate *notepadPredicate = [NSPredicate predicateWithFormat:predicateBaseString];
+    return notepadPredicate;
+}
+
+- (void) getNotesForNotepadFromSinglePList {
+    NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:PLIST_NAME];
+    NSArray *singlePlistNotes = [NSArray arrayWithContentsOfFile:singlePlistPath];
+    NSLog(@"%@", singlePlistNotes);
 }
 
 @end

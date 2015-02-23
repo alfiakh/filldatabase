@@ -78,7 +78,7 @@
         BOOL databaseOpened = [database open];
         if (databaseOpened) {
             database.traceExecution = YES;
-            FMResultSet *resultNotes = [database executeQuery:query];
+            [database executeQuery:query];
         }
         else {
             [self sendErrorNotification:@"Сорь, не удалось открыть базу"];

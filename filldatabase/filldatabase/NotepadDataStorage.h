@@ -15,9 +15,12 @@
             withNotes: (BOOL) displayNotes
      withFutureEvents: (BOOL) displayFutureEvents
        withPastEvents: (BOOL) displayPastEvents;
+- (NSMutableString *) addNotepadConditionsToQuery: (NSMutableString *) query;
 - (NSString *) buildSqlQuery;
 - (void) getNotesForNotepadFromDatabase;
 - (void) sendErrorNotification:(NSString *)message;
+- (NSPredicate *) buildPredicate;
+- (void) getNotesForNotepadFromSinglePList;
 
 @property NSString *order;
 @property BOOL displayNotes;
