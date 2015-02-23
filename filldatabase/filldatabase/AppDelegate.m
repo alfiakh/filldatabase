@@ -18,16 +18,6 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    NotepadDataStorage *storage = [[NotepadDataStorage alloc]
-                                   initWithOrder: @"create_TS"
-                                   withNotes: YES
-                                   withFutureEvents: NO
-                                   withPastEvents: NO];
-    [storage getNotesForNotepadFromSinglePList];
-    [storage getNotesForNotepadFromSingleBinaryPList];
-    [storage getNotesForNotepadFromMultiplePList];
-    [storage getNotesForNotepadFromMultipleBinaryPlist];
-    
     return YES;
 }
 
