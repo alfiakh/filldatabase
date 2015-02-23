@@ -62,7 +62,7 @@
     return query;
 }
 
-- (void) executeNotesForNotepad {
+- (void) getNotesForNotepadFromDatabase {
     NSString *query = [self buildQuery];
     NSString *databasePath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:DATABASE_NAME];
     if([[NSFileManager defaultManager] fileExistsAtPath:databasePath]) {

@@ -16,7 +16,7 @@
      withFutureEvents: (BOOL) displayFutureEvents
        withPastEvents: (BOOL) displayPastEvents;
 - (NSString *) buildQuery;
-- (void) executeNotesForNotepad;
+- (void) getNotesForNotepadFromDatabase;
 - (void) sendErrorNotification:(NSString *)message;
 
 @property NSString *order;

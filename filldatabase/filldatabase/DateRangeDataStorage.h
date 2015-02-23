@@ -15,7 +15,7 @@
           withNotes: (BOOL) displayNotes
           countDays: (NSNumber *)count;
 - (NSString *) buildQuery;
-- (void) executeNotesForCalendar;
+- (void) getNotesInRangeFromDatabase;
 - (void) sendErrorNotification:(NSString *)message;
 
 @property NSDate *dateStart;

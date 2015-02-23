@@ -71,7 +71,7 @@
     return query;
 }
 
-- (void) executeNotesForCalendar {
+- (void) getNotesInRangeFromDatabase {
     NSString *query = [self buildQuery];
     NSString *databasePath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:DATABASE_NAME];
     if([[NSFileManager defaultManager] fileExistsAtPath:databasePath]) {

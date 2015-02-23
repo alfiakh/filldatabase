@@ -21,7 +21,7 @@
     DateRangeDataStorage *storage = [[DateRangeDataStorage alloc]
                                    initWithDate:[NSDate date]
                                     withNotes:NO countDays:@7];
-    [storage executeNotesForCalendar];
+    [storage getNotesInRangeFromDatabase];
     return YES;
 }
 
