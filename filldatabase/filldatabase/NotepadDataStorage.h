@@ -21,6 +21,9 @@
 - (void) sendErrorNotification:(NSString *)message;
 - (NSPredicate *) buildPredicate;
 - (void) getNotesForNotepadFromSinglePList;
+- (void) getNotesForNotepadFromSingleBinaryPList;
+- (void) getNotesForNotepadFromMultiplePList;
+- (void) getNotesForNotepadFromMultipleBinaryPlist;
 
 @property NSString *order;
 @property BOOL displayNotes;

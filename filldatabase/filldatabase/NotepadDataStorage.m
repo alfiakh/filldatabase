@@ -92,10 +92,43 @@
     return notepadPredicate;
 }
 
+- (NSArray *) applyPredicateToContentOfFile: (NSString *)pathPath {
+    NSArray *plistNotes = [NSArray arrayWithContentsOfFile:pathPath];
+    NSPredicate *notepadFilterPredicate = [self buildPredicate];
+    NSArray *filteredNotes = [plistNotes filteredArrayUsingPredicate:notepadFilterPredicate];
+    return filteredNotes;
+}
+
 - (void) getNotesForNotepadFromSinglePList {
+    TICK;
     NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:PLIST_NAME];
-    NSArray *singlePlistNotes = [NSArray arrayWithContentsOfFile:singlePlistPath];
-    NSLog(@"%@", singlePlistNotes);
+    [self applyPredicateToContentOfFile:singlePlistPath];
+    TACK;
+    NSLog(@"%@", tackInfo);
+}
+
+- (void) getNotesForNotepadFromSingleBinaryPList {
+    TICK;
+    NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:PLIST_BINARY_NAME];
+    [self applyPredicateToContentOfFile:singlePlistPath];
+    TACK;
+    NSLog(@"%@", tackInfo);
+}
+
+- (void) getNotesForNotepadFromMultiplePList {
+    TICK;
+    NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:HELPER_PLIST];
+    NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
+    TACK;
+    NSLog(@"%@", tackInfo);
+}
+
+- (void) getNotesForNotepadFromMultipleBinaryPlist {
+    TICK;
+    NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:HELPER_BINARY_PLIST];
+    NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
+    TACK;
+    NSLog(@"%@", tackInfo);
 }
 
 @end

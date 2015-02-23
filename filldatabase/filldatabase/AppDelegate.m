@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "DateRangeDataStorage.h"
+#import "NotepadDataStorage.h"
 
 @interface AppDelegate ()
 
@@ -17,11 +18,16 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
-    DateRangeDataStorage *storage = [[DateRangeDataStorage alloc]
-                                   initWithDate:[NSDate date]
-                                    withNotes:NO countDays:@7];
-    [storage getNotesInRangeFromDatabase];
+    NotepadDataStorage *storage = [[NotepadDataStorage alloc]
+                                   initWithOrder: @"create_TS"
+                                   withNotes: YES
+                                   withFutureEvents: NO
+                                   withPastEvents: NO];
+    [storage getNotesForNotepadFromSinglePList];
+    [storage getNotesForNotepadFromSingleBinaryPList];
+    [storage getNotesForNotepadFromMultiplePList];
+    [storage getNotesForNotepadFromMultipleBinaryPlist];
+    
     return YES;
 }
 
