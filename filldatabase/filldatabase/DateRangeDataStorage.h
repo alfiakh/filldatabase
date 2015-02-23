@@ -14,7 +14,7 @@
 - (id) initWithDate: (NSDate *)dateStart
           withNotes: (BOOL) displayNotes
           countDays: (NSNumber *)count;
-- (NSString *) buildQuery;
+- (NSString *) buildSqlQuery;
 - (void) getNotesInRangeFromDatabase;
 - (void) sendErrorNotification:(NSString *)message;
 

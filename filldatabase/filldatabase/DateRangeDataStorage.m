@@ -51,7 +51,7 @@
      userInfo: @{@"message": message}];
 }
 
-- (NSString *) buildQuery {
+- (NSString *) buildSqlQuery {
     NSMutableString *query = [NSMutableString
                               stringWithFormat:@"SELECT %@ FROM note",
                               self.columns];
@@ -67,12 +67,11 @@
     [conditions addObject:eventDisplayCondition];
     [query appendString:[conditions componentsJoinedByString:@" OR "]];
     [query appendString:@";"];
-    NSLog(@"%@", query);
     return query;
 }
 
 - (void) getNotesInRangeFromDatabase {
-    NSString *query = [self buildQuery];
+    NSString *query = [self buildSqlQuery];
     NSString *databasePath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:DATABASE_NAME];
     if([[NSFileManager defaultManager] fileExistsAtPath:databasePath]) {
         FMDatabase *database = [FMDatabase databaseWithPath:databasePath];
@@ -80,7 +79,6 @@
         if (databaseOpened) {
             database.traceExecution = YES;
             FMResultSet *resultNotes = [database executeQuery:query];
-            NSLog(@"%@", resultNotes);
         }
         else {
             [self sendErrorNotification:@"Сорь, не удалось открыть базу"];
