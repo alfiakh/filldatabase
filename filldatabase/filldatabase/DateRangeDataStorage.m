@@ -57,13 +57,13 @@
                               self.columns];
     NSMutableArray *conditions = [NSMutableArray arrayWithArray:@[]];
     int tsStart = [self.dateStart timeIntervalSince1970];
-    int tsEnd = tsStart + 60 * 60 * 24 * (long)[self.daysCount integerValue];
+    long tsEnd = tsStart + 60 * 60 * 24 * (long)[self.daysCount integerValue];
     [query appendString:@" WHERE"];
     if (!self.displayNotes) {
-        NSString *notesDisplayCondition = [NSString stringWithFormat: @" event_enable <> \"0\" AND modify_TS BETWEEN %i AND %i", tsStart, tsEnd];
+        NSString *notesDisplayCondition = [NSString stringWithFormat: @" event_enable <> \"0\" AND modify_TS BETWEEN %i AND %ld", tsStart, tsEnd];
         [conditions addObject:notesDisplayCondition];
     }
-    NSString *eventDisplayCondition = [NSString stringWithFormat: @" event_enable <> \"1\" AND event_start_TS BETWEEN %i AND %i OR event_enable <> \"1\" AND event_end_TS BETWEEN %i AND %i", tsStart, tsEnd, tsStart, tsEnd];
+    NSString *eventDisplayCondition = [NSString stringWithFormat: @" event_enable <> \"1\" AND event_start_TS BETWEEN %i AND %ld OR event_enable <> \"1\" AND event_end_TS BETWEEN %i AND %ld", tsStart, tsEnd, tsStart, tsEnd];
     [conditions addObject:eventDisplayCondition];
     [query appendString:[conditions componentsJoinedByString:@" OR "]];
     [query appendString:@";"];
