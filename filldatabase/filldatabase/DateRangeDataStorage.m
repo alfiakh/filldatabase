@@ -51,21 +51,55 @@
      userInfo: @{@"message": message}];
 }
 
+- (NSString *) collectBetweenConditionWIthType: (NSString *) type
+                                withLowerBound: (int) low
+                               withHigherBound: (long) high{
+    if ([type isEqualToString:@"sql"]) {
+        return [NSString stringWithFormat: @"%i AND %ld", low, high];
+    }
+    else if ([type isEqualToString:@"predicate"]){
+        return [NSString stringWithFormat: @"%@", @[@(low), @(high)]];
+    }
+    else {
+        [self sendErrorNotification:@"Задан непривильный тип для билда кондишнов"];
+        return [NSString string];
+    }
+}
+
+- (NSMutableString *) addDateRangeConditionsToQuery: (NSMutableString *) query
+                                           withType: (NSString *) type {
+    NSMutableArray *conditions = [NSMutableArray arrayWithArray:@[]];
+    int tsStart = [self.dateStart timeIntervalSince1970];
+    long tsEnd = tsStart + 60 * 60 * 24 * (long)[self.daysCount integerValue];
+    if (!self.displayNotes) {
+        NSMutableString *notesDisplayCondition = [NSMutableString stringWithFormat: @"event_enable <> \"0\" AND modify_TS BETWEEN"];
+        [notesDisplayCondition
+         appendString:[self collectBetweenConditionWIthType:type
+                                             withLowerBound:tsStart
+                                            withHigherBound:tsEnd]];
+        [conditions addObject:notesDisplayCondition];
+    }
+    NSMutableString *eventDisplayCondition = [NSMutableString stringWithFormat: @"event_enable <> \"1\" AND event_start_TS BETWEEN "];
+    [eventDisplayCondition
+     appendString:[self collectBetweenConditionWIthType:type
+                                         withLowerBound:tsStart
+                                        withHigherBound:tsEnd]];
+    [eventDisplayCondition appendString:@"OR event_enable <> \"1\" AND event_end_TS BETWEEN "];
+    [eventDisplayCondition
+     appendString:[self collectBetweenConditionWIthType:type
+                                         withLowerBound:tsStart
+                                        withHigherBound:tsEnd]];
+    [conditions addObject:eventDisplayCondition];
+    [query appendString:[conditions componentsJoinedByString:@" OR "]];
+    return query;
+}
+
 - (NSString *) buildSqlQuery {
     NSMutableString *query = [NSMutableString
                               stringWithFormat:@"SELECT %@ FROM note",
                               self.columns];
-    NSMutableArray *conditions = [NSMutableArray arrayWithArray:@[]];
-    int tsStart = [self.dateStart timeIntervalSince1970];
-    long tsEnd = tsStart + 60 * 60 * 24 * (long)[self.daysCount integerValue];
     [query appendString:@" WHERE"];
-    if (!self.displayNotes) {
-        NSString *notesDisplayCondition = [NSString stringWithFormat: @" event_enable <> \"0\" AND modify_TS BETWEEN %i AND %ld", tsStart, tsEnd];
-        [conditions addObject:notesDisplayCondition];
-    }
-    NSString *eventDisplayCondition = [NSString stringWithFormat: @" event_enable <> \"1\" AND event_start_TS BETWEEN %i AND %ld OR event_enable <> \"1\" AND event_end_TS BETWEEN %i AND %ld", tsStart, tsEnd, tsStart, tsEnd];
-    [conditions addObject:eventDisplayCondition];
-    [query appendString:[conditions componentsJoinedByString:@" OR "]];
+    [self addDateRangeConditionsToQuery:query withType:@"sql"];
     [query appendString:@";"];
     return query;
 }
@@ -87,6 +121,64 @@
     else {
         [self sendErrorNotification:@"Сорь, базы нет"];
     }
+}
+
+- (NSPredicate *) buildPredicate {
+    NSMutableString *predicateBaseString = [self addDateRangeConditionsToQuery:[NSMutableString string] withType:@"predicate"];
+    NSPredicate *notepadPredicate = [NSPredicate predicateWithFormat:predicateBaseString];
+    return notepadPredicate;
+}
+
+- (NSArray *) applyPredicateToContentOfFile: (NSString *)pathPath {
+    NSArray *plistNotes = [NSArray arrayWithContentsOfFile:pathPath];
+    NSPredicate *notepadFilterPredicate = [self buildPredicate];
+    NSArray *filteredNotes = [plistNotes filteredArrayUsingPredicate:notepadFilterPredicate];
+    return filteredNotes;
+}
+
+- (void) getNotesForDateRangeFromSinglePList {
+    TICK;
+    NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:PLIST_NAME];
+    [self applyPredicateToContentOfFile:singlePlistPath];
+    TACK;
+    NSLog(@"%@", tackInfo);
+}
+
+- (void) getNotesForDateRangeFromSingleBinaryPList {
+    TICK;
+    NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:PLIST_BINARY_NAME];
+    [self applyPredicateToContentOfFile:singlePlistPath];
+    TACK;
+    NSLog(@"%@", tackInfo);
+}
+
+-(NSArray *) collectMultipleNotesWithPath: (NSString *) notesFolder
+                                  withIDs: (NSArray *) IDs {
+    NSMutableArray *notes = [NSMutableArray array];
+    for (NSString *ID in IDs) {
+        NSString *plistPath = [notesFolder stringByAppendingPathComponent:ID];
+        NSDictionary *note = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+        [notes addObject:note];
+    }
+    return notes;
+}
+
+- (void) getNotesForDateRangeFromMultiplePList {
+    TICK;
+    NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:HELPER_PLIST];
+    NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
+    [self collectMultipleNotesWithPath:MULTIPLE_NOTES_FOLDER withIDs:helperfilteredNotes];
+    TACK;
+    NSLog(@"%@", tackInfo);
+}
+
+- (void) getNotesForDateRangeFromMultipleBinaryPlist {
+    TICK;
+    NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:HELPER_BINARY_PLIST];
+    NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
+    [self collectMultipleNotesWithPath:MULTIPLE_BINARY_NOTES_FOLDER withIDs:helperfilteredNotes];
+    TACK;
+    NSLog(@"%@", tackInfo);
 }
 
 @end
