@@ -108,7 +108,7 @@
     return query;
 }
 
-- (void) getNotesInRangeFromDatabase {
+- (void) getNotesForDateRangeFromDataBase {
     NSString *query = [self buildSqlQuery];
     NSString *databasePath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:DATABASE_NAME];
     if([[NSFileManager defaultManager] fileExistsAtPath:databasePath]) {
@@ -176,7 +176,7 @@
     NSLog(@"%@", tackInfo);
 }
 
-- (void) getNotesForDateRangeFromMultipleBinaryPlist {
+- (void) getNotesForDateRangeFromMultipleBinaryPList {
     TICK;
     NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:HELPER_BINARY_PLIST];
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];

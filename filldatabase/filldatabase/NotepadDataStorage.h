@@ -17,13 +17,13 @@
        withPastEvents: (BOOL) displayPastEvents;
 - (NSMutableString *) addNotepadConditionsToQuery: (NSMutableString *) query;
 - (NSString *) buildSqlQuery;
-- (void) getNotesForNotepadFromDatabase;
+- (void) getNotesForNotepadFromDataBase;
 - (void) sendErrorNotification:(NSString *)message;
 - (NSPredicate *) buildPredicate;
 - (void) getNotesForNotepadFromSinglePList;
 - (void) getNotesForNotepadFromSingleBinaryPList;
 - (void) getNotesForNotepadFromMultiplePList;
-- (void) getNotesForNotepadFromMultipleBinaryPlist;
+- (void) getNotesForNotepadFromMultipleBinaryPList;
 
 @property NSString *order;
 @property BOOL displayNotes;

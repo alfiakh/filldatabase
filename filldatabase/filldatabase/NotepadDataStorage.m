@@ -66,7 +66,7 @@
     return query;
 }
 
-- (void) getNotesForNotepadFromDatabase {
+- (void) getNotesForNotepadFromDataBase {
     NSString *query = [self buildSqlQuery];
     NSString *databasePath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:DATABASE_NAME];
     if([[NSFileManager defaultManager] fileExistsAtPath:databasePath]) {
@@ -144,7 +144,7 @@
     NSLog(@"%@", tackInfo);
 }
 
-- (void) getNotesForNotepadFromMultipleBinaryPlist {
+- (void) getNotesForNotepadFromMultipleBinaryPList {
     TICK;
     NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:HELPER_BINARY_PLIST];
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];

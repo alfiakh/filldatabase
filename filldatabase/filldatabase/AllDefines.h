@@ -7,6 +7,7 @@
 //
 
 #define DOCUMENTS_DIRECTORY NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0]
+#define DATA_STORAGES @[@"DataBase", @"SinglePList", @"SingleBinaryPList", @"MultiplePList", @"MultipleBinaryPList"]
 #define DATABASE_NAME @"notes.sqlite"
 #define PLIST_NAME @"notes.plist"
 #define PLIST_BINARY_NAME @"notesBinary.plist"

@@ -15,12 +15,12 @@
           withNotes: (BOOL) displayNotes
           countDays: (NSNumber *)count;
 - (NSString *) buildSqlQuery;
-- (void) getNotesInRangeFromDatabase;
+- (void) getNotesForDateRangeFromDataBase;
 - (void) sendErrorNotification:(NSString *)message;
 - (void) getNotesForDateRangeFromSinglePList;
 - (void) getNotesForDateRangeFromSingleBinaryPList;
 - (void) getNotesForDateRangeFromMultiplePList;
-- (void) getNotesForDateRangeFromMultipleBinaryPlist;
+- (void) getNotesForDateRangeFromMultipleBinaryPList;
 
 @property NSDate *dateStart;
 @property BOOL displayNotes;

@@ -7,8 +7,6 @@
 //
 
 #import "FirstTestCase.h"
-#import "DateRangeDataStorage.h"
-#import "NotepadDataStorage.h"
 #import "AllDefines.h"
 
 #define CR @"create_TS"
@@ -33,90 +31,46 @@
     });
 }
 
+- (void) callTestCaseWithStoraType: (NSString *) storageType {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        NSString *notepadStorageSelectorName = [NSString stringWithFormat:@"getNotesForNotepadFrom%@", storageType];
+        SEL notepadStorageSelector = NSSelectorFromString(notepadStorageSelectorName);
+        NSString *dateRangeStorageSelectorName = [NSString stringWithFormat:@"getNotesForDateRangeFrom%@", storageType];
+        SEL dateRangeStorageSelector = NSSelectorFromString(dateRangeStorageSelectorName);
+        TICK;
+        [self.notepadStorage performSelector:notepadStorageSelector];
+        [self.calendarStorage performSelector:dateRangeStorageSelector];
+        [self.monthCalendarStorage performSelector:dateRangeStorageSelector];
+        [self.calendarStorage performSelector:dateRangeStorageSelector];
+        [self.diaryStorage performSelector:dateRangeStorageSelector];
+        [self.calendarStorage performSelector:dateRangeStorageSelector];
+        TACK;
+        NSString *message = [NSString stringWithFormat:@"1st TC finished %@ %@", storageType, tackInfo[@"time"]];
+        [self sendDoneNotification:message];
+    });
+}
+
 - (void) run {
-    NotepadDataStorage *notepadStorage = [[NotepadDataStorage alloc]
-                                          initWithOrder:CR
-                                          withNotes:YES
-                                          withFutureEvents:YES
-                                          withPastEvents:YES];
-    DateRangeDataStorage *calendarStorage = [[DateRangeDataStorage alloc]
-                                             initWithDate:[NSDate date]
-                                             withNotes:YES
-                                             countDays:@7];
-    DateRangeDataStorage *monthCalendarStorage = [[DateRangeDataStorage alloc]
-                                                  initWithDate:[NSDate date]
-                                                  withNotes:NO
-                                                  countDays:@42];
-    DateRangeDataStorage *diaryStorage = [[DateRangeDataStorage alloc]
-                                          initWithDate:[NSDate date]
-                                          withNotes:YES
-                                          countDays:@1];
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        //это sqlite
-        TICK;
-        [notepadStorage getNotesForNotepadFromDatabase];
-        [calendarStorage getNotesInRangeFromDatabase];
-        [monthCalendarStorage getNotesInRangeFromDatabase];
-        [calendarStorage getNotesInRangeFromDatabase];
-        [diaryStorage getNotesInRangeFromDatabase];
-        [calendarStorage getNotesInRangeFromDatabase];
-        TACK;
-        NSString *message = [NSString stringWithFormat:@"1st TC finished SQLite %@", tackInfo[@"time"]];
-        [self sendDoneNotification:message];
-    });
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        //это single
-        TICK;
-        [notepadStorage getNotesForNotepadFromSinglePList];
-        [calendarStorage getNotesForDateRangeFromSinglePList];
-        [monthCalendarStorage getNotesForDateRangeFromSinglePList];
-        [calendarStorage getNotesForDateRangeFromSinglePList];
-        [diaryStorage getNotesForDateRangeFromSinglePList];
-        [calendarStorage getNotesForDateRangeFromSinglePList];
-        TACK;
-        NSString *message = [NSString stringWithFormat:@"1st TC finished S PL %@", tackInfo[@"time"]];
-        [self sendDoneNotification:message];
-    });
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        //это single binary
-        TICK;
-        [notepadStorage getNotesForNotepadFromSingleBinaryPList];
-        [calendarStorage getNotesForDateRangeFromSingleBinaryPList];
-        [monthCalendarStorage getNotesForDateRangeFromSingleBinaryPList];
-        [calendarStorage getNotesForDateRangeFromSingleBinaryPList];
-        [diaryStorage getNotesForDateRangeFromSingleBinaryPList];
-        [calendarStorage getNotesForDateRangeFromSingleBinaryPList];
-        TACK;
-        NSString *message = [NSString stringWithFormat:@"1st TC finished SB PL %@", tackInfo[@"time"]];
-        [self sendDoneNotification:message];
-    });
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        //это multiple
-        TICK;
-        [notepadStorage getNotesForNotepadFromMultiplePList];
-        [calendarStorage getNotesForDateRangeFromMultiplePList];
-        [monthCalendarStorage getNotesForDateRangeFromMultiplePList];
-        [calendarStorage getNotesForDateRangeFromMultiplePList];
-        [diaryStorage getNotesForDateRangeFromMultiplePList];
-        [calendarStorage getNotesForDateRangeFromMultiplePList];
-        TACK;
-        NSString *message = [NSString stringWithFormat:@"1st TC finished M PL %@", tackInfo[@"time"]];
-        [self sendDoneNotification:message];
-    });
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        //это miltiple binary
-        TICK;
-        [notepadStorage getNotesForNotepadFromSingleBinaryPList];
-        [calendarStorage getNotesForDateRangeFromMultipleBinaryPlist];
-        [monthCalendarStorage getNotesForDateRangeFromMultipleBinaryPlist];
-        [calendarStorage getNotesForDateRangeFromMultipleBinaryPlist];
-        [diaryStorage getNotesForDateRangeFromMultipleBinaryPlist];
-        [calendarStorage getNotesForDateRangeFromMultipleBinaryPlist];
-        TACK;
-        NSString *message = [NSString stringWithFormat:@"1st TC finished MB PL %@", tackInfo[@"time"]];
-        [self sendDoneNotification:message];
-    });
+    self.notepadStorage = [[NotepadDataStorage alloc]
+                           initWithOrder:CR
+                           withNotes:YES
+                           withFutureEvents:YES
+                           withPastEvents:YES];
+    self.calendarStorage = [[DateRangeDataStorage alloc]
+                            initWithDate:[NSDate date]
+                            withNotes:YES
+                            countDays:@7];
+    self.monthCalendarStorage = [[DateRangeDataStorage alloc]
+                                 initWithDate:[NSDate date]
+                                 withNotes:NO
+                                 countDays:@42];
+    self.diaryStorage = [[DateRangeDataStorage alloc]
+                         initWithDate:[NSDate date]
+                         withNotes:YES
+                         countDays:@1];
+    for (NSString *dataStorage in DATA_STORAGES) {
+        [self callTestCaseWithStoraType:dataStorage];
+    }
 }
 
 @end
