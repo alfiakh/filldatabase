@@ -14,7 +14,6 @@
 - (id) initWithDate: (NSDate *)dateStart
           withNotes: (BOOL) displayNotes
           countDays: (NSNumber *)count;
-- (NSMutableString *) addDateRangeConditionsToQuery: (NSMutableString *) query;
 - (NSString *) buildSqlQuery;
 - (void) getNotesInRangeFromDatabase;
 - (void) sendErrorNotification:(NSString *)message;

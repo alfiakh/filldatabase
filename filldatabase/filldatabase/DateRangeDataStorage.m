@@ -52,13 +52,14 @@
 }
 
 - (NSString *) collectBetweenConditionWIthType: (NSString *) type
+                                   withKeyName: (NSString *) keyName
                                 withLowerBound: (int) low
                                withHigherBound: (long) high{
     if ([type isEqualToString:@"sql"]) {
-        return [NSString stringWithFormat: @"%i AND %ld", low, high];
+        return [NSString stringWithFormat: @"%@ BETWEEN %i AND %ld", keyName, low, high];
     }
     else if ([type isEqualToString:@"predicate"]){
-        return [NSString stringWithFormat: @"%@", @[@(low), @(high)]];
+        return [NSString stringWithFormat: @"(%i <= %@) && (%@ <= %ld)", low, keyName, keyName, high];
     }
     else {
         [self sendErrorNotification:@"Задан непривильный тип для билда кондишнов"];
@@ -72,21 +73,24 @@
     int tsStart = [self.dateStart timeIntervalSince1970];
     long tsEnd = tsStart + 60 * 60 * 24 * (long)[self.daysCount integerValue];
     if (!self.displayNotes) {
-        NSMutableString *notesDisplayCondition = [NSMutableString stringWithFormat: @"event_enable <> \"0\" AND modify_TS BETWEEN"];
+        NSMutableString *notesDisplayCondition = [NSMutableString stringWithFormat: @"event_enable <> \"0\" AND "];
         [notesDisplayCondition
          appendString:[self collectBetweenConditionWIthType:type
+                                                withKeyName:@"modify_TS"
                                              withLowerBound:tsStart
                                             withHigherBound:tsEnd]];
         [conditions addObject:notesDisplayCondition];
     }
-    NSMutableString *eventDisplayCondition = [NSMutableString stringWithFormat: @"event_enable <> \"1\" AND event_start_TS BETWEEN "];
+    NSMutableString *eventDisplayCondition = [NSMutableString stringWithFormat: @"event_enable <> \"1\" AND "];
     [eventDisplayCondition
      appendString:[self collectBetweenConditionWIthType:type
+                                            withKeyName:@"event_start_TS"
                                          withLowerBound:tsStart
                                         withHigherBound:tsEnd]];
-    [eventDisplayCondition appendString:@"OR event_enable <> \"1\" AND event_end_TS BETWEEN "];
+    [eventDisplayCondition appendString:@" OR event_enable <> \"1\" AND "];
     [eventDisplayCondition
      appendString:[self collectBetweenConditionWIthType:type
+                                            withKeyName:@"event_start_TS"
                                          withLowerBound:tsStart
                                         withHigherBound:tsEnd]];
     [conditions addObject:eventDisplayCondition];

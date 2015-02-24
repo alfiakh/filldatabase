@@ -18,17 +18,6 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    DateRangeDataStorage *storage = [[DateRangeDataStorage alloc]
-                                     initWithDate:[NSDate date]
-                                     withNotes:YES
-                                     countDays:@7];
-    NSPredicate *pre = [NSPredicate predicateWithFormat:@"event_start_TS BETWEEN %@", @[@1424777277, @1425382077]];
-    NSString *str = [NSString stringWithFormat:@"event_start_TS BETWEEN %@", @[@1424777277, @1425382077]];
-    NSPredicate *pre1 = [NSPredicate predicateWithFormat:str];
-//    [storage getNotesForDateRangeFromSinglePList];
-//    [storage getNotesForDateRangeFromSingleBinaryPList];
-//    [storage getNotesForDateRangeFromMultiplePList];
-//    [storage getNotesForDateRangeFromMultipleBinaryPlist];
     return YES;
 }
 
