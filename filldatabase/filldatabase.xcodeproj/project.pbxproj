@@ -26,6 +26,7 @@
 		F0B2DBD91A933DCF00E8655D /* PlistPusher.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBD81A933DCF00E8655D /* PlistPusher.m */; };
 		F0FDEF551A9656A500725F3A /* NotepadDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF541A9656A500725F3A /* NotepadDataStorage.m */; };
 		F0FDEF581A96911100725F3A /* DateRangeDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF571A96911100725F3A /* DateRangeDataStorage.m */; };
+		F0FDEF5B1A9CCA5400725F3A /* CasesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF5A1A9CCA5400725F3A /* CasesViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,8 @@
 		F0FDEF541A9656A500725F3A /* NotepadDataStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NotepadDataStorage.m; path = filldatabase/NotepadDataStorage.m; sourceTree = "<group>"; };
 		F0FDEF561A96911100725F3A /* DateRangeDataStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DateRangeDataStorage.h; path = filldatabase/DateRangeDataStorage.h; sourceTree = "<group>"; };
 		F0FDEF571A96911100725F3A /* DateRangeDataStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DateRangeDataStorage.m; path = filldatabase/DateRangeDataStorage.m; sourceTree = "<group>"; };
+		F0FDEF591A9CCA5400725F3A /* CasesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CasesViewController.h; sourceTree = "<group>"; };
+		F0FDEF5A1A9CCA5400725F3A /* CasesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CasesViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +143,8 @@
 				F009E2B01A8BA9E600271245 /* ViewController.h */,
 				F009E2B11A8BA9E600271245 /* ViewController.m */,
 				F009E2B31A8BA9E600271245 /* Main.storyboard */,
+				F0FDEF591A9CCA5400725F3A /* CasesViewController.h */,
+				F0FDEF5A1A9CCA5400725F3A /* CasesViewController.m */,
 				F009E2CF1A8BABD400271245 /* DataGetter.h */,
 				F009E2D01A8BABD400271245 /* DataGetter.m */,
 				F0B2DBAC1A8C8B4000E8655D /* DataPusher.h */,
@@ -293,6 +298,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F009E2D11A8BABD400271245 /* DataGetter.m in Sources */,
+				F0FDEF5B1A9CCA5400725F3A /* CasesViewController.m in Sources */,
 				F009E2B21A8BA9E600271245 /* ViewController.m in Sources */,
 				F0B2DBD01A8C90C700E8655D /* FMDatabasePool.m in Sources */,
 				F0B2DBD91A933DCF00E8655D /* PlistPusher.m in Sources */,
