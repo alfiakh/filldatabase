@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -15,6 +16,7 @@
                         <viewControllerLayoutGuide type="bottom" id="gq5-az-nRO"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="K2V-ct-95U">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aM1-7M-aEJ">
@@ -77,7 +79,7 @@
                                     <action selector="deleteManyNotes:" destination="HtA-1U-wtS" eventType="touchUpInside" id="HFN-qZ-7j8"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SVX-7x-7Of">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SVX-7x-7Of">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -127,6 +129,7 @@
                         <viewControllerLayoutGuide type="bottom" id="r9k-Rg-YEw"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="PGd-ED-kjC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z9v-LV-9el">
@@ -181,6 +184,7 @@
                                 </state>
                                 <connections>
                                     <action selector="pushArrayToSinglePList:" destination="qfK-yw-FxH" eventType="touchUpInside" id="yYH-hj-37s"/>
+                                    <action selector="pushBinaryToMultiplePList:" destination="qfK-yw-FxH" eventType="touchUpInside" id="Vcy-lY-kgf"/>
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Записи еще не загружены" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tWi-E7-aX1">
@@ -220,22 +224,22 @@
                                 <exclude reference="tWi-E7-aX1"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="tWg-mo-Rqh"/>
-                                <exclude reference="HjE-7Y-FQw"/>
-                                <exclude reference="Z2h-bo-B7e"/>
+                                <exclude reference="zgT-eV-3uX"/>
                                 <exclude reference="mCN-vU-2tj"/>
                                 <exclude reference="ut8-6l-b8O"/>
+                                <exclude reference="JU3-ZM-ia6"/>
+                                <exclude reference="kTt-4N-jkS"/>
+                                <exclude reference="Opk-2f-RfM"/>
+                                <exclude reference="vZq-hP-mcL"/>
                                 <exclude reference="ZOb-8I-1M8"/>
                                 <exclude reference="g0W-8b-vDr"/>
                                 <exclude reference="oT3-xQ-P5T"/>
                                 <exclude reference="rBk-rr-yaK"/>
-                                <exclude reference="Opk-2f-RfM"/>
-                                <exclude reference="vZq-hP-mcL"/>
-                                <exclude reference="JU3-ZM-ia6"/>
-                                <exclude reference="kTt-4N-jkS"/>
+                                <exclude reference="tWg-mo-Rqh"/>
+                                <exclude reference="HjE-7Y-FQw"/>
+                                <exclude reference="Z2h-bo-B7e"/>
                                 <exclude reference="Nes-X5-ge9"/>
                                 <exclude reference="hSp-Yt-iat"/>
-                                <exclude reference="zgT-eV-3uX"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -249,22 +253,22 @@
                                 <include reference="tWi-E7-aX1"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="tWg-mo-Rqh"/>
-                                <include reference="HjE-7Y-FQw"/>
-                                <include reference="Z2h-bo-B7e"/>
+                                <include reference="zgT-eV-3uX"/>
                                 <include reference="mCN-vU-2tj"/>
                                 <include reference="ut8-6l-b8O"/>
+                                <include reference="JU3-ZM-ia6"/>
+                                <include reference="kTt-4N-jkS"/>
+                                <include reference="Opk-2f-RfM"/>
+                                <include reference="vZq-hP-mcL"/>
                                 <include reference="ZOb-8I-1M8"/>
                                 <include reference="g0W-8b-vDr"/>
                                 <include reference="oT3-xQ-P5T"/>
                                 <include reference="rBk-rr-yaK"/>
-                                <include reference="Opk-2f-RfM"/>
-                                <include reference="vZq-hP-mcL"/>
-                                <include reference="JU3-ZM-ia6"/>
-                                <include reference="kTt-4N-jkS"/>
+                                <include reference="tWg-mo-Rqh"/>
+                                <include reference="HjE-7Y-FQw"/>
+                                <include reference="Z2h-bo-B7e"/>
                                 <include reference="Nes-X5-ge9"/>
                                 <include reference="hSp-Yt-iat"/>
-                                <include reference="zgT-eV-3uX"/>
                             </mask>
                         </variation>
                     </view>

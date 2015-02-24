@@ -46,7 +46,7 @@
 
 - (void) sendErrorNotification:(NSString *)message {
     [[NSNotificationCenter defaultCenter]
-     postNotificationName: @"CalendarDataStorageErrorNotification"
+     postNotificationName: @"DataStorageErrorNotification"
      object: nil
      userInfo: @{@"message": message}];
 }

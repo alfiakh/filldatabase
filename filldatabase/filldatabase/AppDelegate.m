@@ -7,8 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "DateRangeDataStorage.h"
-#import "NotepadDataStorage.h"
 
 @interface AppDelegate ()
 

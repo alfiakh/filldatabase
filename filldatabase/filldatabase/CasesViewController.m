@@ -7,6 +7,9 @@
 //
 
 #import "CasesViewController.h"
+#import "NotepadDataStorage.h"
+#import "DateRangeDataStorage.h"
+#import "FirstTestCase.h"
 
 @interface CasesViewController ()
 
@@ -16,7 +19,23 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleFinishedSelection:)
+                                                 name:@"TastCaseFinishedNotification"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleFinishedSelection:)
+                                                 name:@"DataStorageErrorNotification"
+                                               object:nil];
+}
+
+- (void) handleFinishedSelection: (NSNotification *) notification {
+    [self addToConsole: notification.userInfo[@"message"]];
+}
+
+- (void) addToConsole: (NSString *) message {
+    NSString *appendingString = [@"\n" stringByAppendingString:message];
+    self.console.text = [self.console.text stringByAppendingString:appendingString];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -25,6 +44,7 @@
 }
 
 - (IBAction)firstCase:(id)sender {
+    [[FirstTestCase alloc] init];
 }
 
 - (IBAction)secondCase:(id)sender {

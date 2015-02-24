@@ -28,7 +28,7 @@
 
 - (void) sendErrorNotification:(NSString *)message {
     [[NSNotificationCenter defaultCenter]
-     postNotificationName: @"NotepadDataStorageErrorNotification"
+     postNotificationName: @"DataStorageErrorNotification"
      object: nil
      userInfo: @{@"message": message}];
 }
@@ -49,7 +49,6 @@
         [conditions addObject:[NSString stringWithFormat:@"event_start_TS > %i", ts ]];
     }
     NSString *finalCondition = [conditions componentsJoinedByString:@" AND "];
-    [query appendString:@" "];
     [query appendString:finalCondition];
     return query;
 }
@@ -88,15 +87,25 @@
 
 - (NSPredicate *) buildPredicate {
     NSMutableString *predicateBaseString = [self addNotepadConditionsToQuery:[NSMutableString string]];
-    NSPredicate *notepadPredicate = [NSPredicate predicateWithFormat:predicateBaseString];
-    return notepadPredicate;
+    if (![predicateBaseString isEqualToString:@""]) {
+        NSPredicate *notepadPredicate = [NSPredicate predicateWithFormat:predicateBaseString];
+        return notepadPredicate;
+    }
+    else {
+        return nil;
+    }
 }
 
 - (NSArray *) applyPredicateToContentOfFile: (NSString *)pathPath {
     NSArray *plistNotes = [NSArray arrayWithContentsOfFile:pathPath];
     NSPredicate *notepadFilterPredicate = [self buildPredicate];
-    NSArray *filteredNotes = [plistNotes filteredArrayUsingPredicate:notepadFilterPredicate];
-    return filteredNotes;
+    if (notepadFilterPredicate) {
+        NSArray *filteredNotes = [plistNotes filteredArrayUsingPredicate:notepadFilterPredicate];
+        return filteredNotes;
+    }
+    else {
+        return  plistNotes;
+    }
 }
 
 -(NSArray *) collectMultipleNotesWithPath: (NSString *) notesFolder
