@@ -47,6 +47,13 @@
     self.responseData = notification.userInfo[@"data"];
 }
 
+- (BOOL) checkDidResponseRecieve {
+    if (!self.responseData) {
+        [self addToConsole:@"Вы еще не загружали данных. Нажмите на кнопку \"Загрузить\""];
+    }
+    return !!self.responseData;
+}
+
 - (void) didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -63,50 +70,35 @@
 }
 
 - (IBAction)pushNotes:(id)sender {
-    if (!self.responseData) {
-        [self addToConsole:@"Вы еще не загружали данных. Нажмите на кнопку \"Загрузить\""];
-    }
-    else {
+    if ([self checkDidResponseRecieve]){
         DataPusher *pusher = [[DataPusher alloc] init];
         [pusher pushNotesFromResponse:self.responseData];
     }
 }
 
 - (IBAction)pushBinaryToSinglePList:(id)sender {
-    if (!self.responseData) {
-        [self addToConsole:@"Вы еще не загружали данных. Нажмите на кнопку \"Загрузить\""];
-    }
-    else {
+    if ([self checkDidResponseRecieve]) {
         PlistPusher *pusher = [[PlistPusher alloc] init];
         [pusher writeBinaryToSinglePlistFile:self.responseData[@"data"]];
     }
 }
 
 - (IBAction)pushArrayToSinglePList:(id)sender {
-    if (!self.responseData) {
-        [self addToConsole:@"Вы еще не загружали данных. Нажмите на кнопку \"Загрузить\""];
-    }
-    else {
+    if ([self checkDidResponseRecieve]) {
         PlistPusher *pusher = [[PlistPusher alloc] init];
         [pusher writeArrayToSinglePlistFile:self.responseData[@"data"]];
     }
 }
 
 - (IBAction)pushBinaryToMultiplePList:(id)sender {
-    if (!self.responseData) {
-        [self addToConsole:@"Вы еще не загружали данных. Нажмите на кнопку \"Загрузить\""];
-    }
-    else {
+    if ([self checkDidResponseRecieve]) {
         PlistPusher *pusher = [[PlistPusher alloc] init];
         [pusher writeBinaryToMultiplePlistFile:self.responseData[@"data"]];
     }
 }
 
 - (IBAction)pushDictionaryToMultiplePList:(id)sender {
-    if (!self.responseData) {
-        [self addToConsole:@"Вы еще не загружали данных. Нажмите на кнопку \"Загрузить\""];
-    }
-    else {
+    if ([self checkDidResponseRecieve]) {
         PlistPusher *pusher = [[PlistPusher alloc] init];
         [pusher writeDictionaryToMultiplePlistFile:self.responseData[@"data"]];
     }

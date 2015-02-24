@@ -1,213 +1,206 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="auD-KD-rLd">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Item 2-->
-        <scene sceneID="pWM-Bx-EHg">
+        <!--Кейсы-->
+        <scene sceneID="mu4-o5-ssk">
             <objects>
-                <viewController id="wwk-xU-jM2" sceneMemberID="viewController">
+                <viewController id="HtA-1U-wtS" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="eQz-At-QRi"/>
-                        <viewControllerLayoutGuide type="bottom" id="pT1-eO-K00"/>
+                        <viewControllerLayoutGuide type="top" id="Tm0-su-cUK"/>
+                        <viewControllerLayoutGuide type="bottom" id="gq5-az-nRO"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="4hp-ed-rgx">
+                    <view key="view" contentMode="scaleToFill" id="K2V-ct-95U">
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 2" id="YgI-j7-bVT"/>
+                    <tabBarItem key="tabBarItem" title="Кейсы" id="IHJ-Hz-lmQ"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Inq-HB-vzY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jWe-vH-j40" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2503.5" y="412"/>
+            <point key="canvasLocation" x="1708.5" y="561"/>
         </scene>
-        <!--Item 1-->
-        <scene sceneID="QEa-nZ-2Xy">
+        <!--Заполнение данных-->
+        <scene sceneID="CUd-KN-kfe">
             <objects>
-                <viewController id="tUs-ua-7FB" sceneMemberID="viewController">
+                <viewController id="qfK-yw-FxH" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Cfz-am-rYK"/>
-                        <viewControllerLayoutGuide type="bottom" id="qR3-h6-Gwa"/>
+                        <viewControllerLayoutGuide type="top" id="4qq-pj-E22"/>
+                        <viewControllerLayoutGuide type="bottom" id="r9k-Rg-YEw"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="P3Y-wc-fSW">
+                    <view key="view" contentMode="scaleToFill" id="PGd-ED-kjC">
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Item 1" id="cJM-nd-DgY"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KLw-zZ-bjO" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2503.5" y="-250"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="ufC-wZ-h7g">
-            <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
-                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4z-AI-BhO">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z9v-LV-9el">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.87198153409090906" green="0.87198153409090906" blue="0.87198153409090906" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Загрузить данные">
-                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Load data">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="loadNotes:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="IJF-LR-fPm"/>
+                                    <action selector="loadNotes:" destination="qfK-yw-FxH" eventType="touchUpInside" id="Cfs-T4-gso"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tVF-oi-okA">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mfN-4f-1gd">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.83921568627450982" green="0.83921568627450982" blue="0.83921568627450982" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="SQLite: заполнить базу">
+                                <state key="normal" title="Push data to database">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="pushNotes:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="WBM-oa-1Eo"/>
+                                    <action selector="pushNotes:" destination="qfK-yw-FxH" eventType="touchUpInside" id="QcW-5q-reE"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="taA-ij-tyq">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Yc-89-8jM">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.83921568627450982" green="0.83921568627450982" blue="0.83921568627450982" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="PList: записать в 1 файл бинарный">
+                                <state key="normal" title="Push data to single plist">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="pushBinaryToSinglePList:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="7h2-Id-qKJ"/>
+                                    <action selector="pushArrayToSinglePList:" destination="qfK-yw-FxH" eventType="touchUpInside" id="HlR-lR-She"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWw-eC-zSj">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YFK-Mt-6EI">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.83921568627450982" green="0.83921568627450982" blue="0.83921568627450982" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="PList: записать в 1 файл из dictionary">
+                                <state key="normal" title="Push data to single binary plist">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="pushArrayToSinglePList:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="MrM-ps-CnB"/>
+                                    <action selector="pushBinaryToSinglePList:" destination="qfK-yw-FxH" eventType="touchUpInside" id="dSk-eU-ixR"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u7M-1M-8X3">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ep9-Bx-jQJ">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.80392156862745101" green="0.80392156862745101" blue="0.80392156862745101" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="PList: Записать в неск файлов бинарных">
+                                <state key="normal" title="Push data to multiple plist">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="pushBinaryToMultiplePList:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="qNi-bo-Grg"/>
+                                    <action selector="pushDictionaryToMultiplePList:" destination="qfK-yw-FxH" eventType="touchUpInside" id="vFp-dJ-MIk"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UFp-ml-lsu">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D6o-Aa-dlG">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.83921568627450982" green="0.83921568627450982" blue="0.83921568627450982" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="PList: Записать в неск файлов из dictionary">
+                                <state key="normal" title="Push data to multiple binary plist">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="pushDictionaryToMultiplePList:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="9Av-Uf-F2R"/>
+                                    <action selector="pushArrayToSinglePList:" destination="qfK-yw-FxH" eventType="touchUpInside" id="yYH-hj-37s"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Записи еще не загружены" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I0m-1W-isb">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Записи еще не загружены" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tWi-E7-aX1">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="taA-ij-tyq" firstAttribute="top" secondItem="tVF-oi-okA" secondAttribute="bottom" constant="8" symbolic="YES" id="25j-r5-zae"/>
-                            <constraint firstItem="u7M-1M-8X3" firstAttribute="top" secondItem="oWw-eC-zSj" secondAttribute="bottom" constant="8" symbolic="YES" id="4G2-TV-RDs"/>
-                            <constraint firstItem="tVF-oi-okA" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="7VK-f5-xko"/>
-                            <constraint firstItem="I0m-1W-isb" firstAttribute="top" secondItem="UFp-ml-lsu" secondAttribute="bottom" constant="8" symbolic="YES" id="ADx-Pt-IKv"/>
-                            <constraint firstItem="Y4z-AI-BhO" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="GGB-wz-xnL"/>
-                            <constraint firstItem="u7M-1M-8X3" firstAttribute="leading" secondItem="UFp-ml-lsu" secondAttribute="leading" id="GvK-Sb-quH"/>
-                            <constraint firstAttribute="bottom" secondItem="I0m-1W-isb" secondAttribute="bottom" constant="20" symbolic="YES" id="KYf-6V-lRV"/>
-                            <constraint firstItem="tVF-oi-okA" firstAttribute="top" secondItem="Y4z-AI-BhO" secondAttribute="bottom" constant="8" symbolic="YES" id="SW3-f5-mId"/>
-                            <constraint firstItem="oWw-eC-zSj" firstAttribute="leading" secondItem="u7M-1M-8X3" secondAttribute="leading" id="XtL-sr-gVp"/>
-                            <constraint firstItem="oWw-eC-zSj" firstAttribute="leading" secondItem="taA-ij-tyq" secondAttribute="leading" id="eNv-Xr-cmm"/>
-                            <constraint firstItem="UFp-ml-lsu" firstAttribute="top" secondItem="u7M-1M-8X3" secondAttribute="bottom" constant="8" symbolic="YES" id="oTG-DY-rzm"/>
-                            <constraint firstItem="oWw-eC-zSj" firstAttribute="top" secondItem="taA-ij-tyq" secondAttribute="bottom" constant="8" symbolic="YES" id="tL6-m7-2lT"/>
-                            <constraint firstItem="I0m-1W-isb" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="vE9-au-dtQ"/>
-                            <constraint firstItem="tVF-oi-okA" firstAttribute="leading" secondItem="Y4z-AI-BhO" secondAttribute="leading" id="xUH-WG-4QT"/>
-                            <constraint firstItem="tVF-oi-okA" firstAttribute="leading" secondItem="taA-ij-tyq" secondAttribute="leading" id="zAn-b1-7iK"/>
-                            <constraint firstItem="UFp-ml-lsu" firstAttribute="leading" secondItem="I0m-1W-isb" secondAttribute="leading" id="zOD-fB-yhl"/>
+                            <constraint firstItem="mfN-4f-1gd" firstAttribute="leading" secondItem="Z9v-LV-9el" secondAttribute="leading" id="HjE-7Y-FQw"/>
+                            <constraint firstItem="D6o-Aa-dlG" firstAttribute="top" secondItem="Ep9-Bx-jQJ" secondAttribute="bottom" constant="8" symbolic="YES" id="JU3-ZM-ia6"/>
+                            <constraint firstItem="tWi-E7-aX1" firstAttribute="top" secondItem="D6o-Aa-dlG" secondAttribute="bottom" constant="8" symbolic="YES" id="Nes-X5-ge9"/>
+                            <constraint firstItem="Ep9-Bx-jQJ" firstAttribute="leading" secondItem="D6o-Aa-dlG" secondAttribute="leading" id="Opk-2f-RfM"/>
+                            <constraint firstItem="mfN-4f-1gd" firstAttribute="top" secondItem="Z9v-LV-9el" secondAttribute="bottom" constant="8" symbolic="YES" id="Z2h-bo-B7e"/>
+                            <constraint firstItem="YFK-Mt-6EI" firstAttribute="leading" secondItem="2Yc-89-8jM" secondAttribute="leading" id="ZOb-8I-1M8"/>
+                            <constraint firstItem="YFK-Mt-6EI" firstAttribute="leading" secondItem="Ep9-Bx-jQJ" secondAttribute="leading" id="g0W-8b-vDr"/>
+                            <constraint firstItem="tWi-E7-aX1" firstAttribute="trailing" secondItem="PGd-ED-kjC" secondAttribute="trailingMargin" id="hSp-Yt-iat"/>
+                            <constraint firstItem="D6o-Aa-dlG" firstAttribute="leading" secondItem="tWi-E7-aX1" secondAttribute="leading" id="kTt-4N-jkS"/>
+                            <constraint firstItem="2Yc-89-8jM" firstAttribute="leading" secondItem="mfN-4f-1gd" secondAttribute="leading" id="mCN-vU-2tj"/>
+                            <constraint firstItem="YFK-Mt-6EI" firstAttribute="leading" secondItem="PGd-ED-kjC" secondAttribute="leadingMargin" id="oT3-xQ-P5T"/>
+                            <constraint firstItem="YFK-Mt-6EI" firstAttribute="top" secondItem="2Yc-89-8jM" secondAttribute="bottom" constant="8" symbolic="YES" id="rBk-rr-yaK"/>
+                            <constraint firstItem="Z9v-LV-9el" firstAttribute="top" secondItem="4qq-pj-E22" secondAttribute="bottom" id="tWg-mo-Rqh"/>
+                            <constraint firstItem="2Yc-89-8jM" firstAttribute="top" secondItem="mfN-4f-1gd" secondAttribute="bottom" constant="8" symbolic="YES" id="ut8-6l-b8O"/>
+                            <constraint firstItem="Ep9-Bx-jQJ" firstAttribute="top" secondItem="YFK-Mt-6EI" secondAttribute="bottom" constant="8" symbolic="YES" id="vZq-hP-mcL"/>
+                            <constraint firstItem="r9k-Rg-YEw" firstAttribute="top" secondItem="tWi-E7-aX1" secondAttribute="bottom" constant="8" symbolic="YES" id="zgT-eV-3uX"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
-                                <exclude reference="Y4z-AI-BhO"/>
-                                <exclude reference="tVF-oi-okA"/>
-                                <exclude reference="taA-ij-tyq"/>
-                                <exclude reference="oWw-eC-zSj"/>
-                                <exclude reference="u7M-1M-8X3"/>
-                                <exclude reference="UFp-ml-lsu"/>
-                                <exclude reference="I0m-1W-isb"/>
+                                <exclude reference="Z9v-LV-9el"/>
+                                <exclude reference="mfN-4f-1gd"/>
+                                <exclude reference="2Yc-89-8jM"/>
+                                <exclude reference="YFK-Mt-6EI"/>
+                                <exclude reference="Ep9-Bx-jQJ"/>
+                                <exclude reference="D6o-Aa-dlG"/>
+                                <exclude reference="tWi-E7-aX1"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="GGB-wz-xnL"/>
-                                <exclude reference="7VK-f5-xko"/>
-                                <exclude reference="SW3-f5-mId"/>
-                                <exclude reference="xUH-WG-4QT"/>
-                                <exclude reference="zAn-b1-7iK"/>
-                                <exclude reference="25j-r5-zae"/>
-                                <exclude reference="XtL-sr-gVp"/>
-                                <exclude reference="eNv-Xr-cmm"/>
-                                <exclude reference="tL6-m7-2lT"/>
-                                <exclude reference="4G2-TV-RDs"/>
-                                <exclude reference="GvK-Sb-quH"/>
-                                <exclude reference="oTG-DY-rzm"/>
-                                <exclude reference="zOD-fB-yhl"/>
-                                <exclude reference="ADx-Pt-IKv"/>
-                                <exclude reference="KYf-6V-lRV"/>
-                                <exclude reference="vE9-au-dtQ"/>
+                                <exclude reference="tWg-mo-Rqh"/>
+                                <exclude reference="HjE-7Y-FQw"/>
+                                <exclude reference="Z2h-bo-B7e"/>
+                                <exclude reference="mCN-vU-2tj"/>
+                                <exclude reference="ut8-6l-b8O"/>
+                                <exclude reference="ZOb-8I-1M8"/>
+                                <exclude reference="g0W-8b-vDr"/>
+                                <exclude reference="oT3-xQ-P5T"/>
+                                <exclude reference="rBk-rr-yaK"/>
+                                <exclude reference="Opk-2f-RfM"/>
+                                <exclude reference="vZq-hP-mcL"/>
+                                <exclude reference="JU3-ZM-ia6"/>
+                                <exclude reference="kTt-4N-jkS"/>
+                                <exclude reference="Nes-X5-ge9"/>
+                                <exclude reference="hSp-Yt-iat"/>
+                                <exclude reference="zgT-eV-3uX"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
-                                <include reference="Y4z-AI-BhO"/>
-                                <include reference="tVF-oi-okA"/>
-                                <include reference="taA-ij-tyq"/>
-                                <include reference="oWw-eC-zSj"/>
-                                <include reference="u7M-1M-8X3"/>
-                                <include reference="UFp-ml-lsu"/>
-                                <include reference="I0m-1W-isb"/>
+                                <include reference="Z9v-LV-9el"/>
+                                <include reference="mfN-4f-1gd"/>
+                                <include reference="2Yc-89-8jM"/>
+                                <include reference="YFK-Mt-6EI"/>
+                                <include reference="Ep9-Bx-jQJ"/>
+                                <include reference="D6o-Aa-dlG"/>
+                                <include reference="tWi-E7-aX1"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="GGB-wz-xnL"/>
-                                <include reference="7VK-f5-xko"/>
-                                <include reference="SW3-f5-mId"/>
-                                <include reference="xUH-WG-4QT"/>
-                                <include reference="zAn-b1-7iK"/>
-                                <include reference="25j-r5-zae"/>
-                                <include reference="XtL-sr-gVp"/>
-                                <include reference="eNv-Xr-cmm"/>
-                                <include reference="tL6-m7-2lT"/>
-                                <include reference="4G2-TV-RDs"/>
-                                <include reference="GvK-Sb-quH"/>
-                                <include reference="oTG-DY-rzm"/>
-                                <include reference="zOD-fB-yhl"/>
-                                <include reference="ADx-Pt-IKv"/>
-                                <include reference="KYf-6V-lRV"/>
-                                <include reference="vE9-au-dtQ"/>
+                                <include reference="tWg-mo-Rqh"/>
+                                <include reference="HjE-7Y-FQw"/>
+                                <include reference="Z2h-bo-B7e"/>
+                                <include reference="mCN-vU-2tj"/>
+                                <include reference="ut8-6l-b8O"/>
+                                <include reference="ZOb-8I-1M8"/>
+                                <include reference="g0W-8b-vDr"/>
+                                <include reference="oT3-xQ-P5T"/>
+                                <include reference="rBk-rr-yaK"/>
+                                <include reference="Opk-2f-RfM"/>
+                                <include reference="vZq-hP-mcL"/>
+                                <include reference="JU3-ZM-ia6"/>
+                                <include reference="kTt-4N-jkS"/>
+                                <include reference="Nes-X5-ge9"/>
+                                <include reference="hSp-Yt-iat"/>
+                                <include reference="zgT-eV-3uX"/>
                             </mask>
                         </variation>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Заполнение данных" id="EdR-ca-x5Z"/>
                     <connections>
-                        <outlet property="console" destination="I0m-1W-isb" id="fF5-mM-S9i"/>
+                        <outlet property="console" destination="tWi-E7-aX1" id="Igt-lB-qCF"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RRH-wr-gdf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="78" y="180"/>
+            <point key="canvasLocation" x="1708.5" y="-177"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="dTo-Dr-MG0">
+            <objects>
+                <tabBarController id="auD-KD-rLd" sceneMemberID="viewController">
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="fMB-19-Jpp">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="qfK-yw-FxH" kind="relationship" relationship="viewControllers" id="THl-Vx-hyT"/>
+                        <segue destination="HtA-1U-wtS" kind="relationship" relationship="viewControllers" id="yFV-Tx-UNF"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nYh-q5-Ygs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="787.5" y="180"/>
         </scene>
     </scenes>
 </document>
