@@ -18,14 +18,6 @@
 
 @implementation ViewController
 
-- (id) init {
-    self = [super init];
-    if (self) {
-        //some code
-    }
-    return self;
-}
-
 - (void) viewDidLoad {
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -44,7 +36,24 @@
 
 - (void) handleRequestDone: (NSNotification *) notification {
     [self addToConsole: notification.userInfo[@"message"]];
-    self.responseData = notification.userInfo[@"data"];
+    if (!self.responseData) {
+        self.responseData = [NSMutableArray array];
+    }
+    
+    [self.responseData addObjectsFromArray: notification.userInfo[@"notes"]];
+    int notesLength = [notification.userInfo[@"notes"] count];
+    
+    if ([notification.userInfo[@"notes"] count] == 1000) {
+        NSNumber *lastModifyTS = notification.userInfo[@"notes"][notesLength - 1][@"modify_TS"];
+        NSString *listUrl = [self.getter collectUrlForListWithUserID:USER_ID
+                                                       lastTimeStamp:[lastModifyTS integerValue]
+                                                          notesCount:[NOTES_COUNT integerValue]];
+        [self addToConsole:@"Пошел запрос"];
+        [self.getter runRequestWithUrl:listUrl];
+    }
+    else {
+        [self addToConsole:[NSString stringWithFormat:@"Загрузили все заметки. Количество :%i", [self.responseData count]]];
+    }
 }
 
 - (BOOL) checkDidResponseRecieve {
@@ -61,46 +70,49 @@
 
 - (IBAction)loadNotes:(id)sender {
     [self addToConsole:@"Пошел запрос"];
-    DataGetter *getter = [[DataGetter alloc] init];
-    NSArray *currentTimeStamps = [getter giveMeTS];
-    NSString *listUrl = [getter collectUrlForListWithUserID:USER_ID
+    self.getter = [[DataGetter alloc] init];
+    NSArray *currentTimeStamps = [self.getter giveMeTS];
+    NSString *listUrl = [self.getter collectUrlForListWithUserID:USER_ID
                           lastTimeStamp:[currentTimeStamps[0] integerValue]
                              notesCount:[NOTES_COUNT integerValue]];
-    [getter runRequestWithUrl:listUrl];
+    [self.getter runRequestWithUrl:listUrl];
 }
 
 - (IBAction)pushNotes:(id)sender {
     if ([self checkDidResponseRecieve]){
         DataPusher *pusher = [[DataPusher alloc] init];
-        [pusher pushNotesFromResponse:self.responseData];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void) {
+            [pusher pushNotesFromResponse:self.responseData];
+    
+        });
     }
 }
 
 - (IBAction)pushBinaryToSinglePList:(id)sender {
     if ([self checkDidResponseRecieve]) {
         PlistPusher *pusher = [[PlistPusher alloc] init];
-        [pusher writeBinaryToSinglePlistFile:self.responseData[@"data"]];
+        [pusher writeBinaryToSinglePlistFile:self.responseData];
     }
 }
 
 - (IBAction)pushArrayToSinglePList:(id)sender {
     if ([self checkDidResponseRecieve]) {
         PlistPusher *pusher = [[PlistPusher alloc] init];
-        [pusher writeArrayToSinglePlistFile:self.responseData[@"data"]];
+        [pusher writeArrayToSinglePlistFile:self.responseData];
     }
 }
 
 - (IBAction)pushBinaryToMultiplePList:(id)sender {
     if ([self checkDidResponseRecieve]) {
         PlistPusher *pusher = [[PlistPusher alloc] init];
-        [pusher writeBinaryToMultiplePlistFile:self.responseData[@"data"]];
+        [pusher writeBinaryToMultiplePlistFile:self.responseData];
     }
 }
 
 - (IBAction)pushDictionaryToMultiplePList:(id)sender {
     if ([self checkDidResponseRecieve]) {
         PlistPusher *pusher = [[PlistPusher alloc] init];
-        [pusher writeDictionaryToMultiplePlistFile:self.responseData[@"data"]];
+        [pusher writeDictionaryToMultiplePlistFile:self.responseData];
     }
 }
 

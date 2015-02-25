@@ -25,6 +25,10 @@
     });
 }
 
+- (void) sendDoneNotification:(NSString *)message withTackInfo: (NSDictionary *) tackInfo{
+    [self sendErrorNotification:[NSString stringWithFormat:@"%@ %@", message, tackInfo[@"time"]]];
+}
+
 - (void) collectPlistFileInfo {
     if([[NSFileManager defaultManager] fileExistsAtPath:PLIST_PATH]) {
         [self sendErrorNotification:@"PList уже существует"];
@@ -66,7 +70,8 @@
                                        atomically:YES];
             if (ok)
             {
-                [self sendErrorNotification:@"Удалось записать данные в файл PList"];
+                TACK;
+                [self sendDoneNotification:@"Удалось записать данные в файл PList" withTackInfo:tackInfo];
             }
             else
             {
@@ -77,8 +82,6 @@
         {
             [self sendErrorNotification:@"Пичаль=((( Не удалось сериализовать данные для PList"];
         }
-        TACK;
-        NSLog(@"Push to single PList binary: %@", tackInfo);
     });
 }
 
@@ -90,14 +93,13 @@
                           atomically:YES];
         if (ok)
         {
-            [self sendErrorNotification:@"Удалось записать данные в файл PList"];
+            TACK;
+            [self sendDoneNotification:@"Удалось записать данные в файл PList" withTackInfo: tackInfo];
         }
         else
         {
             [self sendErrorNotification:@"Не удалось записать данные в файл PList"];
         }
-        TACK;
-        NSLog(@"Push to single PList from array: %@", tackInfo);
     });
 }
 
@@ -135,12 +137,14 @@
             if (!ok) {
                 [self sendErrorNotification:@"Не удалось записать хелпер для выборки в файл PList"];
             }
+            else {
+                TACK;
+                [self sendDoneNotification:@"Готово" withTackInfo:tackInfo];
+            }
         }
         else{
             [self sendErrorNotification:@"Пичаль=((( Не удалось сериализовать хелпер для выборки для PList"];
         }
-        TACK;
-        NSLog(@"Push to multiple PList binary: %@", tackInfo);
     });
 }
 
@@ -156,14 +160,16 @@
                 [self sendErrorNotification:@"Не удалось записать заметку в файл PList"];
             }
         }
-        TACK;
         BOOL ok = [selectionHelper
                    writeToFile:[DOCUMENTS_DIRECTORY stringByAppendingPathComponent:HELPER_PLIST]
                    atomically:YES];
         if (!ok){
             [self sendErrorNotification:@"Не удалось записать хелпер для выборки в файл PList"];
         }
-        NSLog(@"Push to multiple PList binary: %@", tackInfo);
+        else {
+            TACK;
+            [self sendDoneNotification:@"Готово" withTackInfo:tackInfo];
+        }
     });
 }
 

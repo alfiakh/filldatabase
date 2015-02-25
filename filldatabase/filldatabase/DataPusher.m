@@ -22,11 +22,22 @@
     return self;
 }
 
-- (void) sendErrorNotification:(NSString *)message {
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName: @"DataErrorNotification"
-     object: nil
-     userInfo: @{@"message": message}];
+- (void) sendErrorNotification:(NSString *)message{
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName: @"DataErrorNotification"
+         object: nil
+         userInfo: @{@"message": message}];
+    });
+}
+
+- (void) sendDoneNotification:(NSString *)message withTackInfo: (NSDictionary *) tackInfo{
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName: @"DataErrorNotification"
+         object: nil
+         userInfo: @{@"message": [NSString stringWithFormat:@"%@ %@", message, tackInfo[@"time"]]}];
+    });
 }
 
 - (void) createDataBase {
@@ -95,11 +106,11 @@
     }
 }
 
-- (void) pushNotesFromResponse: (NSDictionary *) notes {
+- (void) pushNotesFromResponse: (NSArray *) notes {
     if ([self.database beginTransaction]) {
         BOOL rollbacked = NO;
         TICK;
-        for (NSMutableDictionary *note in notes[@"data"]) {
+        for (NSMutableDictionary *note in notes) {
             NSMutableDictionary *mutableNote = [note mutableCopy];
             NSString *history = [NSString stringWithFormat:@"%@", mutableNote[@"history"]];
             [mutableNote setObject:history forKey:@"history"];
@@ -122,11 +133,10 @@
                 [self sendErrorNotification:@"Не удалось закоммитить транзакцию после добавления новых записей"];
             }
             else {
-                [self sendErrorNotification:@"Новые записи успешно добавлены в базу"];
+                TACK;
+                [self sendDoneNotification:@"Новые записи успешно добавлены в базу" withTackInfo:tackInfo];
             }
         }
-        TACK;
-        NSLog(@"pushNotes: %@", tackInfo);
     }
     else {
         [self sendErrorNotification:@"Не удалось открыть транзакцию для пуша новых заметок"];

@@ -18,7 +18,7 @@
 - (void) handleRequestDone: (NSNotification *) notification;
 
 @property (weak, nonatomic) IBOutlet UITextView *console;
-@property NSDictionary *responseData;
+@property NSMutableArray *responseData;
 @property DataGetter *getter;
 
 @end

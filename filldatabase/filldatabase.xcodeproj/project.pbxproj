@@ -29,6 +29,7 @@
 		F0FDEF5B1A9CCA5400725F3A /* CasesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF5A1A9CCA5400725F3A /* CasesViewController.m */; };
 		F0FDEF5E1A9CD59200725F3A /* FirstTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF5D1A9CD59200725F3A /* FirstTestCase.m */; };
 		F0FDEF611A9CF79700725F3A /* SecondTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF601A9CF79700725F3A /* SecondTestCase.m */; };
+		F0FDEF641A9D0F6800725F3A /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF631A9D0F6800725F3A /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +87,8 @@
 		F0FDEF5D1A9CD59200725F3A /* FirstTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FirstTestCase.m; path = filldatabase/FirstTestCase.m; sourceTree = "<group>"; };
 		F0FDEF5F1A9CF79700725F3A /* SecondTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondTestCase.h; sourceTree = "<group>"; };
 		F0FDEF601A9CF79700725F3A /* SecondTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondTestCase.m; sourceTree = "<group>"; };
+		F0FDEF621A9D0F6800725F3A /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = filldatabase/JSONKit.h; sourceTree = "<group>"; };
+		F0FDEF631A9D0F6800725F3A /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = filldatabase/JSONKit.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +124,8 @@
 				F0B2DBCB1A8C90C700E8655D /* FMDB.h */,
 				F0B2DBCC1A8C90C700E8655D /* FMResultSet.h */,
 				F0B2DBCD1A8C90C700E8655D /* FMResultSet.m */,
+				F0FDEF621A9D0F6800725F3A /* JSONKit.h */,
+				F0FDEF631A9D0F6800725F3A /* JSONKit.m */,
 				F0B2DBB11A8C8F1700E8655D /* libsqlite3.dylib */,
 				F009E2A81A8BA9E600271245 /* filldatabase */,
 				F009E2C21A8BA9E600271245 /* filldatabaseTests */,
@@ -309,6 +314,7 @@
 			files = (
 				F009E2D11A8BABD400271245 /* DataGetter.m in Sources */,
 				F0FDEF5B1A9CCA5400725F3A /* CasesViewController.m in Sources */,
+				F0FDEF641A9D0F6800725F3A /* JSONKit.m in Sources */,
 				F009E2B21A8BA9E600271245 /* ViewController.m in Sources */,
 				F0B2DBD01A8C90C700E8655D /* FMDatabasePool.m in Sources */,
 				F0B2DBD91A933DCF00E8655D /* PlistPusher.m in Sources */,

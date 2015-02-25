@@ -8,6 +8,7 @@
 
 #import "DataGetter.h"
 #import "AllDefines.h"
+#import "JSONKit.h"
 
 @implementation DataGetter
 
@@ -58,7 +59,7 @@
         [[NSNotificationCenter defaultCenter]
          postNotificationName:@"RequestDoneNotification"
          object:nil
-         userInfo:@{@"message": message, @"data": data}];
+         userInfo:@{@"message": message, @"notes": data[@"data"]}];
     });
 }
 
@@ -93,6 +94,7 @@
 - (void) decodeJsonData:(NSData *)data {
     NSError *jsonParsingError;
     NSDictionary *responseData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&jsonParsingError];
+    NSLog(@"%@", jsonParsingError);
     if (jsonParsingError) {
         [self createErrorNotification:@"Произошла ошибка при преобразовании JSON"];
     }
@@ -103,7 +105,8 @@
             [self createErrorNotification:@"Некорректный srvMessageCode"];
         }
         else {
-            [self createDoneRequestNotification:@"JSON успешно перекодирован" withResponseData:responseData];
+            NSString *message = [NSString stringWithFormat:@"JSON успешно перекодирован. Загружено: %i",[responseData[@"data"] count]];
+            [self createDoneRequestNotification: message withResponseData: responseData];
         }
     }
 }
