@@ -34,6 +34,15 @@
     [self addToConsole: notification.userInfo[@"message"]];
 }
 
+- (void) runRequestWithUserID: (NSString *) userID
+                withTImeStamp: (NSNumber *) timeStamp {
+    NSString *listUrl = [self.getter collectUrlForListWithUserID:userID
+                                                   lastTimeStamp:[timeStamp integerValue]
+                                                      notesCount:[NOTES_COUNT integerValue]];
+    [self addToConsole:@"Пошел запрос"];
+    [self.getter runRequestWithUrl:listUrl];
+}
+
 - (void) handleRequestDone: (NSNotification *) notification {
     [self addToConsole: notification.userInfo[@"message"]];
     if (!self.responseData) {
@@ -45,14 +54,16 @@
     
     if ([notification.userInfo[@"notes"] count] == 1000) {
         NSNumber *lastModifyTS = notification.userInfo[@"notes"][notesLength - 1][@"modify_TS"];
-        NSString *listUrl = [self.getter collectUrlForListWithUserID:USER_ID
-                                                       lastTimeStamp:[lastModifyTS integerValue]
-                                                          notesCount:[NOTES_COUNT integerValue]];
-        [self addToConsole:@"Пошел запрос"];
-        [self.getter runRequestWithUrl:listUrl];
+        [self runRequestWithUserID:[ACCOUNTS objectAtIndex:self.accountNumber]
+                     withTImeStamp:lastModifyTS];
+    }
+    else if (self.accountNumber == [ACCOUNTS count] - 1){
+        [self addToConsole:[NSString stringWithFormat:@"Загрузили все заметки. Количество :%i", [self.responseData count]]];
     }
     else {
-        [self addToConsole:[NSString stringWithFormat:@"Загрузили все заметки. Количество :%i", [self.responseData count]]];
+        self.accountNumber++;
+        [self runRequestWithUserID:[ACCOUNTS objectAtIndex:self.accountNumber]
+                     withTImeStamp:[self.getter giveMeTS][0]];
     }
 }
 
@@ -70,9 +81,11 @@
 
 - (IBAction)loadNotes:(id)sender {
     [self addToConsole:@"Пошел запрос"];
+    self.accountNumber = 0;
     self.getter = [[DataGetter alloc] init];
     NSArray *currentTimeStamps = [self.getter giveMeTS];
-    NSString *listUrl = [self.getter collectUrlForListWithUserID:USER_ID
+    NSString *listUrl = [self.getter
+                         collectUrlForListWithUserID:[ACCOUNTS objectAtIndex:self.accountNumber]
                           lastTimeStamp:[currentTimeStamps[0] integerValue]
                              notesCount:[NOTES_COUNT integerValue]];
     [self.getter runRequestWithUrl:listUrl];

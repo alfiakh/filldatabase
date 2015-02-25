@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *console;
 @property NSMutableArray *responseData;
 @property DataGetter *getter;
+@property NSUInteger accountNumber;
 
 @end
 
