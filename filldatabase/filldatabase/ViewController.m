@@ -39,7 +39,6 @@
     NSString *listUrl = [self.getter collectUrlForListWithUserID:userID
                                                    lastTimeStamp:[timeStamp integerValue]
                                                       notesCount:[NOTES_COUNT integerValue]];
-    [self addToConsole:@"Пошел запрос"];
     [self.getter runRequestWithUrl:listUrl];
 }
 
@@ -59,6 +58,17 @@
     }
     else if (self.accountNumber == [ACCOUNTS count] - 1){
         [self addToConsole:[NSString stringWithFormat:@"Загрузили все заметки. Количество :%i", [self.responseData count]]];
+        NSFileManager *manager = [NSFileManager defaultManager];
+        NSString *helperFilePath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:REQUEST_NOTES_FILE_NAME];
+        if ([manager fileExistsAtPath:helperFilePath]) {
+            NSError *error = nil;
+            [manager removeItemAtPath:helperFilePath error:&error];
+            NSLog(@"ERROR:!!!!!!!%@", error);
+        }
+        BOOL ok = [self.responseData writeToFile:helperFilePath atomically:YES];
+        if (!ok) {
+            [self addToConsole:@"Произошла ошибка при записи в хелпер"];
+        }
     }
     else {
         self.accountNumber++;
@@ -80,6 +90,7 @@
 }
 
 - (IBAction)loadNotes:(id)sender {
+    self.responseData = [NSMutableArray array];
     [self addToConsole:@"Пошел запрос"];
     self.accountNumber = 0;
     self.getter = [[DataGetter alloc] init];
@@ -92,16 +103,18 @@
 }
 
 - (IBAction)pushNotes:(id)sender {
+    [self clearConsole];
     if ([self checkDidResponseRecieve]){
         DataPusher *pusher = [[DataPusher alloc] init];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void) {
-            [pusher pushNotesFromResponse:self.responseData];
+            [pusher pushNotesFromResponse];
     
         });
     }
 }
 
 - (IBAction)pushBinaryToSinglePList:(id)sender {
+    [self clearConsole];
     if ([self checkDidResponseRecieve]) {
         PlistPusher *pusher = [[PlistPusher alloc] init];
         [pusher writeBinaryToSinglePlistFile:self.responseData];
@@ -109,6 +122,7 @@
 }
 
 - (IBAction)pushArrayToSinglePList:(id)sender {
+    [self clearConsole];
     if ([self checkDidResponseRecieve]) {
         PlistPusher *pusher = [[PlistPusher alloc] init];
         [pusher writeArrayToSinglePlistFile:self.responseData];
@@ -116,6 +130,7 @@
 }
 
 - (IBAction)pushBinaryToMultiplePList:(id)sender {
+    [self clearConsole];
     if ([self checkDidResponseRecieve]) {
         PlistPusher *pusher = [[PlistPusher alloc] init];
         [pusher writeBinaryToMultiplePlistFile:self.responseData];
@@ -123,6 +138,7 @@
 }
 
 - (IBAction)pushDictionaryToMultiplePList:(id)sender {
+    [self clearConsole];
     if ([self checkDidResponseRecieve]) {
         PlistPusher *pusher = [[PlistPusher alloc] init];
         [pusher writeDictionaryToMultiplePlistFile:self.responseData];
@@ -134,4 +150,7 @@
     self.console.text = [self.console.text stringByAppendingString:appendingString];
 }
 
+- (void) clearConsole {
+    self.console.text = @"";
+}
 @end

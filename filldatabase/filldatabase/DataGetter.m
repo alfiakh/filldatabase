@@ -31,7 +31,7 @@
 
 - (NSString *) collectTailPart {
     NSArray *timestamps = [self giveMeTS];
-    NSString *tailPart = [NSString stringWithFormat:@"?_%@", timestamps[1]];
+    NSString *tailPart = [NSString stringWithFormat:@"?_%ld", (long)[timestamps[1] integerValue]];
     return tailPart;
 }
 
@@ -86,7 +86,7 @@
                                               [self createErrorNotification: @"Произошла ошибка при отправке запроса"];
                                           }
                                           TACK;
-                                          NSLog(@"%@", tackInfo);
+//                                          NSLog(@"%@", tackInfo);
     }];
     [dataTask resume];
 }
@@ -94,7 +94,7 @@
 - (void) decodeJsonData:(NSData *)data {
     NSError *jsonParsingError;
     NSDictionary *responseData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&jsonParsingError];
-    NSLog(@"%@", jsonParsingError);
+//    NSLog(@"%@", jsonParsingError);
     if (jsonParsingError) {
         [self createErrorNotification:@"Произошла ошибка при преобразовании JSON"];
     }
@@ -105,7 +105,7 @@
             [self createErrorNotification:@"Некорректный srvMessageCode"];
         }
         else {
-            NSString *message = [NSString stringWithFormat:@"JSON успешно перекодирован. Загружено: %i",[responseData[@"data"] count]];
+            NSString *message = [NSString stringWithFormat:@"%i",[responseData[@"data"] count]];
             [self createDoneRequestNotification: message withResponseData: responseData];
         }
     }

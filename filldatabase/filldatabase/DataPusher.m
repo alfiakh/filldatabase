@@ -106,29 +106,24 @@
     }
 }
 
-- (void) pushNotesFromResponse: (NSArray *) notes {
+- (void) pushNotesFromResponse {
+    TICK;
+    NSString *helperNotesFile = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:REQUEST_NOTES_FILE_NAME];
+    self.notesToPush = [NSMutableArray arrayWithContentsOfFile:helperNotesFile];
     if ([self.database beginTransaction]) {
-        BOOL rollbacked = NO;
-        TICK;
-        for (NSMutableDictionary *note in notes) {
-            NSMutableDictionary *mutableNote = [note mutableCopy];
-            NSString *history = [NSString stringWithFormat:@"%@", mutableNote[@"history"]];
-            [mutableNote setObject:history forKey:@"history"];
-            NSDictionary *updatedDict = [[mutableNote nullReplace] flat:nil];
-            NSString *sql = [updatedDict makeSQLinsTable:@"note"];
-            if(![self.database executeUpdate:sql]) {
-                rollbacked = YES;
-                if (![self.database rollback]) {
-                    [self sendErrorNotification:@"Не удалось откатить транзакцию после неуспешного добавления новой записи"];
-                }
-                else {
-                    [self sendErrorNotification:@"Откатили транзакцию после неуспешного добавления новой записи"];
-                }
+        while ( [self.notesToPush count] != 0 ) {
+            if (self.rollbacked) {
                 break;
             }
-
+            sleep(0.1);
+            NSTimer *notesToUpdateTimer = [NSTimer timerWithTimeInterval: 0.5
+                                                              target: self
+                                                            selector: @selector( pushOneNote )
+                                                            userInfo: nil
+                                                             repeats: NO];
+            [notesToUpdateTimer fire];
         }
-        if (!rollbacked) {
+        if (!self.rollbacked) {
             if (![self.database commit]) {
                 [self sendErrorNotification:@"Не удалось закоммитить транзакцию после добавления новых записей"];
             }
@@ -141,7 +136,27 @@
     else {
         [self sendErrorNotification:@"Не удалось открыть транзакцию для пуша новых заметок"];
     }
-    [self.database close];
 }
 
+-(void) pushOneNote {
+    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        NSLog(@"%i", [self.notesToPush count]);
+        NSMutableDictionary *note = [self.notesToPush[0] mutableCopy];
+        [note setObject:@"" forKey:@"history"];
+        NSString *sql = [[[note nullReplace] flat:nil] makeSQLinsTable:@"note"];
+        if(![self.database executeUpdate:sql]) {
+            self.rollbacked = YES;
+            if (![self.database rollback]) {
+                [self sendErrorNotification:@"Не удалось откатить транзакцию после неуспешного добавления новой записи"];
+            }
+            else {
+                [self sendErrorNotification:@"Откатили транзакцию после неуспешного добавления новой записи"];
+            }
+        }
+        else {
+            [self.notesToPush removeObjectAtIndex:0];
+        }
+    });
+
+}
 @end

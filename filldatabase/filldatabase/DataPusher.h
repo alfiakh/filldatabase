@@ -14,9 +14,11 @@
 - (void) createDataBase;
 - (void) createNoteTable;
 - (void) deleteAllOldNotes;
-- (void) pushNotesFromResponse: (NSArray *) notes;
+- (void) pushNotesFromResponse;
 - (void) sendErrorNotification: (NSString *) message;
 
 @property FMDatabase *database;
+@property NSMutableArray *notesToPush;
+@property BOOL rollbacked;
 
 @end
