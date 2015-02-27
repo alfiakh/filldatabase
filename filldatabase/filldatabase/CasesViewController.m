@@ -10,6 +10,7 @@
 #import "NotepadDataStorage.h"
 #import "DateRangeDataStorage.h"
 #import "FirstTestCase.h"
+#import "SecondTestCase.h"
 
 @interface CasesViewController ()
 
@@ -48,6 +49,7 @@
 }
 
 - (IBAction)secondCase:(id)sender {
+    [[SecondTestCase alloc] init];
 }
 
 - (IBAction)thirdCase:(id)sender {

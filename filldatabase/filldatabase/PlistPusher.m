@@ -50,12 +50,7 @@
 - (NSDictionary *) getSelectionInfoForNote:(NSDictionary *)note {
     NSMutableDictionary *selectionHelperDictionary = [NSMutableDictionary dictionary];
     for (NSString *field in SELECTION_KEYS) {
-        @try {
-            selectionHelperDictionary[field] = note[field] ? note[field] : @"";
-        }
-        @catch (NSException *exception) {
-            NSLog(@"%@ %@", field, selectionHelperDictionary[field]);
-        }
+        selectionHelperDictionary[field] = note[field] ? note[field] : @"";
     }
     return selectionHelperDictionary;
 }
@@ -115,7 +110,7 @@
         self.selectionHelper = [NSMutableDictionary dictionary];
         self.binaryNotesToPush = [NSMutableArray arrayWithArray:notes];
         TICK;
-        while ( [self.binaryNotesToPush count] != 0 ) {
+        while ( [self.binaryNotesToPush count] > 0 ) {
             if (self.rollbacked) {
                 break;
             }
@@ -126,7 +121,6 @@
                                                                  repeats: NO];
             [notesToUpdateTimer fire];
         }
-        NSLog(@"DONE!!!!");
         NSError *error = nil;
         NSData *representation = [NSPropertyListSerialization dataWithPropertyList:self.selectionHelper
                                                                             format:NSPropertyListXMLFormat_v1_0
@@ -181,7 +175,6 @@
 
 - (void) pushBinaryOneNote {
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        NSLog(@"%i", [self.binaryNotesToPush count]);
         NSError *error = nil;
         NSDictionary *note = self.binaryNotesToPush[0];
         self.selectionHelper[note[@"ID"]] = [self getSelectionInfoForNote: note];
@@ -211,7 +204,6 @@
 
 - (void) pushOneNote {
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        NSLog(@"%lu", (unsigned long)[self.notesToPush count]);
         NSDictionary *note = self.notesToPush[0];
         self.selectionHelper[note[@"ID"]] = [self getSelectionInfoForNote: note];
         NSString *newPath = [MULTIPLE_NOTES_FOLDER stringByAppendingString:note[@"ID"]];

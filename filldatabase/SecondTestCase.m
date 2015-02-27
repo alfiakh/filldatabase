@@ -46,7 +46,7 @@
         [self.calendarStorage performSelector:dateRangeStorageSelector];
         [self.diaryStorage performSelector:dateRangeStorageSelector];
         TACK;
-        NSString *message = [NSString stringWithFormat:@"1st TC finished %@ %@", storageType, tackInfo[@"time"]];
+        NSString *message = [NSString stringWithFormat:@"2nd TC finished %@ %@", storageType, tackInfo[@"time"]];
         [self sendDoneNotification:message];
     });
 }

@@ -183,7 +183,6 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="pushArrayToSinglePList:" destination="qfK-yw-FxH" eventType="touchUpInside" id="yYH-hj-37s"/>
                                     <action selector="pushBinaryToMultiplePList:" destination="qfK-yw-FxH" eventType="touchUpInside" id="Vcy-lY-kgf"/>
                                 </connections>
                             </button>
