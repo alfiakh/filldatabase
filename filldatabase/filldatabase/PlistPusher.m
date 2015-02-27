@@ -50,7 +50,12 @@
 - (NSDictionary *) getSelectionInfoForNote:(NSDictionary *)note {
     NSMutableDictionary *selectionHelperDictionary = [NSMutableDictionary dictionary];
     for (NSString *field in SELECTION_KEYS) {
-        selectionHelperDictionary[field] = note[field] ? note[field] : @"";
+        @try {
+            selectionHelperDictionary[field] = note[field] ? note[field] : @"";
+        }
+        @catch (NSException *exception) {
+            NSLog(@"%@ %@", field, selectionHelperDictionary[field]);
+        }
     }
     return selectionHelperDictionary;
 }
@@ -104,6 +109,7 @@
 }
 
 - (void) writeBinaryToMultiplePlistFile:(NSArray *)notes {
+    self.binaryNotesToPush = [NSMutableArray arrayWithArray:notes];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         self.rollbacked = NO;
         self.selectionHelper = [NSMutableDictionary dictionary];
@@ -120,6 +126,7 @@
                                                                  repeats: NO];
             [notesToUpdateTimer fire];
         }
+        NSLog(@"DONE!!!!");
         NSError *error = nil;
         NSData *representation = [NSPropertyListSerialization dataWithPropertyList:self.selectionHelper
                                                                             format:NSPropertyListXMLFormat_v1_0
@@ -145,6 +152,7 @@
 
 - (void) writeDictionaryToMultiplePlistFile:(NSArray *)notes {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        self.notesToPush = [NSMutableArray arrayWithArray:notes];
         TICK;
         self.selectionHelper = [NSMutableDictionary dictionary];
         while ( [self.notesToPush count] != 0 ) {
@@ -175,8 +183,9 @@
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         NSLog(@"%i", [self.binaryNotesToPush count]);
         NSError *error = nil;
-        NSDictionary *note = self.notesToPush[0];
+        NSDictionary *note = self.binaryNotesToPush[0];
         self.selectionHelper[note[@"ID"]] = [self getSelectionInfoForNote: note];
+        
         NSString *newPath = [MULTIPLE_BINARY_NOTES_FOLDER stringByAppendingString:note[@"ID"]];
         NSData *representation = [NSPropertyListSerialization
                                   dataWithPropertyList:note
@@ -187,12 +196,16 @@
             BOOL ok = [representation writeToFile:newPath atomically:YES];
             if (!ok) {
                 [self sendErrorNotification:@"Не удалось записать заметку в файл PList"];
+                self.rollbacked = YES;
+            }
+            else {
+                [self.binaryNotesToPush removeObjectAtIndex:0];
             }
         }
         else{
+            self.rollbacked = YES;
             [self sendErrorNotification:@"Пичаль=((( Не удалось сериализовать данные для PList"];
         }
-        [self.notesToPush removeObjectAtIndex:0];
     });
 }
 

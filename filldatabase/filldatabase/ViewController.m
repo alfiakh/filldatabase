@@ -63,7 +63,6 @@
         if ([manager fileExistsAtPath:helperFilePath]) {
             NSError *error = nil;
             [manager removeItemAtPath:helperFilePath error:&error];
-            NSLog(@"ERROR:!!!!!!!%@", error);
         }
         BOOL ok = [self.responseData writeToFile:helperFilePath atomically:YES];
         if (!ok) {
