@@ -102,7 +102,7 @@
     NSMutableString *query = [NSMutableString
                               stringWithFormat:@"SELECT %@ FROM note",
                               self.columns];
-    [query appendString:@" WHERE"];
+    [query appendString:@" WHERE "];
     [self addDateRangeConditionsToQuery:query withType:@"sql"];
     [query appendString:@";"];
     return query;

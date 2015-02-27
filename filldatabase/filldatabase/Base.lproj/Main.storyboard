@@ -7,7 +7,7 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Кейсы-->
+        <!--кейсы-->
         <scene sceneID="mu4-o5-ssk">
             <objects>
                 <viewController id="HtA-1U-wtS" customClass="CasesViewController" sceneMemberID="viewController">
@@ -24,9 +24,6 @@
                                 <state key="normal" title="Кейс1:1Ж-&gt;2A-&gt;3-&gt;3-&gt;2А-&gt;4-&gt;4-&gt;4-&gt;2А">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="16" y="20" width="291" height="30"/>
-                                </variation>
                                 <connections>
                                     <action selector="firstCase:" destination="HtA-1U-wtS" eventType="touchUpInside" id="nnz-DF-k46"/>
                                 </connections>
@@ -36,9 +33,6 @@
                                 <state key="normal" title="Кейс2:1В-&gt;2Б-&gt;3-&gt;3-&gt;2Б-&gt;4-&gt;6">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="16" y="58" width="230" height="30"/>
-                                </variation>
                                 <connections>
                                     <action selector="secondCase:" destination="HtA-1U-wtS" eventType="touchUpInside" id="blv-oc-Qoi"/>
                                 </connections>
@@ -48,9 +42,6 @@
                                 <state key="normal" title="Кейс3:1Д-&gt;2А-&gt;4-&gt;4-&gt;4-&gt;6-&gt;3-&gt;2А">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="16" y="96" width="253" height="30"/>
-                                </variation>
                                 <connections>
                                     <action selector="thirdCase:" destination="HtA-1U-wtS" eventType="touchUpInside" id="6mc-Y6-u9c"/>
                                 </connections>
@@ -60,9 +51,6 @@
                                 <state key="normal" title="Кейс4:5">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="16" y="134" width="57" height="30"/>
-                                </variation>
                                 <connections>
                                     <action selector="changeManyNotes:" destination="HtA-1U-wtS" eventType="touchUpInside" id="cnN-Fs-Hnv"/>
                                 </connections>
@@ -72,9 +60,6 @@
                                 <state key="normal" title="Кейс5:7">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="16" y="172" width="57" height="30"/>
-                                </variation>
                                 <connections>
                                     <action selector="deleteManyNotes:" destination="HtA-1U-wtS" eventType="touchUpInside" id="HFN-qZ-7j8"/>
                                 </connections>
@@ -84,12 +69,25 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="16" y="210" width="368" height="333"/>
-                                </variation>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="SVX-7x-7Of" firstAttribute="top" secondItem="bTy-mF-GCl" secondAttribute="bottom" constant="8" symbolic="YES" id="1Ee-eB-gUR"/>
+                            <constraint firstItem="bTy-mF-GCl" firstAttribute="baseline" secondItem="Ktp-I2-hB3" secondAttribute="baseline" id="5O4-Bg-OFo"/>
+                            <constraint firstItem="d0U-Yy-CkX" firstAttribute="leading" secondItem="0A8-8q-dhf" secondAttribute="leading" id="7AG-4h-vEa"/>
+                            <constraint firstItem="gq5-az-nRO" firstAttribute="top" secondItem="SVX-7x-7Of" secondAttribute="bottom" constant="8" symbolic="YES" id="Bof-l2-UXa"/>
+                            <constraint firstItem="aM1-7M-aEJ" firstAttribute="top" secondItem="Tm0-su-cUK" secondAttribute="bottom" id="ILO-pY-CCe"/>
+                            <constraint firstItem="aM1-7M-aEJ" firstAttribute="leading" secondItem="0A8-8q-dhf" secondAttribute="leading" id="TAV-Yj-00B"/>
+                            <constraint firstItem="SVX-7x-7Of" firstAttribute="trailing" secondItem="K2V-ct-95U" secondAttribute="trailingMargin" id="TnM-HD-Mh1"/>
+                            <constraint firstItem="d0U-Yy-CkX" firstAttribute="top" secondItem="0A8-8q-dhf" secondAttribute="bottom" constant="8" symbolic="YES" id="U98-kd-jJA"/>
+                            <constraint firstItem="bTy-mF-GCl" firstAttribute="top" secondItem="d0U-Yy-CkX" secondAttribute="bottom" constant="8" symbolic="YES" id="duz-lc-Slb"/>
+                            <constraint firstItem="SVX-7x-7Of" firstAttribute="leading" secondItem="bTy-mF-GCl" secondAttribute="leading" id="g6d-Bs-5oG"/>
+                            <constraint firstItem="d0U-Yy-CkX" firstAttribute="leading" secondItem="bTy-mF-GCl" secondAttribute="leading" id="mzk-me-5l1"/>
+                            <constraint firstItem="Ktp-I2-hB3" firstAttribute="leading" secondItem="bTy-mF-GCl" secondAttribute="trailing" constant="8" symbolic="YES" id="q5c-vW-bwM"/>
+                            <constraint firstItem="0A8-8q-dhf" firstAttribute="leading" secondItem="K2V-ct-95U" secondAttribute="leadingMargin" id="qqg-Wm-4Fm"/>
+                            <constraint firstItem="0A8-8q-dhf" firstAttribute="top" secondItem="aM1-7M-aEJ" secondAttribute="bottom" constant="8" symbolic="YES" id="w2y-nK-tf7"/>
+                        </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="aM1-7M-aEJ"/>
@@ -98,6 +96,22 @@
                                 <exclude reference="bTy-mF-GCl"/>
                                 <exclude reference="Ktp-I2-hB3"/>
                                 <exclude reference="SVX-7x-7Of"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="ILO-pY-CCe"/>
+                                <exclude reference="TAV-Yj-00B"/>
+                                <exclude reference="qqg-Wm-4Fm"/>
+                                <exclude reference="w2y-nK-tf7"/>
+                                <exclude reference="7AG-4h-vEa"/>
+                                <exclude reference="U98-kd-jJA"/>
+                                <exclude reference="mzk-me-5l1"/>
+                                <exclude reference="5O4-Bg-OFo"/>
+                                <exclude reference="duz-lc-Slb"/>
+                                <exclude reference="q5c-vW-bwM"/>
+                                <exclude reference="1Ee-eB-gUR"/>
+                                <exclude reference="TnM-HD-Mh1"/>
+                                <exclude reference="g6d-Bs-5oG"/>
+                                <exclude reference="Bof-l2-UXa"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -109,9 +123,25 @@
                                 <include reference="Ktp-I2-hB3"/>
                                 <include reference="SVX-7x-7Of"/>
                             </mask>
+                            <mask key="constraints">
+                                <include reference="ILO-pY-CCe"/>
+                                <include reference="TAV-Yj-00B"/>
+                                <include reference="qqg-Wm-4Fm"/>
+                                <include reference="w2y-nK-tf7"/>
+                                <include reference="7AG-4h-vEa"/>
+                                <include reference="U98-kd-jJA"/>
+                                <include reference="mzk-me-5l1"/>
+                                <include reference="5O4-Bg-OFo"/>
+                                <include reference="duz-lc-Slb"/>
+                                <include reference="q5c-vW-bwM"/>
+                                <include reference="1Ee-eB-gUR"/>
+                                <include reference="TnM-HD-Mh1"/>
+                                <include reference="g6d-Bs-5oG"/>
+                                <include reference="Bof-l2-UXa"/>
+                            </mask>
                         </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Кейсы" id="IHJ-Hz-lmQ"/>
+                    <tabBarItem key="tabBarItem" title="кейсы" id="IHJ-Hz-lmQ"/>
                     <connections>
                         <outlet property="console" destination="SVX-7x-7Of" id="6Ch-X7-QNm"/>
                     </connections>
