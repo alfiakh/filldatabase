@@ -25,6 +25,7 @@
 		F0B2DBD51A8CECCA00E8655D /* SADictionaryAddtions.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBD41A8CECCA00E8655D /* SADictionaryAddtions.m */; };
 		F0B2DBD91A933DCF00E8655D /* PlistPusher.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBD81A933DCF00E8655D /* PlistPusher.m */; };
 		F0C08CDF1AA0B06F002B1969 /* ThirdTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C08CDE1AA0B06F002B1969 /* ThirdTestCase.m */; };
+		F0C08CE31AA0BACD002B1969 /* ChangeNotesStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C08CE21AA0BACD002B1969 /* ChangeNotesStorage.m */; };
 		F0FDEF551A9656A500725F3A /* NotepadDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF541A9656A500725F3A /* NotepadDataStorage.m */; };
 		F0FDEF581A96911100725F3A /* DateRangeDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF571A96911100725F3A /* DateRangeDataStorage.m */; };
 		F0FDEF5B1A9CCA5400725F3A /* CasesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF5A1A9CCA5400725F3A /* CasesViewController.m */; };
@@ -78,18 +79,20 @@
 		F0B2DBD41A8CECCA00E8655D /* SADictionaryAddtions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SADictionaryAddtions.m; sourceTree = "<group>"; };
 		F0B2DBD71A933DCF00E8655D /* PlistPusher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlistPusher.h; sourceTree = "<group>"; };
 		F0B2DBD81A933DCF00E8655D /* PlistPusher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlistPusher.m; sourceTree = "<group>"; };
-		F0C08CDD1AA0B06F002B1969 /* ThirdTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThirdTestCase.h; sourceTree = "<group>"; };
-		F0C08CDE1AA0B06F002B1969 /* ThirdTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThirdTestCase.m; sourceTree = "<group>"; };
+		F0C08CDD1AA0B06F002B1969 /* ThirdTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThirdTestCase.h; path = ../ThirdTestCase.h; sourceTree = "<group>"; };
+		F0C08CDE1AA0B06F002B1969 /* ThirdTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ThirdTestCase.m; path = ../ThirdTestCase.m; sourceTree = "<group>"; };
+		F0C08CE11AA0BACD002B1969 /* ChangeNotesStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeNotesStorage.h; sourceTree = "<group>"; };
+		F0C08CE21AA0BACD002B1969 /* ChangeNotesStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeNotesStorage.m; sourceTree = "<group>"; };
 		F0FDEF531A9656A500725F3A /* NotepadDataStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotepadDataStorage.h; path = filldatabase/NotepadDataStorage.h; sourceTree = "<group>"; };
 		F0FDEF541A9656A500725F3A /* NotepadDataStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NotepadDataStorage.m; path = filldatabase/NotepadDataStorage.m; sourceTree = "<group>"; };
 		F0FDEF561A96911100725F3A /* DateRangeDataStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DateRangeDataStorage.h; path = filldatabase/DateRangeDataStorage.h; sourceTree = "<group>"; };
 		F0FDEF571A96911100725F3A /* DateRangeDataStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DateRangeDataStorage.m; path = filldatabase/DateRangeDataStorage.m; sourceTree = "<group>"; };
 		F0FDEF591A9CCA5400725F3A /* CasesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CasesViewController.h; sourceTree = "<group>"; };
 		F0FDEF5A1A9CCA5400725F3A /* CasesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CasesViewController.m; sourceTree = "<group>"; };
-		F0FDEF5C1A9CD59200725F3A /* FirstTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FirstTestCase.h; path = filldatabase/FirstTestCase.h; sourceTree = "<group>"; };
-		F0FDEF5D1A9CD59200725F3A /* FirstTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FirstTestCase.m; path = filldatabase/FirstTestCase.m; sourceTree = "<group>"; };
-		F0FDEF5F1A9CF79700725F3A /* SecondTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondTestCase.h; sourceTree = "<group>"; };
-		F0FDEF601A9CF79700725F3A /* SecondTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondTestCase.m; sourceTree = "<group>"; };
+		F0FDEF5C1A9CD59200725F3A /* FirstTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstTestCase.h; sourceTree = "<group>"; };
+		F0FDEF5D1A9CD59200725F3A /* FirstTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstTestCase.m; sourceTree = "<group>"; };
+		F0FDEF5F1A9CF79700725F3A /* SecondTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SecondTestCase.h; path = ../SecondTestCase.h; sourceTree = "<group>"; };
+		F0FDEF601A9CF79700725F3A /* SecondTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SecondTestCase.m; path = ../SecondTestCase.m; sourceTree = "<group>"; };
 		F0FDEF621A9D0F6800725F3A /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = filldatabase/JSONKit.h; sourceTree = "<group>"; };
 		F0FDEF631A9D0F6800725F3A /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = filldatabase/JSONKit.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -148,6 +151,7 @@
 		F009E2A81A8BA9E600271245 /* filldatabase */ = {
 			isa = PBXGroup;
 			children = (
+				F0C08CE01AA0B9ED002B1969 /* testcases */,
 				F0FDEF4F1A96562500725F3A /* storage */,
 				F0B2DBD31A8CECCA00E8655D /* SADictionaryAddtions.h */,
 				F0B2DBD41A8CECCA00E8655D /* SADictionaryAddtions.m */,
@@ -198,19 +202,28 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		F0FDEF4F1A96562500725F3A /* storage */ = {
+		F0C08CE01AA0B9ED002B1969 /* testcases */ = {
 			isa = PBXGroup;
 			children = (
-				F0FDEF531A9656A500725F3A /* NotepadDataStorage.h */,
-				F0FDEF541A9656A500725F3A /* NotepadDataStorage.m */,
 				F0C08CDD1AA0B06F002B1969 /* ThirdTestCase.h */,
 				F0C08CDE1AA0B06F002B1969 /* ThirdTestCase.m */,
-				F0FDEF561A96911100725F3A /* DateRangeDataStorage.h */,
-				F0FDEF571A96911100725F3A /* DateRangeDataStorage.m */,
 				F0FDEF5C1A9CD59200725F3A /* FirstTestCase.h */,
 				F0FDEF5D1A9CD59200725F3A /* FirstTestCase.m */,
 				F0FDEF5F1A9CF79700725F3A /* SecondTestCase.h */,
 				F0FDEF601A9CF79700725F3A /* SecondTestCase.m */,
+			);
+			name = testcases;
+			sourceTree = "<group>";
+		};
+		F0FDEF4F1A96562500725F3A /* storage */ = {
+			isa = PBXGroup;
+			children = (
+				F0C08CE11AA0BACD002B1969 /* ChangeNotesStorage.h */,
+				F0C08CE21AA0BACD002B1969 /* ChangeNotesStorage.m */,
+				F0FDEF531A9656A500725F3A /* NotepadDataStorage.h */,
+				F0FDEF541A9656A500725F3A /* NotepadDataStorage.m */,
+				F0FDEF561A96911100725F3A /* DateRangeDataStorage.h */,
+				F0FDEF571A96911100725F3A /* DateRangeDataStorage.m */,
 			);
 			name = storage;
 			path = ..;
@@ -332,6 +345,7 @@
 				F0C08CDF1AA0B06F002B1969 /* ThirdTestCase.m in Sources */,
 				F009E2AC1A8BA9E600271245 /* main.m in Sources */,
 				F0B2DBCE1A8C90C700E8655D /* FMDatabase.m in Sources */,
+				F0C08CE31AA0BACD002B1969 /* ChangeNotesStorage.m in Sources */,
 				F0B2DBD51A8CECCA00E8655D /* SADictionaryAddtions.m in Sources */,
 				F0FDEF551A9656A500725F3A /* NotepadDataStorage.m in Sources */,
 				F0FDEF5E1A9CD59200725F3A /* FirstTestCase.m in Sources */,

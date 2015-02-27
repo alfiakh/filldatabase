@@ -27,7 +27,7 @@
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleFinishedSelection:)
-                                                 name:@"DataStorageErrorNotification"
+                                                 name:@"StorageErrorNotification"
                                                object:nil];
 }
 
