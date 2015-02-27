@@ -98,20 +98,20 @@
                                 <exclude reference="SVX-7x-7Of"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="ILO-pY-CCe"/>
-                                <exclude reference="TAV-Yj-00B"/>
+                                <exclude reference="Bof-l2-UXa"/>
                                 <exclude reference="qqg-Wm-4Fm"/>
                                 <exclude reference="w2y-nK-tf7"/>
+                                <exclude reference="q5c-vW-bwM"/>
+                                <exclude reference="ILO-pY-CCe"/>
+                                <exclude reference="TAV-Yj-00B"/>
+                                <exclude reference="5O4-Bg-OFo"/>
+                                <exclude reference="duz-lc-Slb"/>
                                 <exclude reference="7AG-4h-vEa"/>
                                 <exclude reference="U98-kd-jJA"/>
                                 <exclude reference="mzk-me-5l1"/>
-                                <exclude reference="5O4-Bg-OFo"/>
-                                <exclude reference="duz-lc-Slb"/>
-                                <exclude reference="q5c-vW-bwM"/>
                                 <exclude reference="1Ee-eB-gUR"/>
                                 <exclude reference="TnM-HD-Mh1"/>
                                 <exclude reference="g6d-Bs-5oG"/>
-                                <exclude reference="Bof-l2-UXa"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -124,20 +124,20 @@
                                 <include reference="SVX-7x-7Of"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="ILO-pY-CCe"/>
-                                <include reference="TAV-Yj-00B"/>
+                                <include reference="Bof-l2-UXa"/>
                                 <include reference="qqg-Wm-4Fm"/>
                                 <include reference="w2y-nK-tf7"/>
+                                <include reference="q5c-vW-bwM"/>
+                                <include reference="ILO-pY-CCe"/>
+                                <include reference="TAV-Yj-00B"/>
+                                <include reference="5O4-Bg-OFo"/>
+                                <include reference="duz-lc-Slb"/>
                                 <include reference="7AG-4h-vEa"/>
                                 <include reference="U98-kd-jJA"/>
                                 <include reference="mzk-me-5l1"/>
-                                <include reference="5O4-Bg-OFo"/>
-                                <include reference="duz-lc-Slb"/>
-                                <include reference="q5c-vW-bwM"/>
                                 <include reference="1Ee-eB-gUR"/>
                                 <include reference="TnM-HD-Mh1"/>
                                 <include reference="g6d-Bs-5oG"/>
-                                <include reference="Bof-l2-UXa"/>
                             </mask>
                         </variation>
                     </view>

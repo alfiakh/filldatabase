@@ -11,6 +11,7 @@
 #import "DateRangeDataStorage.h"
 #import "FirstTestCase.h"
 #import "SecondTestCase.h"
+#import "ThirdTestCase.h"
 
 @interface CasesViewController ()
 
@@ -53,6 +54,7 @@
 }
 
 - (IBAction)thirdCase:(id)sender {
+    [[ThirdTestCase alloc] init];
 }
 
 - (IBAction)changeManyNotes:(id)sender {
