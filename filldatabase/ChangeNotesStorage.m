@@ -81,7 +81,7 @@
         NSTimer *timer = [NSTimer
                           timerWithTimeInterval:0.4
                           target:self
-                          selector:@selector(changeOneNoteInSinglePlist:)
+                          selector:@selector(changeOneNoteInSinglePList:)
                           userInfo:@{@"note": note}
                           repeats:NO];
         [timer fire];
@@ -101,7 +101,7 @@
         NSTimer *timer = [NSTimer
                           timerWithTimeInterval:0.4
                           target:self
-                          selector:@selector(changeOneNoteInSinglePlist:)
+                          selector:@selector(changeOneNoteInSinglePList:)
                           userInfo:@{@"note": note}
                           repeats:NO];
         [timer fire];
@@ -125,6 +125,46 @@
     }
 }
 
+- (void) changeNotesForNotepadFromMultiplePList {
+    self.rollbacked = NO;
+    NSArray *noteIDs = [[NSDictionary dictionaryWithContentsOfFile:HELPER_PLIST_PATH] allKeys];
+    for (NSString *noteID in noteIDs) {
+        if (self.rollbacked) {
+            break;
+        }
+        NSTimer *timer = [NSTimer
+                          timerWithTimeInterval:0.4
+                          target:self
+                          selector:@selector(changeOneNoteInMultiplePList:)
+                          userInfo:@{@"noteID":noteID}
+                          repeats:NO];
+        [timer fire];
+    }
+    if (!self.rollbacked) {
+        
+    }
+}
+
+- (void) changeNotesForNotepadFromMultipleBinaryPList {
+    self.rollbacked = NO;
+    NSArray *noteIDs = [[NSDictionary dictionaryWithContentsOfFile:HELPER_PLIST_PATH] allKeys];
+    for (NSString *noteID in noteIDs) {
+        if (self.rollbacked) {
+            break;
+        }
+        NSTimer *timer = [NSTimer
+                          timerWithTimeInterval:0.4
+                          target:self
+                          selector:@selector(changeOneNoteInMultipleBinaryPList:)
+                          userInfo:@{@"noteID":noteID}
+                          repeats:NO];
+        [timer fire];
+    }
+    if (!self.rollbacked) {
+        
+    }
+}
+
 - (void) changeOneNoteInDataBase:(NSTimer *) timer {
     NSString *sql = [self collectSQLStringWithNoteData:timer.userInfo[@"results"]];
     if(![timer.userInfo[@"database"] executeUpdate:sql]) {
@@ -138,11 +178,53 @@
     }
 }
 
-- (void) changeOneNoteInSinglePlist:(NSTimer *) timer {
+- (void) changeOneNoteInSinglePList:(NSTimer *) timer {
     NSMutableDictionary *newNote = [NSMutableDictionary dictionaryWithDictionary:timer.userInfo[@"note"]];
     NSString *newMessage = [NSString stringWithFormat:@"%@ ", timer.userInfo];
     [newNote setObject:newMessage forKey:@"message"];
     [self.changedNotes addObject:newNote];
+}
+
+- (void) changeOneNoteInMultiplePList:(NSTimer *) timer {
+    NSString *notePath = [MULTIPLE_NOTES_FOLDER stringByAppendingPathComponent:timer.userInfo[@"noteID"]];
+    NSMutableDictionary *note = [NSMutableDictionary dictionaryWithContentsOfFile:notePath];
+    if(!note) {
+        self.rollbacked = YES;
+        [self sendErrorNotification:@"Да нету заметки!"];
+    }
+    note[@"message"] = [NSString stringWithFormat:@"%@ ", note[@"message"]];
+    BOOL ok = [note writeToFile:notePath atomically:YES];
+    if (!ok) {
+        self.rollbacked = YES;
+        [self sendErrorNotification:@"Не удалось записать заметку в файл=("];
+    }
+}
+
+- (void) changeOneNoteInMultipleBinaryPList:(NSTimer *) timer {
+    NSString *notePath = [MULTIPLE_BINARY_NOTES_FOLDER stringByAppendingPathComponent:timer.userInfo[@"noteID"]];
+    NSMutableDictionary *note = [NSMutableDictionary dictionaryWithContentsOfFile:notePath];
+    if(!note) {
+        self.rollbacked = YES;
+        [self sendErrorNotification:@"Да нету заметки!"];
+    }
+    note[@"message"] = [NSString stringWithFormat:@"%@ ", note[@"message"]];
+    NSError *error = nil;
+    NSData *representation= [NSPropertyListSerialization
+                             dataWithPropertyList:note
+                             format:NSPropertyListXMLFormat_v1_0
+                             options:0
+                             error:&error];
+    if (!error) {
+        BOOL ok = [representation writeToFile:notePath atomically:YES];
+        if (!ok) {
+            self.rollbacked = YES;
+            [self sendErrorNotification:@"Не удалось вписать заметку в файл"];
+        }
+    }
+    else {
+        self.rollbacked = YES;
+        [self sendErrorNotification:@"Не удалось сериализовать данные"];
+    }
 }
 
 @end

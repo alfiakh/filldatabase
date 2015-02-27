@@ -18,7 +18,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ChangeNotesStorage *change = [[ChangeNotesStorage alloc] init];
-    [change changeNotesForNotepadFromSinglePList];
+    [change changeNotesForNotepadFromMultiplePList];
+    [change changeNotesForNotepadFromSingleBinaryPList];
     return YES;
 }
 

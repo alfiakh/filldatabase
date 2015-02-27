@@ -12,7 +12,7 @@
 #define PLIST_PATH [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:@"notes.plist"]
 #define PLIST_BINARY_PATH [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:@"notesBinary.plist"]
 #define HELPER_PLIST_PATH [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:@"selectionHelper.plist"]
-#define HELPER_BINARY_PLIST_PATH @"selectionBinaryHelper.plist"
+#define HELPER_BINARY_PLIST_PATH [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:@"selectionBinaryHelper.plist"]
 #define MULTIPLE_NOTES_FOLDER [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:@"Notes"]
 #define MULTIPLE_BINARY_NOTES_FOLDER [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:@"BinaryNotes"]
 #define NOTES_COUNT @10000

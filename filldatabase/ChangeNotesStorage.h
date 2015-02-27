@@ -12,6 +12,9 @@
 
 - (void) changeNotesForNotepadFromDataBase;
 - (void) changeNotesForNotepadFromSinglePList;
+- (void) changeNotesForNotepadFromSingleBinaryPList;
+- (void) changeNotesForNotepadFromMultiplePList;
+- (void) changeNotesForNotepadFromMultipleBinaryPList;
 
 @property BOOL rollbacked;
 @property NSMutableArray *changedNotes;
