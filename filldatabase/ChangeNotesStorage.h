@@ -14,5 +14,6 @@
 - (void) changeNotesForNotepadFromSinglePList;
 
 @property BOOL rollbacked;
+@property NSMutableArray *changedNotes;
 
 @end
