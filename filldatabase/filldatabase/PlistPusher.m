@@ -50,7 +50,7 @@
 - (NSDictionary *) getSelectionInfoForNote:(NSDictionary *)note {
     NSMutableDictionary *selectionHelperDictionary = [NSMutableDictionary dictionary];
     for (NSString *field in SELECTION_KEYS) {
-        selectionHelperDictionary[field] = note[field];
+        selectionHelperDictionary[field] = note[field] ? note[field] : @"";
     }
     return selectionHelperDictionary;
 }
@@ -105,28 +105,23 @@
 
 - (void) writeBinaryToMultiplePlistFile:(NSArray *)notes {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        self.rollbacked = NO;
+        self.selectionHelper = [NSMutableDictionary dictionary];
+        self.binaryNotesToPush = [NSMutableArray arrayWithArray:notes];
         TICK;
-        NSMutableDictionary *selectionHelper = [NSMutableDictionary dictionary];
-        for (NSDictionary *note in notes) {
-            NSError *error = nil;
-            selectionHelper[note[@"ID"]] = [self getSelectionInfoForNote: note];
-            NSString *newPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:note[@"ID"]];
-            NSData *representation = [NSPropertyListSerialization dataWithPropertyList:note
-                                                                                format:NSPropertyListXMLFormat_v1_0
-                                                                               options:0
-                                                                                 error:&error];
-            if (!error){
-                BOOL ok = [representation writeToFile:newPath atomically:YES];
-                if (!ok) {
-                    [self sendErrorNotification:@"Не удалось записать заметку в файл PList"];
-                }
+        while ( [self.binaryNotesToPush count] != 0 ) {
+            if (self.rollbacked) {
+                break;
             }
-            else{
-                [self sendErrorNotification:@"Пичаль=((( Не удалось сериализовать данные для PList"];
-            }
+            NSTimer *notesToUpdateTimer = [NSTimer timerWithTimeInterval: 0.5
+                                                                  target: self
+                                                                selector: @selector( pushBinaryOneNote )
+                                                                userInfo: nil
+                                                                 repeats: NO];
+            [notesToUpdateTimer fire];
         }
         NSError *error = nil;
-        NSData *representation = [NSPropertyListSerialization dataWithPropertyList:selectionHelper
+        NSData *representation = [NSPropertyListSerialization dataWithPropertyList:self.selectionHelper
                                                                             format:NSPropertyListXMLFormat_v1_0
                                                                            options:0
                                                                              error:&error];
@@ -151,16 +146,19 @@
 - (void) writeDictionaryToMultiplePlistFile:(NSArray *)notes {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         TICK;
-        NSMutableDictionary *selectionHelper = [NSMutableDictionary dictionary];
-        for (NSDictionary *note in notes) {
-            selectionHelper[note[@"ID"]] = [self getSelectionInfoForNote: note];
-            NSString *newPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:note[@"ID"]];
-            BOOL ok = [note writeToFile:newPath atomically:YES];
-            if (!ok){
-                [self sendErrorNotification:@"Не удалось записать заметку в файл PList"];
+        self.selectionHelper = [NSMutableDictionary dictionary];
+        while ( [self.notesToPush count] != 0 ) {
+            if (self.rollbacked) {
+                break;
             }
+            NSTimer *notesToUpdateTimer = [NSTimer timerWithTimeInterval: 0.5
+                                                                  target: self
+                                                                selector: @selector( pushOneNote )
+                                                                userInfo: nil
+                                                                 repeats: NO];
+            [notesToUpdateTimer fire];
         }
-        BOOL ok = [selectionHelper
+        BOOL ok = [self.selectionHelper
                    writeToFile:[DOCUMENTS_DIRECTORY stringByAppendingPathComponent:HELPER_PLIST]
                    atomically:YES];
         if (!ok){
@@ -170,6 +168,45 @@
             TACK;
             [self sendDoneNotification:@"Готово" withTackInfo:tackInfo];
         }
+    });
+}
+
+- (void) pushBinaryOneNote {
+    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        NSLog(@"%i", [self.binaryNotesToPush count]);
+        NSError *error = nil;
+        NSDictionary *note = self.notesToPush[0];
+        self.selectionHelper[note[@"ID"]] = [self getSelectionInfoForNote: note];
+        NSString *newPath = [MULTIPLE_BINARY_NOTES_FOLDER stringByAppendingString:note[@"ID"]];
+        NSData *representation = [NSPropertyListSerialization
+                                  dataWithPropertyList:note
+                                  format:NSPropertyListXMLFormat_v1_0
+                                  options:0
+                                  error:&error];
+        if (!error){
+            BOOL ok = [representation writeToFile:newPath atomically:YES];
+            if (!ok) {
+                [self sendErrorNotification:@"Не удалось записать заметку в файл PList"];
+            }
+        }
+        else{
+            [self sendErrorNotification:@"Пичаль=((( Не удалось сериализовать данные для PList"];
+        }
+        [self.notesToPush removeObjectAtIndex:0];
+    });
+}
+
+- (void) pushOneNote {
+    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        NSLog(@"%lu", (unsigned long)[self.notesToPush count]);
+        NSDictionary *note = self.notesToPush[0];
+        self.selectionHelper[note[@"ID"]] = [self getSelectionInfoForNote: note];
+        NSString *newPath = [MULTIPLE_NOTES_FOLDER stringByAppendingString:note[@"ID"]];
+        BOOL ok = [note writeToFile:newPath atomically:YES];
+        if (!ok){
+            [self sendErrorNotification:@"Не удалось записать заметку в файл PList"];
+        }
+        [self.notesToPush removeObjectAtIndex:0];
     });
 }
 

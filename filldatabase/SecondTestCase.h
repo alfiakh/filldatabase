@@ -7,7 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NotepadDataStorage.h"
+#import "DateRangeDataStorage.h"
 
 @interface SecondTestCase : NSObject
+
+@property NotepadDataStorage *notepadStorage;
+@property DateRangeDataStorage *calendarStorage;
+@property DateRangeDataStorage *monthCalendarStorage;
+@property DateRangeDataStorage *diaryStorage;
 
 @end

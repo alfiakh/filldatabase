@@ -9,6 +9,7 @@
 #import "FirstTestCase.h"
 #import "AllDefines.h"
 
+// оказывается я ленивая задница
 #define CR @"create_TS"
 #define MO @"modify_TS"
 

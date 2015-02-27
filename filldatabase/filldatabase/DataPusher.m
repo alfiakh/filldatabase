@@ -115,7 +115,6 @@
             if (self.rollbacked) {
                 break;
             }
-            sleep(0.1);
             NSTimer *notesToUpdateTimer = [NSTimer timerWithTimeInterval: 0.5
                                                               target: self
                                                             selector: @selector( pushOneNote )
@@ -140,7 +139,6 @@
 
 -(void) pushOneNote {
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        NSLog(@"%i", [self.notesToPush count]);
         NSMutableDictionary *note = [self.notesToPush[0] mutableCopy];
         [note setObject:@"" forKey:@"history"];
         NSString *sql = [[[note nullReplace] flat:nil] makeSQLinsTable:@"note"];
