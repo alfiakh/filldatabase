@@ -35,29 +35,22 @@
 }
 
 - (void) changeNotesForNotepadFromDataBase {
-    NSString *databasePath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:DATABASE_NAME];
-    FMDatabase *database = [FMDatabase databaseWithPath:databasePath];
+    FMDatabase *database = [FMDatabase databaseWithPath:DATABASE_PATH];
     if ([database open]) {
         database.traceExecution = YES;
         if ([database beginTransaction]) {
             FMResultSet *results = [database executeQuery:@"SELECT ID, message FROM note"];
-            NSDictionary *noteData;
-            NSString *sql;
             while ([results next]) {
                 if(self.rollbacked) {
                     break;
                 }
-                noteData = [results resultDictionary];
-                sql = [self collectSQLStringWithNoteData:noteData];
-                if(![database executeUpdate:sql]) {
-                    self.rollbacked = YES;
-                    if (![database rollback]) {
-                        [self sendErrorNotification:@"Не удадось зароллбечить транзакцию"];
-                    }
-                    else {
-                        [self sendErrorNotification:@"Не прошел запрос"];
-                    }
-                }
+                NSTimer *timer = [NSTimer
+                                  timerWithTimeInterval:0.5
+                                  target:self
+                                  selector:@selector(pushOneNoteToDataBase:)
+                                  userInfo:[results resultDictionary]
+                                  repeats:NO];
+                [timer fire];
             }
             if (!self.rollbacked && ![database commit]) {
                 [self sendErrorNotification:@"Не удалочь закоммитить транзакцию"];
@@ -71,6 +64,24 @@
     else {
         [self sendErrorNotification:@"Не удалось открыть базу"];
     }
+}
+
+- (void) pushOneNoteToDataBase:(NSTimer *) timer {
+    NSDictionary *noteData = [timer.userInfo[@"results"] resultDictionary];
+    NSString *sql = [self collectSQLStringWithNoteData:noteData];
+    if(![timer.userInfo[@"database"] executeUpdate:sql]) {
+        self.rollbacked = YES;
+        if (![timer.userInfo[@"database"] rollback]) {
+            [self sendErrorNotification:@"Не удадось зароллбечить транзакцию"];
+        }
+        else {
+            [self sendErrorNotification:@"Не прошел запрос"];
+        }
+    }
+}
+
+- (void) changeNotesForNotepadFromSinglePList {
+    NSArray *notes = [NSArray arrayWithContentsOfFile:PLIST_PATH];
 }
 
 @end

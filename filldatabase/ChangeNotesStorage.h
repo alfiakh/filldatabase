@@ -11,6 +11,7 @@
 @interface ChangeNotesStorage : NSObject
 
 - (void) changeNotesForNotepadFromDataBase;
+- (void) changeNotesForNotepadFromSinglePList;
 
 @property BOOL rollbacked;
 

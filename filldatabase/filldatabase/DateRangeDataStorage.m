@@ -110,9 +110,8 @@
 
 - (void) getNotesForDateRangeFromDataBase {
     NSString *query = [self buildSqlQuery];
-    NSString *databasePath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:DATABASE_NAME];
-    if([[NSFileManager defaultManager] fileExistsAtPath:databasePath]) {
-        FMDatabase *database = [FMDatabase databaseWithPath:databasePath];
+    if([[NSFileManager defaultManager] fileExistsAtPath:DATABASE_PATH]) {
+        FMDatabase *database = [FMDatabase databaseWithPath:DATABASE_PATH];
         BOOL databaseOpened = [database open];
         if (databaseOpened) {
             database.traceExecution = YES;
@@ -142,16 +141,14 @@
 
 - (void) getNotesForDateRangeFromSinglePList {
     TICK;
-    NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:PLIST_NAME];
-    [self applyPredicateToContentOfFile:singlePlistPath];
+    [self applyPredicateToContentOfFile:PLIST_PATH];
     TACK;
     NSLog(@"%@", tackInfo);
 }
 
 - (void) getNotesForDateRangeFromSingleBinaryPList {
     TICK;
-    NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:PLIST_BINARY_NAME];
-    [self applyPredicateToContentOfFile:singlePlistPath];
+    [self applyPredicateToContentOfFile:PLIST_BINARY_PATH];
     TACK;
     NSLog(@"%@", tackInfo);
 }
@@ -169,7 +166,7 @@
 
 - (void) getNotesForDateRangeFromMultiplePList {
     TICK;
-    NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:HELPER_PLIST];
+    NSString *singlePlistPath = HELPER_PLIST_PATH;
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
     [self collectMultipleNotesWithPath:MULTIPLE_NOTES_FOLDER withIDs:helperfilteredNotes];
     TACK;
@@ -178,7 +175,7 @@
 
 - (void) getNotesForDateRangeFromMultipleBinaryPList {
     TICK;
-    NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:HELPER_BINARY_PLIST];
+    NSString *singlePlistPath = HELPER_BINARY_PLIST_PATH;
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
     [self collectMultipleNotesWithPath:MULTIPLE_BINARY_NOTES_FOLDER withIDs:helperfilteredNotes];
     TACK;

@@ -41,14 +41,13 @@
 }
 
 - (void) createDataBase {
-    NSString *databasePath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:DATABASE_NAME];
-    if([[NSFileManager defaultManager] fileExistsAtPath:databasePath]) {
+    if([[NSFileManager defaultManager] fileExistsAtPath:DATABASE_PATH]) {
         [self sendErrorNotification:@"База уже существует"];
     }
     else {
         [self sendErrorNotification:@"Базы не было будем создавать"];
     }
-    self.database = [FMDatabase databaseWithPath:databasePath];
+    self.database = [FMDatabase databaseWithPath:DATABASE_PATH];
 //    self.database.traceExecution = YES;
     if ([self.database open]) {
         [self sendErrorNotification:@"Удалось открыть базу"];
@@ -106,10 +105,9 @@
     }
 }
 
-- (void) pushNotesFromResponse {
+- (void) pushNotesFromResponse: (NSArray *) notes{
     TICK;
-    NSString *helperNotesFile = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:REQUEST_NOTES_FILE_NAME];
-    self.notesToPush = [NSMutableArray arrayWithContentsOfFile:helperNotesFile];
+    self.notesToPush = [NSMutableArray arrayWithArray:notes];
     if ([self.database beginTransaction]) {
         while ( [self.notesToPush count] != 0 ) {
             if (self.rollbacked) {

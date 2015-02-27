@@ -68,9 +68,8 @@
 
 - (void) getNotesForNotepadFromDataBase {
     NSString *query = [self buildSqlQuery];
-    NSString *databasePath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:DATABASE_NAME];
-    if([[NSFileManager defaultManager] fileExistsAtPath:databasePath]) {
-        FMDatabase *database = [FMDatabase databaseWithPath:databasePath];
+    if([[NSFileManager defaultManager] fileExistsAtPath:DATABASE_PATH]) {
+        FMDatabase *database = [FMDatabase databaseWithPath:DATABASE_PATH];
         BOOL databaseOpened = [database open];
         if (databaseOpened) {
             database.traceExecution = YES;
@@ -121,24 +120,21 @@
 
 - (void) getNotesForNotepadFromSinglePList {
     TICK;
-    NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:PLIST_NAME];
-    [self applyPredicateToContentOfFile:singlePlistPath];
+    [self applyPredicateToContentOfFile:PLIST_PATH];
     TACK;
     NSLog(@"%@", tackInfo);
 }
 
 - (void) getNotesForNotepadFromSingleBinaryPList {
     TICK;
-    NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:PLIST_BINARY_NAME];
-    [self applyPredicateToContentOfFile:singlePlistPath];
+    [self applyPredicateToContentOfFile:PLIST_BINARY_PATH];
     TACK;
     NSLog(@"%@", tackInfo);
 }
 
 - (void) getNotesForNotepadFromMultiplePList {
     TICK;
-    NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:HELPER_PLIST];
-    NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
+    NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:HELPER_PLIST_PATH];
     [self collectMultipleNotesWithPath:MULTIPLE_NOTES_FOLDER withIDs:helperfilteredNotes];
     TACK;
     NSLog(@"%@", tackInfo);
@@ -146,8 +142,7 @@
 
 - (void) getNotesForNotepadFromMultipleBinaryPList {
     TICK;
-    NSString *singlePlistPath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:HELPER_BINARY_PLIST];
-    NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
+    NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:HELPER_BINARY_PLIST_PATH];
     [self collectMultipleNotesWithPath:MULTIPLE_BINARY_NOTES_FOLDER withIDs:helperfilteredNotes];
     TACK;
     NSLog(@"%@", tackInfo);

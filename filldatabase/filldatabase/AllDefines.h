@@ -8,17 +8,14 @@
 
 #define DOCUMENTS_DIRECTORY NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0]
 #define DATA_STORAGES @[@"DataBase", @"SinglePList", @"SingleBinaryPList", @"MultiplePList", @"MultipleBinaryPList"]
-#define DATABASE_NAME @"notes.sqlite"
-#define PLIST_NAME @"notes.plist"
-#define PLIST_BINARY_NAME @"notesBinary.plist"
-#define HELPER_PLIST @"selectionHelper.plist"
-#define HELPER_BINARY_PLIST @"selectionBinaryHelper.plist"
+#define DATABASE_PATH [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:@"notes.sqlite"]
+#define PLIST_PATH [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:@"notes.plist"]
+#define PLIST_BINARY_PATH [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:@"notesBinary.plist"]
+#define HELPER_PLIST_PATH [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:@"selectionHelper.plist"]
+#define HELPER_BINARY_PLIST_PATH @"selectionBinaryHelper.plist"
 #define MULTIPLE_NOTES_FOLDER [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:@"Notes"]
 #define MULTIPLE_BINARY_NOTES_FOLDER [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:@"BinaryNotes"]
 #define NOTES_COUNT @10000
-#define REQUEST_NOTES_FILE_NAME @"requestNotes.plist"
-//#define USER_ID @"15ff1ce5-d2f7-4bf9-828a-dc3f3913655e"
-//#define USER_ID @"5cbce5fc-6c4a-4ad6-bb6f-c294eb2e91f6"
 #define USER_ID @"06df926b-52ac-46ca-b33a-892650fc9c2c"
 // мой, huge, testmega,
 #define ACCOUNTS @[@"15ff1ce5-d2f7-4bf9-828a-dc3f3913655e", @"5cbce5fc-6c4a-4ad6-bb6f-c294eb2e91f6", @"06df926b-52ac-46ca-b33a-892650fc9c2c", @"e1d5e4ff-9e5a-423c-8d73-cb2824d47ac3"]

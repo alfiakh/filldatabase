@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "ChangeNotesStorage.h"
 
 @interface AppDelegate ()
 
@@ -16,6 +17,8 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    ChangeNotesStorage *change = [[ChangeNotesStorage alloc] init];
+    [change changeNotesForNotepadFromDataBase];
     return YES;
 }
 

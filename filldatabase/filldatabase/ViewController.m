@@ -58,16 +58,6 @@
     }
     else if (self.accountNumber == [ACCOUNTS count] - 1){
         [self addToConsole:[NSString stringWithFormat:@"Загрузили все заметки. Количество :%i", [self.responseData count]]];
-        NSFileManager *manager = [NSFileManager defaultManager];
-        NSString *helperFilePath = [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:REQUEST_NOTES_FILE_NAME];
-        if ([manager fileExistsAtPath:helperFilePath]) {
-            NSError *error = nil;
-            [manager removeItemAtPath:helperFilePath error:&error];
-        }
-        BOOL ok = [self.responseData writeToFile:helperFilePath atomically:YES];
-        if (!ok) {
-            [self addToConsole:@"Произошла ошибка при записи в хелпер"];
-        }
     }
     else {
         self.accountNumber++;
@@ -106,7 +96,7 @@
     if ([self checkDidResponseRecieve]){
         DataPusher *pusher = [[DataPusher alloc] init];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void) {
-            [pusher pushNotesFromResponse];
+            [pusher pushNotesFromResponse:self.responseData];
     
         });
     }

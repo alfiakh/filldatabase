@@ -9,9 +9,6 @@
 #import "PlistPusher.h"
 #import "AllDefines.h"
 
-
-#define PLIST_PATH [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:PLIST_NAME]
-#define PLIST_BINARY_PATH [DOCUMENTS_DIRECTORY stringByAppendingPathComponent:PLIST_BINARY_NAME]
 #define SELECTION_KEYS @[@"event_enable", @"event_start_TS", @"event_end_TS", @"create_TS", @"modify_TS"]
 
 @implementation PlistPusher
@@ -128,7 +125,7 @@
                                                                              error:&error];
         if (!error){
             BOOL ok = [representation
-                       writeToFile:[DOCUMENTS_DIRECTORY stringByAppendingPathComponent:HELPER_BINARY_PLIST]
+                       writeToFile:HELPER_BINARY_PLIST_PATH
                        atomically:YES];
             if (!ok) {
                 [self sendErrorNotification:@"Не удалось записать хелпер для выборки в файл PList"];
@@ -161,7 +158,7 @@
             [notesToUpdateTimer fire];
         }
         BOOL ok = [self.selectionHelper
-                   writeToFile:[DOCUMENTS_DIRECTORY stringByAppendingPathComponent:HELPER_PLIST]
+                   writeToFile:HELPER_PLIST_PATH
                    atomically:YES];
         if (!ok){
             [self sendErrorNotification:@"Не удалось записать хелпер для выборки в файл PList"];
