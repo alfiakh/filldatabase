@@ -221,9 +221,9 @@
 				F0FDEF5C1A9CD59200725F3A /* FirstTestCase.h */,
 				F0FDEF5D1A9CD59200725F3A /* FirstTestCase.m */,
 				F0FDEF5F1A9CF79700725F3A /* SecondTestCase.h */,
+				F0FDEF601A9CF79700725F3A /* SecondTestCase.m */,
 				F0C08CEA1AA3941F002B1969 /* DropTestCase.h */,
 				F0C08CEB1AA3941F002B1969 /* DropTestCase.m */,
-				F0FDEF601A9CF79700725F3A /* SecondTestCase.m */,
 			);
 			name = testcases;
 			sourceTree = "<group>";

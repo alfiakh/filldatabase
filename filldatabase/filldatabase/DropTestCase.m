@@ -46,12 +46,12 @@
         [changeNotesInvocation setSelector:changeNotesSelector];
         [getIDsInvocation setSelector:getIDsSelector];
         
-        // вызываем получение ID заметок для изменения
-        [getIDsInvocation invokeWithTarget:self.storage];
-        
         // создаем пространство для резултьтата и получаем результат
         NSArray *IDs;
-        [getIDsInvocation getReturnValue:&IDs];
+        [getIDsInvocation setReturnValue:&IDs];
+
+        // вызываем получение ID заметок для изменения
+        [getIDsInvocation invokeWithTarget:self.storage];
         
         // устанавливаем аргумент у invocation
         [changeNotesInvocation setArgument:&IDs atIndex:0];
@@ -61,7 +61,7 @@
         [changeNotesInvocation invokeWithTarget:self.storage];
         TACK;
         
-        NSString *message = [NSString stringWithFormat:@"Change TC finished %@ %@", storageType, tackInfo[@"time"]];
+        NSString *message = [NSString stringWithFormat:@"Drop TC finished %@ %@", storageType, tackInfo[@"time"]];
         [self sendDoneNotification:message];
     });
 }

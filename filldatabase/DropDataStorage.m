@@ -99,7 +99,7 @@
     self.rollbacked = NO;
     self.notesToWrite = [NSMutableArray arrayWithContentsOfFile:SINGLE_PLIST_PATH];
     NSTimer *timer;
-    for (int i = [self.notesToWrite count]; i >= 0; i--) {
+    for (int i = (int)[self.notesToWrite count] - 1; i >= 0; i--) {
         if (self.rollbacked) {
             break;
         }
@@ -129,7 +129,7 @@
     self.rollbacked = NO;
     self.notesToWrite = [NSMutableArray arrayWithContentsOfFile:SINGLE_PLIST_PATH];
     NSTimer *timer;
-    for (int i = [self.notesToWrite count]; i >= 0; i--) {
+    for (int i = (int)[self.notesToWrite count] - 1; i >= 0; i--) {
         if (self.rollbacked) {
             break;
         }
@@ -166,11 +166,74 @@
 }
 
 - (void) dropNotesFromMultiplePListWithNoteIDs:(NSArray *)noteIDs {
-    
+    self.rollbacked = NO;
+    NSDictionary *helperNotes = [NSDictionary dictionaryWithContentsOfFile:HELPER_PLIST_PATH];
+    self.helperNotes = [helperNotes mutableCopy];
+    NSTimer *timer;
+    for (NSString *noteID in self.helperNotes) {
+        if (self.rollbacked) {
+            break;
+        }
+        if ([noteIDs containsObject:noteID]) {
+            timer = [NSTimer
+                     timerWithTimeInterval:0.4
+                     target:self
+                     selector:@selector(dropOneNoteInMultiplePList:)
+                     userInfo:@{
+                                @"noteID": noteID,
+                                @"type": @"multiple"
+                                }
+                     repeats:NO];
+            [timer fire];
+        }
+    }
+    if (!self.rollbacked) {
+        BOOL ok = [self.notesToWrite writeToFile:HELPER_PLIST_PATH atomically:YES];
+        if (!ok) {
+            [self sendErrorNotification:@"Произошла ошибка при записи во вспомогательный файл"];
+        }
+    }
 }
 
 - (void) dropNotesFromMultipleBinaryPListWIthNoteIDs:(NSArray *)noteIDs {
-    
+    self.rollbacked = NO;
+    NSDictionary *helperNotes = [NSDictionary dictionaryWithContentsOfFile:HELPER_PLIST_PATH];
+    self.helperNotes = [helperNotes mutableCopy];
+    NSTimer *timer;
+    for (NSString *noteID in self.helperNotes) {
+        if (self.rollbacked) {
+            break;
+        }
+        if ([noteIDs containsObject:noteID]) {
+            timer = [NSTimer
+                     timerWithTimeInterval:0.4
+                     target:self
+                     selector:@selector(dropOneNoteInMultiplePList:)
+                     userInfo:@{
+                                @"noteID": noteID,
+                                @"type": @"multiple"
+                                }
+                     repeats:NO];
+            [timer fire];
+        }
+    }
+    if (!self.rollbacked) {
+        NSError *error = nil;
+        NSData *representation = [NSPropertyListSerialization
+                                  dataWithPropertyList:self.notesToWrite
+                                  format:NSPropertyListXMLFormat_v1_0
+                                  options:0
+                                  error:&error];
+        if (!error) {
+            BOOL ok = [representation writeToFile:HELPER_BINARY_PLIST_PATH atomically:YES];
+            if (!ok) {
+                [self sendErrorNotification:@"Не удалось записать бинарный данные файл"];
+            }
+        }
+        else {
+            [self sendErrorNotification:@"Не удалось преобразовать данные в бинарный форомат"];
+        }
+    }
 }
 
 - (void) dropOneNoteInDataBase: (NSTimer *) timer {
@@ -196,6 +259,40 @@
     else {
         self.rollbacked = YES;
         [self sendErrorNotification:@"Заметка, которую пытаемся удалить не соответствует индексу"];
+    }
+}
+
+- (void) dropOneNoteInMultiplePList: (NSTimer *) timer {
+    NSString *noteID = timer.userInfo[@"noteID"];
+    NSString *notePath;
+    if ([timer.userInfo[@"type"] isEqualToString:@"multiple"]) {
+        notePath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:noteID];
+    }
+    else if ([timer.userInfo[@"type"] isEqualToString:@"multiple binary"]) {
+        notePath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingString:noteID];
+    }
+    else {
+        self.rollbacked = YES;
+        [self sendErrorNotification:@"Переданый некорректный тип стореджа в таймер"];
+    }
+    if (self.helperNotes[noteID]) {
+        [self.helperNotes removeObjectForKey:noteID];
+        NSFileManager *manager = [NSFileManager defaultManager];
+        if ([manager fileExistsAtPath:notePath]) {
+            NSError *error;
+            BOOL ok = [manager removeItemAtPath:notePath error:&error];
+            if (error || !ok) {
+                self.rollbacked = YES;
+                [self sendErrorNotification:@"Не удалось снести заметку"];
+            }
+        }
+        else {
+            [self sendErrorNotification:@"Заметки которую вы пытаетесь удалить уже не было"];
+        }
+    }
+    else {
+        self.rollbacked = YES;
+        [self sendErrorNotification:@"Во вспомогательном PList нет заметки, которая пришла на удаление"];
     }
 }
 

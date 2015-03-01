@@ -24,5 +24,6 @@
 
 @property BOOL rollbacked;
 @property NSMutableArray *notesToWrite;
+@property NSMutableDictionary *helperNotes;
 
 @end
