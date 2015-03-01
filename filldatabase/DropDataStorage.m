@@ -19,7 +19,53 @@
      userInfo: @{@"message": message}];
 }
 
-- (void) dropNotesForNotepadFromDataBase {
+- (NSArray *) getNoteIDsToDropFromDataBase {
+    NSArray *notes = @[];
+    return  notes;
+}
+
+- (NSArray *) getIDsToDropFromDataBase {
+    NSMutableArray *notesData = [NSMutableArray array];
+    FMDatabase *database = [FMDatabase databaseWithPath:DATABASE_PATH];
+    if ([database open]) {
+        FMResultSet *results = [database executeQuery:@"SELECT ID, message FROM note"];
+        while ([results next]) {
+            [notesData addObject:[results resultDictionary]];
+        }
+    }
+    else {
+        [self sendErrorNotification:@"Не удалось открыть базу"];
+    }
+    return notesData;
+}
+
+- (NSArray *) collectIDsFromPListWithPath: (NSString *) path {
+    NSMutableArray *noteIDs = [NSMutableArray array];
+    NSArray *notes = [NSArray arrayWithContentsOfFile:path];
+    // память не утекай!
+    for (NSDictionary *note in notes) {
+        [noteIDs addObject:note[@"ID"]];
+    }
+    return noteIDs;
+}
+
+- (NSArray *) getIDsToDropFromSinglePList {
+    return [self collectIDsFromPListWithPath:SINGLE_PLIST_PATH];
+}
+
+- (NSArray *) getIDsToDropFromSingleBinaryPList {
+    return [self collectIDsFromPListWithPath:SINGLE_PLIST_BINARY_PATH];
+}
+
+- (NSArray *) getIDsToDropFromMultiplePList {
+    return [self collectIDsFromPListWithPath:HELPER_PLIST_PATH];
+}
+
+- (NSArray *) getIDsToDropFromMultipleBinaryPList {
+    return [self collectIDsFromPListWithPath:HELPER_BINARY_PLIST_PATH];
+}
+
+- (void) dropNotesFromDataBaseWithNoteIDs:(NSArray *)noteIDs {
     self.rollbacked = NO;
     FMDatabase *database = [FMDatabase databaseWithPath:DATABASE_PATH];
     if ([database open]) {
@@ -56,19 +102,19 @@
     }
 }
 
-- (void) dropNotesForNotepadFromSinglePList {
+- (void) dropNotesFromSinglePListWithNoteIDs:(NSArray *)noteIDs {
     
 }
 
-- (void) dropNotesForNotepadFromSingleBinaryPList {
+- (void) dropNotesFromSingleBinaryPListWithNoteIDs:(NSArray *)noteIDs {
     
 }
 
-- (void) dropNotesForNotepadFromMultiplePList {
+- (void) dropNotesFromMultiplePListWithNoteIDs:(NSArray *)noteIDs {
     
 }
 
-- (void) dropNotesForNotepadFromMultipleBinaryPList {
+- (void) dropNotesFromMultipleBinaryPListWIthNoteIDs:(NSArray *)noteIDs {
     
 }
 

@@ -10,11 +10,17 @@
 
 @interface DropDataStorage : NSObject
 
-- (void) dropNotesForNotepadFromDataBase;
-- (void) dropNotesForNotepadFromSinglePList;
-- (void) dropNotesForNotepadFromSingleBinaryPList;
-- (void) dropNotesForNotepadFromMultiplePList;
-- (void) dropNotesForNotepadFromMultipleBinaryPList;
+- (NSArray *) getIDsToDropFromDataBase;
+- (NSArray *) getIDsToDropFromSinglePList;
+- (NSArray *) getIDsToDropFromSingleBinaryPList;
+- (NSArray *) getIDsToDropFromMultiplePList;
+- (NSArray *) getIDsToDropFromMultipleBinaryPList;
+
+- (void) dropNotesFromDataBaseWithNoteIDs: (NSArray *) noteIDs;
+- (void) dropNotesFromSinglePListWithNoteIDs: (NSArray *) noteIDs;
+- (void) dropNotesFromSingleBinaryPListWithNoteIDs: (NSArray *) noteIDs;
+- (void) dropNotesFromMultiplePListWithNoteIDs: (NSArray *) noteIDs;
+- (void) dropNotesFromMultipleBinaryPListWIthNoteIDs: (NSArray *) noteIDs;
 
 @property BOOL rollbacked;
 @property NSMutableArray *notesToDrop;
