@@ -120,14 +120,14 @@
 
 - (void) getNotesForNotepadFromSinglePList {
     TICK;
-    [self applyPredicateToContentOfFile:PLIST_PATH];
+    [self applyPredicateToContentOfFile:SINGLE_PLIST_PATH];
     TACK;
     NSLog(@"%@", tackInfo);
 }
 
 - (void) getNotesForNotepadFromSingleBinaryPList {
     TICK;
-    [self applyPredicateToContentOfFile:PLIST_BINARY_PATH];
+    [self applyPredicateToContentOfFile:SINGLE_PLIST_BINARY_PATH];
     TACK;
     NSLog(@"%@", tackInfo);
 }
@@ -135,7 +135,7 @@
 - (void) getNotesForNotepadFromMultiplePList {
     TICK;
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:HELPER_PLIST_PATH];
-    [self collectMultipleNotesWithPath:MULTIPLE_NOTES_FOLDER withIDs:helperfilteredNotes];
+    [self collectMultipleNotesWithPath:MULTIPLE_PLIST_FOLDER withIDs:helperfilteredNotes];
     TACK;
     NSLog(@"%@", tackInfo);
 }
@@ -143,7 +143,7 @@
 - (void) getNotesForNotepadFromMultipleBinaryPList {
     TICK;
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:HELPER_BINARY_PLIST_PATH];
-    [self collectMultipleNotesWithPath:MULTIPLE_BINARY_NOTES_FOLDER withIDs:helperfilteredNotes];
+    [self collectMultipleNotesWithPath:MULTIPLE_BINARY_PLIST_FOLDER withIDs:helperfilteredNotes];
     TACK;
     NSLog(@"%@", tackInfo);
 }

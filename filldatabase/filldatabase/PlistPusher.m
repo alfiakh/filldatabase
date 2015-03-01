@@ -27,7 +27,7 @@
 }
 
 - (void) collectPlistFileInfo {
-    if([[NSFileManager defaultManager] fileExistsAtPath:PLIST_PATH]) {
+    if([[NSFileManager defaultManager] fileExistsAtPath:SINGLE_PLIST_PATH]) {
         [self sendErrorNotification:@"PList уже существует"];
     }
     else {
@@ -36,7 +36,7 @@
 }
 
 - (void) collectBinaryPlistFileInfo {
-    if([[NSFileManager defaultManager] fileExistsAtPath:PLIST_BINARY_PATH]) {
+    if([[NSFileManager defaultManager] fileExistsAtPath:SINGLE_PLIST_BINARY_PATH]) {
         [self sendErrorNotification:@"Бинарный PList уже существует"];
     }
     else {
@@ -63,7 +63,7 @@
                                                                              error:&error];
         if (!error)
         {
-            BOOL ok = [representation writeToFile:PLIST_BINARY_PATH
+            BOOL ok = [representation writeToFile:SINGLE_PLIST_BINARY_PATH
                                        atomically:YES];
             if (ok)
             {
@@ -86,7 +86,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         [self collectPlistFileInfo];
         TICK;
-        BOOL ok = [notes writeToFile:PLIST_PATH
+        BOOL ok = [notes writeToFile:SINGLE_PLIST_PATH
                           atomically:YES];
         if (ok)
         {
@@ -176,7 +176,7 @@
         NSDictionary *note = self.binaryNotesToPush[0];
         self.selectionHelper[note[@"ID"]] = [self getSelectionInfoForNote: note];
         
-        NSString *newPath = [MULTIPLE_BINARY_NOTES_FOLDER stringByAppendingString:note[@"ID"]];
+        NSString *newPath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingString:note[@"ID"]];
         NSData *representation = [NSPropertyListSerialization
                                   dataWithPropertyList:note
                                   format:NSPropertyListXMLFormat_v1_0
@@ -203,7 +203,7 @@
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         NSDictionary *note = self.notesToPush[0];
         self.selectionHelper[note[@"ID"]] = [self getSelectionInfoForNote: note];
-        NSString *newPath = [MULTIPLE_NOTES_FOLDER stringByAppendingString:note[@"ID"]];
+        NSString *newPath = [MULTIPLE_PLIST_FOLDER stringByAppendingString:note[@"ID"]];
         BOOL ok = [note writeToFile:newPath atomically:YES];
         if (!ok){
             [self sendErrorNotification:@"Не удалось записать заметку в файл PList"];

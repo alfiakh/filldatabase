@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "DropDataStorage.h"
+#import "ChangeNotesStorage.h"
 
 @interface AppDelegate ()
 
@@ -17,8 +18,14 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    DropDataStorage *storage = [[DropDataStorage alloc] init];
-    [storage dropNotesForNotepadFromDataBase];
+//    DropDataStorage *storage = [[DropDataStorage alloc] init];
+//    [storage dropNotesForNotepadFromDataBase];
+    ChangeNotesStorage *storage = [[ChangeNotesStorage alloc] init];
+    [storage changeNotesFromDataBaseWithNotesData:[storage getIDsToChangeFromDataBase]];
+    [storage changeNotesFromSinglePListWithNoteIDs:[storage getIDsToChangeFromSinglePList]];
+    [storage changeNotesFromSingleBinaryPListWithNoteIDs:[storage getIDsToChangeFromSingleBinaryPList]];
+    [storage changeNotesFromMultiplePListWithNoteIDs:[storage getIDsToChangeFromMultiplePList]];
+    [storage changeNotesFromMultipleBinaryPListWithNoteIDs:[storage getIDsToChangeFromMultipleBinaryPList]];
     return YES;
 }
 

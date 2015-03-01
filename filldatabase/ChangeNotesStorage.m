@@ -33,19 +33,58 @@
     return  [separated componentsJoinedByString:@"'"];
 }
 
-- (void) changeNotesForNotepadFromDataBase {
+- (NSArray *) getIDsToChangeFromDataBase {
+    NSMutableArray *notesData = [NSMutableArray array];
+    FMDatabase *database = [FMDatabase databaseWithPath:DATABASE_PATH];
+    if ([database open]) {
+        FMResultSet *results = [database executeQuery:@"SELECT ID, message FROM note"];
+        while ([results next]) {
+            [notesData addObject:[results resultDictionary]];
+        }
+    }
+    else {
+        [self sendErrorNotification:@"Не удалось открыть базу"];
+    }
+    return notesData;
+}
+
+- (NSArray *) collectIDsFromPListWithPath: (NSString *) path {
+    NSMutableArray *noteIDs = [NSMutableArray array];
+    NSArray *notes = [NSArray arrayWithContentsOfFile:path];
+    // память не утекай!
+    for (NSDictionary *note in notes) {
+        [noteIDs addObject:note[@"ID"]];
+    }
+    return noteIDs;
+}
+
+- (NSArray *) getIDsToChangeFromSinglePList {
+    return [self collectIDsFromPListWithPath:SINGLE_PLIST_PATH];
+}
+
+- (NSArray *) getIDsToChangeFromSingleBinaryPList {
+    return [self collectIDsFromPListWithPath:SINGLE_PLIST_BINARY_PATH];
+}
+
+- (NSArray *) getIDsToChangeFromMultiplePList {
+    return [self collectIDsFromPListWithPath:HELPER_PLIST_PATH];
+}
+
+- (NSArray *) getIDsToChangeFromMultipleBinaryPList {
+    return [self collectIDsFromPListWithPath:HELPER_BINARY_PLIST_PATH];
+}
+
+- (void) changeNotesFromDataBaseWithNotesData:(NSArray *)notesData {
     self.rollbacked = NO;
     FMDatabase *database = [FMDatabase databaseWithPath:DATABASE_PATH];
     if ([database open]) {
-//        database.traceExecution = YES;
         if ([database beginTransaction]) {
-            FMResultSet *results = [database executeQuery:@"SELECT ID, message FROM note"];
-            while ([results next]) {
+            for (NSString *note in notesData) {
                 if(self.rollbacked) {
                     break;
                 }
                 NSDictionary *userInfo = @{
-                                           @"results": [results resultDictionary],
+                                           @"noteData": note,
                                            @"database": database
                                            };
                 NSTimer *timer = [NSTimer
@@ -70,40 +109,49 @@
     }
 }
 
-- (void) changeNotesForNotepadFromSinglePList {
+- (void) changeNotesFromSinglePListWithNoteIDs:(NSArray *)noteIDs {
     self.rollbacked = NO;
-    NSArray *notes= [NSMutableArray arrayWithContentsOfFile:PLIST_PATH];
+    NSArray *notes = [NSArray arrayWithContentsOfFile:SINGLE_PLIST_PATH];
+    NSTimer *timer;
     for (NSDictionary *note in notes) {
         if (self.rollbacked) {
             break;
         }
-        NSTimer *timer = [NSTimer
-                          timerWithTimeInterval:0.4
-                          target:self
-                          selector:@selector(changeOneNoteInSinglePList:)
-                          userInfo:@{@"note": note}
-                          repeats:NO];
-        [timer fire];
+        if ([noteIDs containsObject:note[@"ID"]]) {
+            timer = [NSTimer
+                              timerWithTimeInterval:0.4
+                              target:self
+                              selector:@selector(changeOneNoteInSinglePList:)
+                              userInfo:@{@"note": note}
+                              repeats:NO];
+            [timer fire];
+        }
     }
     if (!self.rollbacked) {
-        [self.changedNotes writeToFile:PLIST_PATH atomically:YES];
+        BOOL ok =[self.changedNotes writeToFile:SINGLE_PLIST_PATH atomically:YES];
+        if (!ok) {
+            [self sendErrorNotification:@"Не удалось записать заметки в файл"];
+        }
     }
 }
 
-- (void) changeNotesForNotepadFromSingleBinaryPList {
+- (void) changeNotesFromSingleBinaryPListWithNoteIDs:(NSArray *)noteIDs {
     self.rollbacked = NO;
-    NSArray *notes= [NSMutableArray arrayWithContentsOfFile:PLIST_PATH];
+    NSArray *notes = [NSArray arrayWithContentsOfFile:SINGLE_PLIST_BINARY_PATH];
+    NSTimer *timer;
     for (NSDictionary *note in notes) {
         if (self.rollbacked) {
             break;
         }
-        NSTimer *timer = [NSTimer
-                          timerWithTimeInterval:0.4
-                          target:self
-                          selector:@selector(changeOneNoteInSinglePList:)
-                          userInfo:@{@"note": note}
-                          repeats:NO];
-        [timer fire];
+        if ([noteIDs containsObject:note[@"ID"]]) {
+            timer = [NSTimer
+                              timerWithTimeInterval:0.4
+                              target:self
+                              selector:@selector(changeOneNoteInSinglePList:)
+                              userInfo:@{@"note": note}
+                              repeats:NO];
+            [timer fire];
+        }
     }
     if (!self.rollbacked) {
         NSError *error = nil;
@@ -113,7 +161,7 @@
                                   options:0
                                   error:&error];
         if (!error) {
-            BOOL ok = [representation writeToFile:PLIST_BINARY_PATH atomically:YES];
+            BOOL ok = [representation writeToFile:SINGLE_PLIST_BINARY_PATH atomically:YES];
             if (!ok) {
                 [self sendErrorNotification:@"Не удалось записать данные в файл"];
             }
@@ -124,9 +172,8 @@
     }
 }
 
-- (void) changeNotesForNotepadFromMultiplePList {
+- (void) changeNotesFromMultiplePListWithNoteIDs:(NSArray *)noteIDs {
     self.rollbacked = NO;
-    NSArray *noteIDs = [[NSDictionary dictionaryWithContentsOfFile:HELPER_PLIST_PATH] allKeys];
     for (NSString *noteID in noteIDs) {
         if (self.rollbacked) {
             break;
@@ -144,9 +191,8 @@
     }
 }
 
-- (void) changeNotesForNotepadFromMultipleBinaryPList {
+- (void) changeNotesFromMultipleBinaryPListWithNoteIDs:(NSArray *)noteIDs {
     self.rollbacked = NO;
-    NSArray *noteIDs = [[NSDictionary dictionaryWithContentsOfFile:HELPER_PLIST_PATH] allKeys];
     for (NSString *noteID in noteIDs) {
         if (self.rollbacked) {
             break;
@@ -165,7 +211,7 @@
 }
 
 - (void) changeOneNoteInDataBase:(NSTimer *) timer {
-    NSString *sql = [self collectSQLStringWithNoteData:timer.userInfo[@"results"]];
+    NSString *sql = [self collectSQLStringWithNoteData:timer.userInfo[@"noteData"]];
     if(![timer.userInfo[@"database"] executeUpdate:sql]) {
         self.rollbacked = YES;
         if (![timer.userInfo[@"database"] rollback]) {
@@ -185,7 +231,7 @@
 }
 
 - (void) changeOneNoteInMultiplePList:(NSTimer *) timer {
-    NSString *notePath = [MULTIPLE_NOTES_FOLDER stringByAppendingPathComponent:timer.userInfo[@"noteID"]];
+    NSString *notePath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:timer.userInfo[@"noteData"]];
     NSMutableDictionary *note = [NSMutableDictionary dictionaryWithContentsOfFile:notePath];
     if(!note) {
         self.rollbacked = YES;
@@ -200,7 +246,7 @@
 }
 
 - (void) changeOneNoteInMultipleBinaryPList:(NSTimer *) timer {
-    NSString *notePath = [MULTIPLE_BINARY_NOTES_FOLDER stringByAppendingPathComponent:timer.userInfo[@"noteID"]];
+    NSString *notePath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingPathComponent:timer.userInfo[@"noteID"]];
     NSMutableDictionary *note = [NSMutableDictionary dictionaryWithContentsOfFile:notePath];
     if(!note) {
         self.rollbacked = YES;

@@ -10,11 +10,17 @@
 
 @interface ChangeNotesStorage : NSObject
 
-- (void) changeNotesForNotepadFromDataBase;
-- (void) changeNotesForNotepadFromSinglePList;
-- (void) changeNotesForNotepadFromSingleBinaryPList;
-- (void) changeNotesForNotepadFromMultiplePList;
-- (void) changeNotesForNotepadFromMultipleBinaryPList;
+- (NSArray *) getIDsToChangeFromDataBase;
+- (NSArray *) getIDsToChangeFromSinglePList;
+- (NSArray *) getIDsToChangeFromSingleBinaryPList;
+- (NSArray *) getIDsToChangeFromMultiplePList;
+- (NSArray *) getIDsToChangeFromMultipleBinaryPList;
+
+- (void) changeNotesFromDataBaseWithNotesData: (NSArray *) notesData;
+- (void) changeNotesFromSinglePListWithNoteIDs: (NSArray *) noteIDs;
+- (void) changeNotesFromSingleBinaryPListWithNoteIDs: (NSArray *) noteIDs;
+- (void) changeNotesFromMultiplePListWithNoteIDs: (NSArray *) noteIDs;
+- (void) changeNotesFromMultipleBinaryPListWithNoteIDs: (NSArray *) noteIDs;
 
 @property BOOL rollbacked;
 @property NSMutableArray *changedNotes;
