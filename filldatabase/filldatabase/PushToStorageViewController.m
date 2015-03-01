@@ -6,17 +6,17 @@
 //  Copyright (c) 2015 Alfiya Khairetdinova. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "PushToStorageViewController.h"
 
 #import "AllDefines.h"
 #import "SADictionaryAddtions.h"
 #import "PlistPusher.h"
 
-@interface ViewController ()
+@interface PushToStorageViewController ()
 
 @end
 
-@implementation ViewController
+@implementation PushToStorageViewController
 
 - (void) viewDidLoad {
     [super viewDidLoad];

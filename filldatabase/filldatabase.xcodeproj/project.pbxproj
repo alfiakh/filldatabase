@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		F009E2AC1A8BA9E600271245 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F009E2AB1A8BA9E600271245 /* main.m */; };
 		F009E2AF1A8BA9E600271245 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F009E2AE1A8BA9E600271245 /* AppDelegate.m */; };
-		F009E2B21A8BA9E600271245 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F009E2B11A8BA9E600271245 /* ViewController.m */; };
+		F009E2B21A8BA9E600271245 /* PushToStorageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F009E2B11A8BA9E600271245 /* PushToStorageViewController.m */; };
 		F009E2B51A8BA9E600271245 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F009E2B31A8BA9E600271245 /* Main.storyboard */; };
 		F009E2B71A8BA9E600271245 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F009E2B61A8BA9E600271245 /* Images.xcassets */; };
 		F009E2BA1A8BA9E600271245 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F009E2B81A8BA9E600271245 /* LaunchScreen.xib */; };
@@ -52,8 +52,8 @@
 		F009E2AB1A8BA9E600271245 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F009E2AD1A8BA9E600271245 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F009E2AE1A8BA9E600271245 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		F009E2B01A8BA9E600271245 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		F009E2B11A8BA9E600271245 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		F009E2B01A8BA9E600271245 /* PushToStorageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PushToStorageViewController.h; sourceTree = "<group>"; };
+		F009E2B11A8BA9E600271245 /* PushToStorageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PushToStorageViewController.m; sourceTree = "<group>"; };
 		F009E2B41A8BA9E600271245 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F009E2B61A8BA9E600271245 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F009E2B91A8BA9E600271245 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -164,8 +164,8 @@
 				F009E2D21A8BB20F00271245 /* AllDefines.h */,
 				F009E2AD1A8BA9E600271245 /* AppDelegate.h */,
 				F009E2AE1A8BA9E600271245 /* AppDelegate.m */,
-				F009E2B01A8BA9E600271245 /* ViewController.h */,
-				F009E2B11A8BA9E600271245 /* ViewController.m */,
+				F009E2B01A8BA9E600271245 /* PushToStorageViewController.h */,
+				F009E2B11A8BA9E600271245 /* PushToStorageViewController.m */,
 				F009E2B31A8BA9E600271245 /* Main.storyboard */,
 				F0FDEF591A9CCA5400725F3A /* CasesViewController.h */,
 				F0FDEF5A1A9CCA5400725F3A /* CasesViewController.m */,
@@ -343,7 +343,7 @@
 				F009E2D11A8BABD400271245 /* DataGetter.m in Sources */,
 				F0FDEF5B1A9CCA5400725F3A /* CasesViewController.m in Sources */,
 				F0FDEF641A9D0F6800725F3A /* JSONKit.m in Sources */,
-				F009E2B21A8BA9E600271245 /* ViewController.m in Sources */,
+				F009E2B21A8BA9E600271245 /* PushToStorageViewController.m in Sources */,
 				F0B2DBD01A8C90C700E8655D /* FMDatabasePool.m in Sources */,
 				F0B2DBD91A933DCF00E8655D /* PlistPusher.m in Sources */,
 				F0FDEF611A9CF79700725F3A /* SecondTestCase.m in Sources */,

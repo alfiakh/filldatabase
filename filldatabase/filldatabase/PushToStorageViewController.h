@@ -11,7 +11,7 @@
 #import "DataGetter.h"
 #import "DataPusher.h"
 
-@interface ViewController : UIViewController
+@interface PushToStorageViewController : UIViewController
 
 - (void) addToConsole: (NSString *) message;
 - (void) handleError: (NSNotification *) notification;
