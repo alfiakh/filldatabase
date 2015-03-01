@@ -28,9 +28,9 @@
     NSMutableArray *notesData = [NSMutableArray array];
     FMDatabase *database = [FMDatabase databaseWithPath:DATABASE_PATH];
     if ([database open]) {
-        FMResultSet *results = [database executeQuery:@"SELECT ID, message FROM note"];
+        FMResultSet *results = [database executeQuery:@"SELECT ID FROM note"];
         while ([results next]) {
-            [notesData addObject:[results resultDictionary]];
+            [notesData addObject:[results resultDictionary][@"ID"]];
         }
     }
     else {
@@ -69,15 +69,13 @@
     self.rollbacked = NO;
     FMDatabase *database = [FMDatabase databaseWithPath:DATABASE_PATH];
     if ([database open]) {
-        //        database.traceExecution = YES;
         if ([database beginTransaction]) {
-            FMResultSet *results = [database executeQuery:@"SELECT ID FROM note"];
-            while ([results next]) {
+            for (NSString *noteID in noteIDs) {
                 if(self.rollbacked) {
                     break;
                 }
                 NSDictionary *userInfo = @{
-                                           @"results": [results resultDictionary],
+                                           @"noteID": noteID,
                                            @"database": database
                                            };
                 NSTimer *timer = [NSTimer
@@ -119,8 +117,7 @@
 }
 
 - (void) dropOneNoteInDataBase: (NSTimer *) timer {
-    NSString *sql = [NSString stringWithFormat:@"DELETE FROM note WHERE ID = \"%@\"", timer.userInfo[@"results"][@"ID"]];
-    NSLog(@"%@", sql);
+    NSString *sql = [NSString stringWithFormat:@"DELETE FROM note WHERE ID = \"%@\"", timer.userInfo[@"noteID"]];
     if(![timer.userInfo[@"database"] executeUpdate:sql]) {
         self.rollbacked = YES;
         if (![timer.userInfo[@"database"] rollback]) {
