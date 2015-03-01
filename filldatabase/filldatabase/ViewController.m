@@ -62,7 +62,7 @@
     else {
         self.accountNumber++;
         [self runRequestWithUserID:[ACCOUNTS objectAtIndex:self.accountNumber]
-                     withTImeStamp:[self.getter giveMeTS][0]];
+                     withTImeStamp:[self.getter giveMeTS]];
     }
 }
 
@@ -83,11 +83,11 @@
     [self addToConsole:@"Пошел запрос"];
     self.accountNumber = 0;
     self.getter = [[DataGetter alloc] init];
-    NSArray *currentTimeStamps = [self.getter giveMeTS];
     NSString *listUrl = [self.getter
                          collectUrlForListWithUserID:[ACCOUNTS objectAtIndex:self.accountNumber]
-                          lastTimeStamp:[currentTimeStamps[0] integerValue]
+                          lastTimeStamp:[[self.getter giveMeTS] integerValue]
                              notesCount:[NOTES_COUNT integerValue]];
+    NSLog(@"URL: %@", listUrl);
     [self.getter runRequestWithUrl:listUrl];
 }
 

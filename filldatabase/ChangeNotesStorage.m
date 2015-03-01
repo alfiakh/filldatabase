@@ -22,7 +22,6 @@
 
 - (NSString *) collectSQLStringWithNoteData: (NSDictionary *) noteData {
     NSMutableString *sql = [NSMutableString string];
-    NSLog(@"MESSAGE: %@", [self quotesReplaceInString: noteData[@"message"]]);
     [sql appendFormat:@"UPDATE note SET message = \"%@ \" WHERE ID = \"%@\";", [self quotesReplaceInString: noteData[@"message"]], noteData[@"ID"]];
     return sql;
 }
@@ -38,7 +37,7 @@
     self.rollbacked = NO;
     FMDatabase *database = [FMDatabase databaseWithPath:DATABASE_PATH];
     if ([database open]) {
-        database.traceExecution = YES;
+//        database.traceExecution = YES;
         if ([database beginTransaction]) {
             FMResultSet *results = [database executeQuery:@"SELECT ID, message FROM note"];
             while ([results next]) {

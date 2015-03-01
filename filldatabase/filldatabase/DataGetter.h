@@ -10,7 +10,7 @@
 
 @interface DataGetter : NSObject
 
-- (NSArray *) giveMeTS;
+- (NSNumber *) giveMeTS;
 - (NSString *) collectAuthPartWithUserID: (NSString *) userID;
 - (NSString *) collectCmdPartForListWithCount:(NSInteger) count lastTimeStamp: (NSInteger) timestamp;
 - (NSString *) collectTailPart;

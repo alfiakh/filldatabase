@@ -12,15 +12,13 @@
 
 @implementation DataGetter
 
-- (NSArray *) giveMeTS {
+- (NSNumber *) giveMeTS {
     int ts = [[NSDate date] timeIntervalSince1970];
-    long msts =round((float) [[NSDate date]timeIntervalSince1970] * 1000);
-    return @[@(ts), @(msts)];
+    return @(ts);
 }
 
 - (NSString *) collectAuthPartWithUserID: (NSString *) userID{
-    NSArray *timestamps = [self giveMeTS];
-    NSString *authPart = [NSString stringWithFormat:@"u:%@_s:%@_d:4ad674c0-b0be-48ff-b7eb-0f788ceda519_r:8ef0e934-cda9-4a7c-9b41-77b3958c2910_t:%@", userID, TESTER_SIGNATURE, timestamps[0]];
+    NSString *authPart = [NSString stringWithFormat:@"u:%@_s:%@_d:4ad674c0-b0be-48ff-b7eb-0f788ceda519_r:8ef0e934-cda9-4a7c-9b41-77b3958c2910_t:%@", userID, TESTER_SIGNATURE, [self giveMeTS]];
     return authPart;
 }
 
@@ -30,8 +28,7 @@
 }
 
 - (NSString *) collectTailPart {
-    NSArray *timestamps = [self giveMeTS];
-    NSString *tailPart = [NSString stringWithFormat:@"?_%ld", (long)[timestamps[1] integerValue]];
+    NSString *tailPart = [NSString stringWithFormat:@"?_%@", [self giveMeTS]];
     return tailPart;
 }
 
@@ -42,6 +39,7 @@
     NSString *cmdPart = [self collectCmdPartForListWithCount:noteCount lastTimeStamp: timestamp];
     NSString *tailPart = [self collectTailPart];
     NSString *url = [NSString stringWithFormat:@"http://%@/api/v2/%@/%@/%@", API_NODE, authPart, cmdPart, tailPart];
+    NSLog(@"%@", url);
     return url;
 }
 
