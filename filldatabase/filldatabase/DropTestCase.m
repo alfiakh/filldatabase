@@ -1,15 +1,15 @@
 //
-//  ChangeTextCase.m
+//  DropTestCase.m
 //  filldatabase
 //
 //  Created by Alfiya on 01.03.15.
 //  Copyright (c) 2015 Alfiya Khairetdinova. All rights reserved.
 //
 
-#import "ChangeTestCase.h"
+#import "DropTestCase.h"
 #import "AllDefines.h"
 
-@implementation ChangeTestCase
+@implementation DropTestCase
 
 - (id) init {
     self = [super init];
@@ -32,13 +32,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         // собираем строки для селекторов
         NSString *getIDsSelectorName = [NSString stringWithFormat:@"getIDsToChangeFrom%@", storageType];
-        NSString *changeNotesSelectorName;
-        if (![storageType isEqualToString: @"DataBase"]) {
-            changeNotesSelectorName = [NSString stringWithFormat:@"changeNotesFrom%@tWithNoteIDs", storageType];
-        }
-        else {
-            changeNotesSelectorName = [NSString stringWithFormat:@"changeNotesFrom%@tWithNotesData", storageType];
-        }
+        NSString *changeNotesSelectorName = [NSString stringWithFormat:@"changeNotesFrom%@tWithNoteIDs", storageType];
         
         // создаем селекторы
         SEL getIDsSelector = NSSelectorFromString(getIDsSelectorName);
@@ -73,7 +67,7 @@
 }
 
 - (void) run {
-    self.storage = [[ChangeNotesStorage alloc] init];
+    self.storage = [[DropDataStorage alloc] init];
     for (NSString *dataStorage in DATA_STORAGES) {
         [self callTestCaseWithStoraType:dataStorage];
     }
