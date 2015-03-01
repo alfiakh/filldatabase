@@ -19,11 +19,6 @@
      userInfo: @{@"message": message}];
 }
 
-- (NSArray *) getNoteIDsToDropFromDataBase {
-    NSArray *notes = @[];
-    return  notes;
-}
-
 - (NSArray *) getIDsToDropFromDataBase {
     NSMutableArray *notesData = [NSMutableArray array];
     FMDatabase *database = [FMDatabase databaseWithPath:DATABASE_PATH];
@@ -101,11 +96,73 @@
 }
 
 - (void) dropNotesFromSinglePListWithNoteIDs:(NSArray *)noteIDs {
-    
+    self.rollbacked = NO;
+    self.notesToWrite = [NSMutableArray arrayWithContentsOfFile:SINGLE_PLIST_PATH];
+    NSTimer *timer;
+    for (int i = [self.notesToWrite count]; i >= 0; i--) {
+        if (self.rollbacked) {
+            break;
+        }
+        if ([noteIDs containsObject:self.notesToWrite[i][@"ID"]]) {
+            timer = [NSTimer
+                     timerWithTimeInterval:0.4
+                     target:self
+                     selector:@selector(dropOneNoteInSinglePList:)
+                     userInfo:@{
+                                @"note": self.notesToWrite[i],
+                                @"counter": @(i)
+                                }
+                     repeats:NO];
+            [timer fire];
+        }
+    }
+    if (!self.rollbacked) {
+        BOOL ok =[self.notesToWrite writeToFile:SINGLE_PLIST_PATH atomically:YES];
+        if (!ok) {
+            [self sendErrorNotification:@"Не удалось записать заметки в файл"];
+        }
+    }
+    self.notesToWrite = [NSMutableArray array];
 }
 
 - (void) dropNotesFromSingleBinaryPListWithNoteIDs:(NSArray *)noteIDs {
-    
+    self.rollbacked = NO;
+    self.notesToWrite = [NSMutableArray arrayWithContentsOfFile:SINGLE_PLIST_PATH];
+    NSTimer *timer;
+    for (int i = [self.notesToWrite count]; i >= 0; i--) {
+        if (self.rollbacked) {
+            break;
+        }
+        if ([noteIDs containsObject:self.notesToWrite[i][@"ID"]]) {
+            timer = [NSTimer
+                     timerWithTimeInterval:0.4
+                     target:self
+                     selector:@selector(dropOneNoteInSinglePList:)
+                     userInfo:@{
+                                @"note": self.notesToWrite[i],
+                                @"counter": @(i)
+                                }
+                     repeats:NO];
+            [timer fire];
+        }
+    }
+    if (!self.rollbacked) {
+        NSError *error = nil;
+        NSData *representation = [NSPropertyListSerialization
+                                  dataWithPropertyList:self.notesToWrite
+                                  format:NSPropertyListXMLFormat_v1_0
+                                  options:0
+                                  error:&error];
+        if (!error) {
+            BOOL ok = [representation writeToFile:SINGLE_PLIST_BINARY_PATH atomically:YES];
+            if (!ok) {
+                [self sendErrorNotification:@"Не удалось записать данные в файл"];
+            }
+        }
+        else {
+            [self sendErrorNotification:@"Не удалось преобразовать данные"];
+        }
+    }
 }
 
 - (void) dropNotesFromMultiplePListWithNoteIDs:(NSArray *)noteIDs {
@@ -126,6 +183,19 @@
         else {
             [self sendErrorNotification:@"Не прошел запрос"];
         }
+    }
+}
+
+- (void) dropOneNoteInSinglePList: (NSTimer *)timer {
+    //на страх и риск. нужен алгоритм который ищет в аррае по entityID и возвращает индекс. пробегаться каждый раз аррай бред
+    NSUInteger counter = [timer.userInfo[@"counter"] integerValue];
+    BOOL correctNote = [[self.notesToWrite objectAtIndex:counter] isEqualToDictionary:timer.userInfo[@"note"]];
+    if (correctNote) {
+        [self.notesToWrite removeObjectAtIndex:counter];
+    }
+    else {
+        self.rollbacked = YES;
+        [self sendErrorNotification:@"Заметка, которую пытаемся удалить не соответствует индексу"];
     }
 }
 

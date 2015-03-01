@@ -12,6 +12,8 @@
 #import "FirstTestCase.h"
 #import "SecondTestCase.h"
 #import "ThirdTestCase.h"
+#import "ChangeNotesStorage.h"
+#import "DropDataStorage.h"
 
 @interface CasesViewController ()
 
@@ -58,9 +60,11 @@
 }
 
 - (IBAction)changeManyNotes:(id)sender {
+    
 }
 
 - (IBAction)deleteManyNotes:(id)sender {
+    
 }
 
 /*

@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "DropDataStorage.h"
 
 @interface AppDelegate ()
 
@@ -17,8 +16,6 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    DropDataStorage *storage = [[DropDataStorage alloc] init];
-    [storage dropNotesFromDataBaseWithNoteIDs:[storage getIDsToDropFromDataBase]];
     return YES;
 }
 
