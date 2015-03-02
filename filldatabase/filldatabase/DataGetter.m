@@ -39,7 +39,6 @@
     NSString *cmdPart = [self collectCmdPartForListWithCount:noteCount lastTimeStamp: timestamp];
     NSString *tailPart = [self collectTailPart];
     NSString *url = [NSString stringWithFormat:@"http://%@/api/v2/%@/%@/%@", API_NODE, authPart, cmdPart, tailPart];
-    NSLog(@"%@", url);
     return url;
 }
 
@@ -99,7 +98,6 @@
     else {
         NSInteger srvMessageCode = [responseData[@"srvMessageCode"] integerValue];
         if (srvMessageCode != 200) {
-            NSLog(@"%ld", (long)srvMessageCode);
             [self createErrorNotification:@"Некорректный srvMessageCode"];
         }
         else {

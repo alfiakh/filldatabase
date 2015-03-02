@@ -82,7 +82,7 @@
                 [timer fire];
             }
             if (!self.rollbacked && ![database commit]) {
-                [self sendErrorNotification:@"Не удалочь закоммитить транзакцию"];
+                [self sendErrorNotification:@"Не удалоcь закоммитить транзакцию"];
             }
         }
         else {
@@ -110,13 +110,15 @@
                      selector:@selector(dropOneNoteInSinglePList:)
                      userInfo:@{
                                 @"note": self.notesToWrite[i],
-                                @"counter": @(i)
+                                @"counter": @(i),
+                                @"type": @"single"
                                 }
                      repeats:NO];
             [timer fire];
         }
     }
     if (!self.rollbacked) {
+        NSLog(@"%@", self.notesToWrite);
         BOOL ok =[self.notesToWrite writeToFile:SINGLE_PLIST_PATH atomically:YES];
         if (!ok) {
             [self sendErrorNotification:@"Не удалось записать заметки в файл"];
@@ -127,20 +129,21 @@
 
 - (void) dropNotesFromSingleBinaryPListWithNoteIDs:(NSArray *)noteIDs {
     self.rollbacked = NO;
-    self.notesToWrite = [NSMutableArray arrayWithContentsOfFile:SINGLE_PLIST_PATH];
+    self.notesToWriteBinary = [NSMutableArray arrayWithContentsOfFile:SINGLE_PLIST_PATH];
     NSTimer *timer;
-    for (int i = (int)[self.notesToWrite count] - 1; i >= 0; i--) {
+    for (int i = (int)[self.notesToWriteBinary count] - 1; i >= 0; i--) {
         if (self.rollbacked) {
             break;
         }
-        if ([noteIDs containsObject:self.notesToWrite[i][@"ID"]]) {
+        if ([noteIDs containsObject:self.notesToWriteBinary[i][@"ID"]]) {
             timer = [NSTimer
                      timerWithTimeInterval:0.4
                      target:self
                      selector:@selector(dropOneNoteInSinglePList:)
                      userInfo:@{
-                                @"note": self.notesToWrite[i],
-                                @"counter": @(i)
+                                @"note": self.notesToWriteBinary[i],
+                                @"counter": @(i),
+                                @"type": @"single binary"
                                 }
                      repeats:NO];
             [timer fire];
@@ -149,7 +152,7 @@
     if (!self.rollbacked) {
         NSError *error = nil;
         NSData *representation = [NSPropertyListSerialization
-                                  dataWithPropertyList:self.notesToWrite
+                                  dataWithPropertyList:self.notesToWriteBinary
                                   format:NSPropertyListXMLFormat_v1_0
                                   options:0
                                   error:&error];
@@ -175,6 +178,7 @@
             break;
         }
         if ([noteIDs containsObject:noteID]) {
+            sleep(0.1);
             timer = [NSTimer
                      timerWithTimeInterval:0.4
                      target:self
@@ -205,6 +209,7 @@
             break;
         }
         if ([noteIDs containsObject:noteID]) {
+            sleep(0.1);
             timer = [NSTimer
                      timerWithTimeInterval:0.4
                      target:self
@@ -251,49 +256,72 @@
 
 - (void) dropOneNoteInSinglePList: (NSTimer *)timer {
     //на страх и риск. нужен алгоритм который ищет в аррае по entityID и возвращает индекс. пробегаться каждый раз аррай бред
-    NSUInteger counter = [timer.userInfo[@"counter"] integerValue];
-    BOOL correctNote = [[self.notesToWrite objectAtIndex:counter] isEqualToDictionary:timer.userInfo[@"note"]];
-    if (correctNote) {
-        [self.notesToWrite removeObjectAtIndex:counter];
-    }
-    else {
-        self.rollbacked = YES;
-        [self sendErrorNotification:@"Заметка, которую пытаемся удалить не соответствует индексу"];
-    }
-}
-
-- (void) dropOneNoteInMultiplePList: (NSTimer *) timer {
-    NSString *noteID = timer.userInfo[@"noteID"];
-    NSString *notePath;
-    if ([timer.userInfo[@"type"] isEqualToString:@"multiple"]) {
-        notePath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:noteID];
-    }
-    else if ([timer.userInfo[@"type"] isEqualToString:@"multiple binary"]) {
-        notePath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingString:noteID];
-    }
-    else {
-        self.rollbacked = YES;
-        [self sendErrorNotification:@"Переданый некорректный тип стореджа в таймер"];
-    }
-    if (self.helperNotes[noteID]) {
-        [self.helperNotes removeObjectForKey:noteID];
-        NSFileManager *manager = [NSFileManager defaultManager];
-        if ([manager fileExistsAtPath:notePath]) {
-            NSError *error;
-            BOOL ok = [manager removeItemAtPath:notePath error:&error];
-            if (error || !ok) {
+    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        NSUInteger counter = [timer.userInfo[@"counter"] integerValue];
+        BOOL correctNote;
+        if ([timer.userInfo[@"type"] isEqualToString:@"single"]) {
+            correctNote = [[self.notesToWrite objectAtIndex:counter] isEqualToDictionary:timer.userInfo[@"note"]];
+        }
+        else if ([timer.userInfo[@"type"] isEqualToString:@"single binary"]) {
+            correctNote = [[self.notesToWriteBinary objectAtIndex:counter] isEqualToDictionary:timer.userInfo[@"note"]];
+        }
+        else {
+            self.rollbacked = YES;
+            [self sendErrorNotification:@"Прислан некорректный тип стореджа для дропа 1 заметки"];
+        }
+        if (correctNote) {
+            if ([timer.userInfo[@"type"] isEqualToString:@"single"]) {
+                [self.notesToWrite removeObjectAtIndex:counter];
+            }
+            else if ([timer.userInfo[@"type"] isEqualToString:@"single binary"]) {
+                [self.notesToWriteBinary removeObjectAtIndex:counter];
+            }
+            else {
                 self.rollbacked = YES;
-                [self sendErrorNotification:@"Не удалось снести заметку"];
+                [self sendErrorNotification:@"Прислан некорректный тип стореджа для дропа 1 заметки"];
             }
         }
         else {
-            [self sendErrorNotification:@"Заметки которую вы пытаетесь удалить уже не было"];
+            self.rollbacked = YES;
+            [self sendErrorNotification:@"Заметка, которую пытаемся удалить не соответствует индексу"];
         }
-    }
-    else {
-        self.rollbacked = YES;
-        [self sendErrorNotification:@"Во вспомогательном PList нет заметки, которая пришла на удаление"];
-    }
+    });
+}
+
+- (void) dropOneNoteInMultiplePList: (NSTimer *) timer {
+    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        NSString *noteID = timer.userInfo[@"noteID"];
+        NSString *notePath;
+        if ([timer.userInfo[@"type"] isEqualToString:@"multiple"]) {
+            notePath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:noteID];
+        }
+        else if ([timer.userInfo[@"type"] isEqualToString:@"multiple binary"]) {
+            notePath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingString:noteID];
+        }
+        else {
+            self.rollbacked = YES;
+            [self sendErrorNotification:@"Переданый некорректный тип стореджа в таймер"];
+        }
+        if (self.helperNotes[noteID]) {
+            [self.helperNotes removeObjectForKey:noteID];
+            NSFileManager *manager = [NSFileManager defaultManager];
+            if ([manager fileExistsAtPath:notePath]) {
+                NSError *error;
+                BOOL ok = [manager removeItemAtPath:notePath error:&error];
+                if (error || !ok) {
+                    self.rollbacked = YES;
+                    [self sendErrorNotification:@"Не удалось снести заметку"];
+                }
+            }
+            else {
+                [self sendErrorNotification:@"Заметки которую вы пытаетесь удалить уже не было"];
+            }
+        }
+        else {
+            self.rollbacked = YES;
+            [self sendErrorNotification:@"Во вспомогательном PList нет заметки, которая пришла на удаление"];
+        }
+    });
 }
 
 @end
