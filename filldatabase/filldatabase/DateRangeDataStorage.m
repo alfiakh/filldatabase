@@ -141,14 +141,14 @@
 
 - (void) getNotesForDateRangeFromSinglePList {
     TICK;
-    [self applyPredicateToContentOfFile:PLIST_PATH];
+    [self applyPredicateToContentOfFile:SINGLE_PLIST_PATH];
     TACK;
     NSLog(@"%@", tackInfo);
 }
 
 - (void) getNotesForDateRangeFromSingleBinaryPList {
     TICK;
-    [self applyPredicateToContentOfFile:PLIST_BINARY_PATH];
+    [self applyPredicateToContentOfFile:SINGLE_PLIST_BINARY_PATH];
     TACK;
     NSLog(@"%@", tackInfo);
 }
@@ -168,7 +168,7 @@
     TICK;
     NSString *singlePlistPath = HELPER_PLIST_PATH;
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
-    [self collectMultipleNotesWithPath:MULTIPLE_NOTES_FOLDER withIDs:helperfilteredNotes];
+    [self collectMultipleNotesWithPath:MULTIPLE_PLIST_FOLDER withIDs:helperfilteredNotes];
     TACK;
     NSLog(@"%@", tackInfo);
 }
@@ -177,7 +177,7 @@
     TICK;
     NSString *singlePlistPath = HELPER_BINARY_PLIST_PATH;
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
-    [self collectMultipleNotesWithPath:MULTIPLE_BINARY_NOTES_FOLDER withIDs:helperfilteredNotes];
+    [self collectMultipleNotesWithPath:MULTIPLE_BINARY_PLIST_FOLDER withIDs:helperfilteredNotes];
     TACK;
     NSLog(@"%@", tackInfo);
 }

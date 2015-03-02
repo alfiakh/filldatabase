@@ -22,9 +22,4 @@
 - (void) dropNotesFromMultiplePListWithNoteIDs: (NSArray *) noteIDs;
 - (void) dropNotesFromMultipleBinaryPListWIthNoteIDs: (NSArray *) noteIDs;
 
-@property BOOL rollbacked;
-@property NSMutableArray *notesToWrite;
-@property NSMutableArray *notesToWriteBinary;
-@property NSMutableDictionary *helperNotes;
-
 @end

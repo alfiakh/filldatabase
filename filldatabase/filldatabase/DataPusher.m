@@ -83,7 +83,7 @@
 
 - (void) deleteAllOldNotes {
     if ([self.database beginTransaction]) {
-        if ([self.database executeUpdate:DELETE_NOTES_QUERY]) {
+        if ([self.database executeUpdate:@"DELETE FROM note;"]) {
             if (![self.database commit]) {
                 [self sendErrorNotification:@"Не удалось закоммитить транзакцию после удаления старых записей"];
             }
@@ -113,9 +113,10 @@
             if (self.rollbacked) {
                 break;
             }
+            
             NSTimer *notesToUpdateTimer = [NSTimer timerWithTimeInterval: 0.5
                                                               target: self
-                                                            selector: @selector( pushOneNote )
+                                                            selector: @selector( pushOneNote)
                                                             userInfo: nil
                                                              repeats: NO];
             [notesToUpdateTimer fire];

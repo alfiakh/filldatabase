@@ -10,7 +10,23 @@
 #import "FMDatabase.h"
 #import "AllDefines.h"
 
-@implementation DropDataStorage
+@implementation DropDataStorage {
+    // состояния отката дропа
+    BOOL _rollbackedDataBase;
+    BOOL _rollbackedSinglePList;
+    BOOL _rollbackedSingleBinaryPList;
+    BOOL _rollbackedMultiplePList;
+    BOOL _rollbackedMultipleBinaryPList;
+    
+    // вспомогательные структуры для записи
+    
+    // из этих сносятся заметки и потом пишется
+    NSMutableArray *_notesToWrite;
+    NSMutableArray *_notesToWriteBinary;
+    // это для обновления вспомогательных структур мультиплов
+    NSMutableDictionary *_helperNotes;
+    NSMutableDictionary *_helperNotesBinary;
+}
 
 - (void) sendErrorNotification:(NSString *)message {
     [[NSNotificationCenter defaultCenter]
@@ -61,12 +77,12 @@
 }
 
 - (void) dropNotesFromDataBasetWithNoteIDs:(NSArray *)noteIDs {
-    self.rollbacked = NO;
+    _rollbackedDataBase = NO;
     FMDatabase *database = [FMDatabase databaseWithPath:DATABASE_PATH];
     if ([database open]) {
         if ([database beginTransaction]) {
             for (NSString *noteID in noteIDs) {
-                if(self.rollbacked) {
+                if(_rollbackedDataBase) {
                     break;
                 }
                 NSDictionary *userInfo = @{
@@ -81,7 +97,7 @@
                                   repeats:NO];
                 [timer fire];
             }
-            if (!self.rollbacked && ![database commit]) {
+            if (!_rollbackedDataBase && ![database commit]) {
                 [self sendErrorNotification:@"Не удалоcь закоммитить транзакцию"];
             }
         }
@@ -96,20 +112,20 @@
 }
 
 - (void) dropNotesFromSinglePListWithNoteIDs:(NSArray *)noteIDs {
-    self.rollbacked = NO;
-    self.notesToWrite = [NSMutableArray arrayWithContentsOfFile:SINGLE_PLIST_PATH];
+    _rollbackedSinglePList = NO;
+    _notesToWrite = [NSMutableArray arrayWithContentsOfFile:SINGLE_PLIST_PATH];
     NSTimer *timer;
-    for (int i = (int)[self.notesToWrite count] - 1; i >= 0; i--) {
-        if (self.rollbacked) {
+    for (int i = (int)[_notesToWrite count] - 1; i >= 0; i--) {
+        if (_rollbackedSinglePList) {
             break;
         }
-        if ([noteIDs containsObject:self.notesToWrite[i][@"ID"]]) {
+        if ([noteIDs containsObject:_notesToWrite[i][@"ID"]]) {
             timer = [NSTimer
                      timerWithTimeInterval:0.4
                      target:self
                      selector:@selector(dropOneNoteInSinglePList:)
                      userInfo:@{
-                                @"note": self.notesToWrite[i],
+                                @"note": _notesToWrite[i],
                                 @"counter": @(i),
                                 @"type": @"single"
                                 }
@@ -117,31 +133,30 @@
             [timer fire];
         }
     }
-    if (!self.rollbacked) {
-        NSLog(@"%@", self.notesToWrite);
-        BOOL ok =[self.notesToWrite writeToFile:SINGLE_PLIST_PATH atomically:YES];
+    if (!_rollbackedSinglePList) {
+        NSLog(@"%@", _notesToWrite);
+        BOOL ok =[_notesToWrite writeToFile:SINGLE_PLIST_PATH atomically:YES];
         if (!ok) {
             [self sendErrorNotification:@"Не удалось записать заметки в файл"];
         }
     }
-    self.notesToWrite = [NSMutableArray array];
 }
 
 - (void) dropNotesFromSingleBinaryPListWithNoteIDs:(NSArray *)noteIDs {
-    self.rollbacked = NO;
-    self.notesToWriteBinary = [NSMutableArray arrayWithContentsOfFile:SINGLE_PLIST_PATH];
+    _rollbackedSingleBinaryPList = NO;
+    _notesToWriteBinary = [NSMutableArray arrayWithContentsOfFile:SINGLE_PLIST_PATH];
     NSTimer *timer;
-    for (int i = (int)[self.notesToWriteBinary count] - 1; i >= 0; i--) {
-        if (self.rollbacked) {
+    for (int i = (int)[_notesToWriteBinary count] - 1; i >= 0; i--) {
+        if (_rollbackedSingleBinaryPList) {
             break;
         }
-        if ([noteIDs containsObject:self.notesToWriteBinary[i][@"ID"]]) {
+        if ([noteIDs containsObject:_notesToWriteBinary[i][@"ID"]]) {
             timer = [NSTimer
                      timerWithTimeInterval:0.4
                      target:self
                      selector:@selector(dropOneNoteInSinglePList:)
                      userInfo:@{
-                                @"note": self.notesToWriteBinary[i],
+                                @"note": _notesToWriteBinary[i],
                                 @"counter": @(i),
                                 @"type": @"single binary"
                                 }
@@ -149,10 +164,10 @@
             [timer fire];
         }
     }
-    if (!self.rollbacked) {
+    if (!_rollbackedSingleBinaryPList) {
         NSError *error = nil;
         NSData *representation = [NSPropertyListSerialization
-                                  dataWithPropertyList:self.notesToWriteBinary
+                                  dataWithPropertyList:_notesToWriteBinary
                                   format:NSPropertyListXMLFormat_v1_0
                                   options:0
                                   error:&error];
@@ -169,12 +184,11 @@
 }
 
 - (void) dropNotesFromMultiplePListWithNoteIDs:(NSArray *)noteIDs {
-    self.rollbacked = NO;
-    NSDictionary *helperNotes = [NSDictionary dictionaryWithContentsOfFile:HELPER_PLIST_PATH];
-    self.helperNotes = [helperNotes mutableCopy];
+    _rollbackedMultiplePList = NO;
+    _helperNotes = [NSMutableDictionary dictionaryWithContentsOfFile:HELPER_PLIST_PATH];
     NSTimer *timer;
-    for (NSString *noteID in self.helperNotes) {
-        if (self.rollbacked) {
+    for (NSString *noteID in _helperNotes) {
+        if (_rollbackedMultiplePList) {
             break;
         }
         if ([noteIDs containsObject:noteID]) {
@@ -191,8 +205,8 @@
             [timer fire];
         }
     }
-    if (!self.rollbacked) {
-        BOOL ok = [self.notesToWrite writeToFile:HELPER_PLIST_PATH atomically:YES];
+    if (!_rollbackedMultiplePList) {
+        BOOL ok = [_helperNotes writeToFile:HELPER_PLIST_PATH atomically:YES];
         if (!ok) {
             [self sendErrorNotification:@"Произошла ошибка при записи во вспомогательный файл"];
         }
@@ -200,12 +214,11 @@
 }
 
 - (void) dropNotesFromMultipleBinaryPListWIthNoteIDs:(NSArray *)noteIDs {
-    self.rollbacked = NO;
-    NSDictionary *helperNotes = [NSDictionary dictionaryWithContentsOfFile:HELPER_PLIST_PATH];
-    self.helperNotes = [helperNotes mutableCopy];
+    _rollbackedMultipleBinaryPList = NO;
+    _helperNotesBinary = [NSMutableDictionary dictionaryWithContentsOfFile:HELPER_PLIST_PATH];
     NSTimer *timer;
-    for (NSString *noteID in self.helperNotes) {
-        if (self.rollbacked) {
+    for (NSString *noteID in _helperNotesBinary) {
+        if (_rollbackedMultipleBinaryPList) {
             break;
         }
         if ([noteIDs containsObject:noteID]) {
@@ -222,10 +235,10 @@
             [timer fire];
         }
     }
-    if (!self.rollbacked) {
+    if (!_rollbackedMultipleBinaryPList) {
         NSError *error = nil;
         NSData *representation = [NSPropertyListSerialization
-                                  dataWithPropertyList:self.notesToWrite
+                                  dataWithPropertyList:_helperNotesBinary
                                   format:NSPropertyListXMLFormat_v1_0
                                   options:0
                                   error:&error];
@@ -244,7 +257,7 @@
 - (void) dropOneNoteInDataBase: (NSTimer *) timer {
     NSString *sql = [NSString stringWithFormat:@"DELETE FROM note WHERE ID = \"%@\"", timer.userInfo[@"noteID"]];
     if(![timer.userInfo[@"database"] executeUpdate:sql]) {
-        self.rollbacked = YES;
+        _rollbackedDataBase = YES;
         if (![timer.userInfo[@"database"] rollback]) {
             [self sendErrorNotification:@"Не удалось зароллбечить транзакцию"];
         }
@@ -257,33 +270,30 @@
 - (void) dropOneNoteInSinglePList: (NSTimer *)timer {
     //на страх и риск. нужен алгоритм который ищет в аррае по entityID и возвращает индекс. пробегаться каждый раз аррай бред
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        NSUInteger counter = [timer.userInfo[@"counter"] integerValue];
-        BOOL correctNote;
-        if ([timer.userInfo[@"type"] isEqualToString:@"single"]) {
-            correctNote = [[self.notesToWrite objectAtIndex:counter] isEqualToDictionary:timer.userInfo[@"note"]];
-        }
-        else if ([timer.userInfo[@"type"] isEqualToString:@"single binary"]) {
-            correctNote = [[self.notesToWriteBinary objectAtIndex:counter] isEqualToDictionary:timer.userInfo[@"note"]];
-        }
-        else {
-            self.rollbacked = YES;
-            [self sendErrorNotification:@"Прислан некорректный тип стореджа для дропа 1 заметки"];
-        }
-        if (correctNote) {
-            if ([timer.userInfo[@"type"] isEqualToString:@"single"]) {
-                [self.notesToWrite removeObjectAtIndex:counter];
-            }
-            else if ([timer.userInfo[@"type"] isEqualToString:@"single binary"]) {
-                [self.notesToWriteBinary removeObjectAtIndex:counter];
+        BOOL S = [timer.userInfo[@"type"] isEqualToString:@"single"];
+        BOOL SB = [timer.userInfo[@"type"] isEqualToString:@"single binary"];
+        if (SB || S) {
+            NSUInteger counter = [timer.userInfo[@"counter"] integerValue];
+            BOOL correctNote = S ? [[_notesToWrite objectAtIndex:counter] isEqualToDictionary:timer.userInfo[@"note"]] : [[_notesToWriteBinary objectAtIndex:counter] isEqualToDictionary:timer.userInfo[@"note"]];
+            if (correctNote) {
+                if (S) {
+                    [_notesToWrite removeObjectAtIndex:counter];
+                }
+                else if (SB) {
+                    [_notesToWriteBinary removeObjectAtIndex:counter];
+                }
             }
             else {
-                self.rollbacked = YES;
-                [self sendErrorNotification:@"Прислан некорректный тип стореджа для дропа 1 заметки"];
+                if (S) {
+                    _rollbackedSinglePList = YES;
+                } else {
+                    _rollbackedSingleBinaryPList = YES;
+                }
+                [self sendErrorNotification:@"Что-то пошло не так при сносе"];
             }
         }
         else {
-            self.rollbacked = YES;
-            [self sendErrorNotification:@"Заметка, которую пытаемся удалить не соответствует индексу"];
+            [self sendErrorNotification:@"Прислан некорректный тип стореджа для дропа 1 заметки"];
         }
     });
 }
@@ -291,35 +301,38 @@
 - (void) dropOneNoteInMultiplePList: (NSTimer *) timer {
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         NSString *noteID = timer.userInfo[@"noteID"];
-        NSString *notePath;
-        if ([timer.userInfo[@"type"] isEqualToString:@"multiple"]) {
-            notePath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:noteID];
-        }
-        else if ([timer.userInfo[@"type"] isEqualToString:@"multiple binary"]) {
-            notePath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingString:noteID];
-        }
-        else {
-            self.rollbacked = YES;
-            [self sendErrorNotification:@"Переданый некорректный тип стореджа в таймер"];
-        }
-        if (self.helperNotes[noteID]) {
-            [self.helperNotes removeObjectForKey:noteID];
-            NSFileManager *manager = [NSFileManager defaultManager];
-            if ([manager fileExistsAtPath:notePath]) {
-                NSError *error;
-                BOOL ok = [manager removeItemAtPath:notePath error:&error];
-                if (error || !ok) {
-                    self.rollbacked = YES;
-                    [self sendErrorNotification:@"Не удалось снести заметку"];
+        BOOL M = [timer.userInfo[@"type"] isEqualToString:@"multiple"];
+        BOOL MB = [timer.userInfo[@"type"] isEqualToString:@"multiple binary"];
+        if (M || MB) {
+            NSString *notePath = M ? [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:noteID] : [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingString:noteID];
+            if ((M && _helperNotes[noteID]) || (MB && _helperNotesBinary[noteID])) {
+                if (M) {
+                    [_helperNotes removeObjectForKey:noteID];
+                }
+                else {
+                    [_helperNotesBinary removeObjectForKey:noteID];
+                }
+                NSFileManager *manager = [NSFileManager defaultManager];
+                if ([manager fileExistsAtPath:notePath]) {
+                    NSError *error;
+                    BOOL ok = [manager removeItemAtPath:notePath error:&error];
+                    if (error || !ok) {
+                        if (M) {
+                            _rollbackedMultiplePList = YES;
+                        }
+                        else {
+                            _rollbackedMultipleBinaryPList = YES;
+                        }
+                        [self sendErrorNotification:@"Не удалось снести заметку"];
+                    }
+                }
+                else {
+                    [self sendErrorNotification:@"Заметки которую вы пытаетесь удалить уже не было"];
                 }
             }
             else {
-                [self sendErrorNotification:@"Заметки которую вы пытаетесь удалить уже не было"];
+                [self sendErrorNotification:@"Во вспомогательном PList нет заметки, которая пришла на удаление"];
             }
-        }
-        else {
-            self.rollbacked = YES;
-            [self sendErrorNotification:@"Во вспомогательном PList нет заметки, которая пришла на удаление"];
         }
     });
 }
