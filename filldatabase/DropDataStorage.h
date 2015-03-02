@@ -16,7 +16,7 @@
 - (NSArray *) getIDsToDropFromMultiplePList;
 - (NSArray *) getIDsToDropFromMultipleBinaryPList;
 
-- (void) dropNotesFromDataBaseWithNoteIDs: (NSArray *) noteIDs;
+- (void) dropNotesFromDataBasetWithNoteIDs: (NSArray *) noteIDs;
 - (void) dropNotesFromSinglePListWithNoteIDs: (NSArray *) noteIDs;
 - (void) dropNotesFromSingleBinaryPListWithNoteIDs: (NSArray *) noteIDs;
 - (void) dropNotesFromMultiplePListWithNoteIDs: (NSArray *) noteIDs;

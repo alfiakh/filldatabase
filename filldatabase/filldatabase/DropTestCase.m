@@ -28,42 +28,84 @@
     });
 }
 
-- (void) callTestCaseWithStoraType: (NSString *) storageType {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        // собираем строки для селекторов
-        NSString *getIDsSelectorName = [NSString stringWithFormat:@"getIDsToChangeFrom%@", storageType];
-        NSString *changeNotesSelectorName = [NSString stringWithFormat:@"changeNotesFrom%@tWithNoteIDs", storageType];
-        
-        // создаем селекторы
-        SEL getIDsSelector = NSSelectorFromString(getIDsSelectorName);
-        SEL changeNotesSelector = NSSelectorFromString(changeNotesSelectorName);
-        
-        // создаем объекты NSInvocation
-        NSInvocation *changeNotesInvocation = [NSInvocation new];
-        NSInvocation *getIDsInvocation = [NSInvocation new];
-        
-        // подвязываем invocation к селекторам
-        [changeNotesInvocation setSelector:changeNotesSelector];
-        [getIDsInvocation setSelector:getIDsSelector];
-        
-        // создаем пространство для резултьтата и получаем результат
-        NSArray *IDs;
-        [getIDsInvocation setReturnValue:&IDs];
+//- (void) callTestCaseWithStoraType: (NSString *) storageType {
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+//        // собираем строки для селекторов
+//        NSString *getIDsSelectorName = [NSString stringWithFormat:@"getIDsToDropFrom%@", storageType];
+//        NSString *dropNotesSelectorName = [NSString stringWithFormat:@"dropNotesFrom%@WithNoteIDs", storageType];
+//        
+//        // создаем селекторы
+//        SEL getIDsSelector = NSSelectorFromString(getIDsSelectorName);
+//        SEL dropNotesSelector = NSSelectorFromString(dropNotesSelectorName);
+//                NSLog(@"%@ %@ %@", dropNotesSelectorName, [self.storage respondsToSelector:getIDsSelector] ? @"YES" : @"NO", [self.storage respondsToSelector:dropNotesSelector] ? @"YES" : @"NO");
+//        // сам вызов
+//        TICK;
+//        NSArray *IDs = [self.storage performSelector:getIDsSelector];
+//
+////        NSInvocation *dropNotesInvocation = [NSInvocation new];
+//        NSMethodSignature *signature = [self.storage methodSignatureForSelector:dropNotesSelector];
+//        NSInvocation *dropNotesInvocation = [NSInvocation invocationWithMethodSignature:@selector(signature:NSArray *)];
+//        [dropNotesInvocation setSelector:dropNotesSelector];
+//        [dropNotesInvocation setArgument:&IDs atIndex:2];
+//        [dropNotesInvocation setTarget:self.storage];
+//        [dropNotesInvocation invoke];
+//        TACK;
+//        
+//        NSString *message = [NSString stringWithFormat:@"Drop TC finished %@ %@", storageType, tackInfo[@"time"]];
+//        [self sendDoneNotification:message];
+//    });
+//}
 
-        // вызываем получение ID заметок для изменения
-        [getIDsInvocation invokeWithTarget:self.storage];
-        
-        // устанавливаем аргумент у invocation
-        [changeNotesInvocation setArgument:&IDs atIndex:0];
-        
-        // сам вызов
-        TICK;
-        [changeNotesInvocation invokeWithTarget:self.storage];
-        TACK;
-        
-        NSString *message = [NSString stringWithFormat:@"Drop TC finished %@ %@", storageType, tackInfo[@"time"]];
-        [self sendDoneNotification:message];
-    });
+- (void) sendTCDoneNotification: (NSString *) storageType
+                   withTackInfo: (NSDictionary *) tackInfo {
+    NSString *message = [NSString stringWithFormat:@"Drop TC finished %@ %@", storageType, tackInfo[@"time"]];
+    [self sendDoneNotification:message];
+}
+
+- (void) callTestCaseWithStoraType: (NSString *) storageType {
+    if ([storageType isEqualToString:@"DataBase"]) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+            TICK;
+            [self.storage dropNotesFromDataBasetWithNoteIDs:[self.storage getIDsToDropFromDataBase]];
+            TACK;
+            [self sendTCDoneNotification:storageType withTackInfo:tackInfo];
+        });
+    }
+    else if ([storageType isEqualToString:@"SinglePList"]) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+            TICK;
+            [self.storage dropNotesFromSinglePListWithNoteIDs:[self.storage getIDsToDropFromSinglePList]];
+            TACK;
+            [self sendTCDoneNotification:storageType withTackInfo:tackInfo];
+        });
+    }
+    else if ([storageType isEqualToString:@"SingleBinaryPList"]) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+            TICK;
+            [self.storage dropNotesFromSingleBinaryPListWithNoteIDs:[self.storage getIDsToDropFromSingleBinaryPList]];
+            TACK;
+            [self sendTCDoneNotification:storageType withTackInfo:tackInfo];
+        });
+    }
+    else if ([storageType isEqualToString:@"MultiplePList"]) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+            TICK;
+            [self.storage dropNotesFromMultiplePListWithNoteIDs:[self.storage getIDsToDropFromMultiplePList]];
+            TACK;
+            [self sendTCDoneNotification:storageType withTackInfo:tackInfo];
+        });
+    }
+    else if ([storageType isEqualToString:@"MultipleBinaryPList"]) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+            TICK;
+            [self.storage dropNotesFromMultipleBinaryPListWIthNoteIDs:[self.storage getIDsToDropFromMultipleBinaryPList]];
+            TACK;
+            [self sendTCDoneNotification:storageType withTackInfo:tackInfo];
+        });
+    }
+    else {
+        [self sendDoneNotification:@"Выслан некорректный тип стореджа"];
+    }
 }
 
 - (void) run {

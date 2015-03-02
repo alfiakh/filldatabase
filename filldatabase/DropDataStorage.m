@@ -60,7 +60,7 @@
     return [self collectIDsFromPListWithPath:HELPER_BINARY_PLIST_PATH];
 }
 
-- (void) dropNotesFromDataBaseWithNoteIDs:(NSArray *)noteIDs {
+- (void) dropNotesFromDataBasetWithNoteIDs:(NSArray *)noteIDs {
     self.rollbacked = NO;
     FMDatabase *database = [FMDatabase databaseWithPath:DATABASE_PATH];
     if ([database open]) {

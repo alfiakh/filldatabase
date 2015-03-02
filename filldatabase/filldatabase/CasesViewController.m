@@ -38,8 +38,10 @@
 }
 
 - (void) addToConsole: (NSString *) message {
-    NSString *appendingString = [@"\n" stringByAppendingString:message];
-    self.console.text = [self.console.text stringByAppendingString:appendingString];
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
+        NSString *appendingString = [@"\n" stringByAppendingString:message];
+        self.console.text = [self.console.text stringByAppendingString:appendingString];
+    });
 }
 
 - (void)didReceiveMemoryWarning {
