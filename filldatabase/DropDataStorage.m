@@ -144,7 +144,6 @@
                      userInfo:@{
                                 @"note": _notesToWrite[i],
                                 @"counter": @(i),
-                                @"type": @"single"
                                 }
                      repeats:NO];
             [timer fire];
@@ -175,11 +174,10 @@
             timer = [NSTimer
                      timerWithTimeInterval:0
                      target:self
-                     selector:@selector(dropOneNoteInSinglePList:)
+                     selector:@selector(dropOneNoteInSingleBinaryPList:)
                      userInfo:@{
                                 @"note": _notesToWriteBinary[i],
                                 @"counter": @(i),
-                                @"type": @"single binary"
                                 }
                      repeats:NO];
             [timer fire];
@@ -212,12 +210,12 @@
     NSFileManager *manager = [NSFileManager defaultManager];
     NSError *error= nil;
     NSArray *multipleNotes = [manager contentsOfDirectoryAtPath:MULTIPLE_PLIST_FOLDER error:&error];
+    NSLog(@"%lu %lu", (unsigned long)[_helperNotes count], (unsigned long)[multipleNotes count]);
     if ([_helperNotes count] != [multipleNotes count]) {
         NSLog(@"%lu %lu", (unsigned long)[_helperNotes count], (unsigned long)[multipleNotes count]);
     }
     for (NSString *noteID in _helperNotes) {
         while (!_timerFiredMultiplePList) {
-            NSLog(@"sleep");
             sleep(0.1);
         }
         if (_rollbackedMultiplePList) {
@@ -232,7 +230,6 @@
                      selector:@selector(dropOneNoteInMultiplePList:)
                      userInfo:@{
                                 @"noteID": noteID,
-                                @"type": @"multiple"
                                 }
                      repeats:NO];
             [timer fire];
@@ -270,10 +267,9 @@
             timer = [NSTimer
                      timerWithTimeInterval:0
                      target:self
-                     selector:@selector(dropOneNoteInMultiplePList:)
+                     selector:@selector(dropOneNoteInMultipleBinaryPList:)
                      userInfo:@{
                                 @"noteID": noteID,
-                                @"type": @"multiple binary"
                                 }
                      repeats:NO];
             [timer fire];
@@ -365,7 +361,6 @@
         NSError *error= nil;
         NSArray *multipleNotes = [manager contentsOfDirectoryAtPath:MULTIPLE_PLIST_FOLDER error:&error];
         NSLog(@"%lu, %lu", (unsigned long) [_helperNotes count], (unsigned long)[multipleNotes count]);
-        
         
         if (_helperNotes[noteID]) {
             [_helperNotes removeObjectForKey:noteID];
