@@ -44,6 +44,25 @@
     }
 }
 
+- (BOOL) createDirectoryWithPath: (NSString *) path {
+    NSFileManager *manager = [NSFileManager defaultManager];
+    BOOL isDirectory;
+    if (![manager fileExistsAtPath:path isDirectory:&isDirectory] && isDirectory) {
+        NSError *error = nil;
+        NSDictionary *attr = [NSDictionary
+                              dictionaryWithObject:NSFileProtectionComplete
+                              forKey:NSFileProtectionKey];
+        [manager createDirectoryAtPath:path
+           withIntermediateDirectories:YES
+                            attributes:attr
+                                 error:&error];
+        return !error;
+    }
+    else {
+        return NO;
+    }
+}
+
 - (NSDictionary *) getSelectionInfoForNote:(NSDictionary *)note {
     NSMutableDictionary *selectionHelperDictionary = [NSMutableDictionary dictionary];
     for (NSString *field in SELECTION_KEYS) {
@@ -143,17 +162,8 @@
 
 - (void) writeDictionaryToMultiplePlistFile:(NSArray *)notes {
     // создадим папку для множественных заметок
-    NSFileManager *manager = [NSFileManager defaultManager];
-    BOOL isDirectory;
-    if (![manager fileExistsAtPath:MULTIPLE_PLIST_FOLDER isDirectory:&isDirectory]) {
-        NSError *error = nil;
-        NSDictionary *attr = [NSDictionary
-                              dictionaryWithObject:NSFileProtectionComplete
-                              forKey:NSFileProtectionKey];
-        [manager createDirectoryAtPath:MULTIPLE_PLIST_FOLDER
-           withIntermediateDirectories:YES
-                            attributes:attr
-                                 error:&error];
+    if (![self createDirectoryWithPath:MULTIPLE_PLIST_FOLDER]) {
+        return;
     }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         self.notesToPush = [NSMutableArray arrayWithArray:notes];
@@ -185,6 +195,10 @@
 }
 
 - (void) pushBinaryOneNote {
+    // создадим папку для множественных заметок
+    if (![self createDirectoryWithPath:MULTIPLE_BINARY_PLIST_FOLDER]) {
+        return;
+    }
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         NSError *error = nil;
         NSDictionary *note = self.binaryNotesToPush[0];
@@ -218,7 +232,6 @@
         NSDictionary *note = self.notesToPush[0];
         self.selectionHelper[note[@"ID"]] = [self getSelectionInfoForNote: note];
         NSString *newPath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:note[@"ID"]];
-        NSLog(@"%@", newPath);
         BOOL ok = [note writeToFile:newPath atomically:YES];
         if (!ok){
             [self sendErrorNotification:@"Не удалось записать заметку в файл PList"];

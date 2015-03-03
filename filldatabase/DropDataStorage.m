@@ -151,7 +151,6 @@
         }
     }
     if (!_rollbackedSinglePList) {
-        NSLog(@"%@", _notesToWrite);
         BOOL ok =[_notesToWrite writeToFile:SINGLE_PLIST_PATH atomically:YES];
         if (!ok) {
             [self sendErrorNotification:@"Не удалось записать заметки в файл"];
