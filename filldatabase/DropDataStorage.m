@@ -18,6 +18,13 @@
     BOOL _rollbackedMultiplePList;
     BOOL _rollbackedMultipleBinaryPList;
     
+    // состояния файра таймера
+    BOOL _timerFiredDataBase;
+    BOOL _timerFiredSinglePList;
+    BOOL _timerFiredSingleBinaryPList;
+    BOOL _timerFiredMultiplePList;
+    BOOL _timerFiredMultipleBinaryPList;
+    
     // вспомогательные структуры для записи
     
     // из этих сносятся заметки и потом пишется
@@ -78,19 +85,24 @@
 
 - (void) dropNotesFromDataBasetWithNoteIDs:(NSArray *)noteIDs {
     _rollbackedDataBase = NO;
+    _timerFiredDataBase = YES;
     FMDatabase *database = [FMDatabase databaseWithPath:DATABASE_PATH];
     if ([database open]) {
         if ([database beginTransaction]) {
             for (NSString *noteID in noteIDs) {
+                while (!_timerFiredDataBase) {
+                    sleep(0.1);
+                }
                 if(_rollbackedDataBase) {
                     break;
                 }
+                _timerFiredDataBase = NO;
                 NSDictionary *userInfo = @{
                                            @"noteID": noteID,
                                            @"database": database
                                            };
                 NSTimer *timer = [NSTimer
-                                  timerWithTimeInterval:0.5
+                                  timerWithTimeInterval:0
                                   target:self
                                   selector:@selector(dropOneNoteInDataBase:)
                                   userInfo:userInfo
@@ -113,15 +125,20 @@
 
 - (void) dropNotesFromSinglePListWithNoteIDs:(NSArray *)noteIDs {
     _rollbackedSinglePList = NO;
+    _timerFiredSinglePList = YES;
     _notesToWrite = [NSMutableArray arrayWithContentsOfFile:SINGLE_PLIST_PATH];
     NSTimer *timer;
     for (int i = (int)[_notesToWrite count] - 1; i >= 0; i--) {
+        while (!_timerFiredSinglePList) {
+            sleep(0.1);
+        }
+        _timerFiredSinglePList = NO;
         if (_rollbackedSinglePList) {
             break;
         }
         if ([noteIDs containsObject:_notesToWrite[i][@"ID"]]) {
             timer = [NSTimer
-                     timerWithTimeInterval:0.4
+                     timerWithTimeInterval:0
                      target:self
                      selector:@selector(dropOneNoteInSinglePList:)
                      userInfo:@{
@@ -144,15 +161,20 @@
 
 - (void) dropNotesFromSingleBinaryPListWithNoteIDs:(NSArray *)noteIDs {
     _rollbackedSingleBinaryPList = NO;
+    _timerFiredSingleBinaryPList = YES;
     _notesToWriteBinary = [NSMutableArray arrayWithContentsOfFile:SINGLE_PLIST_PATH];
     NSTimer *timer;
     for (int i = (int)[_notesToWriteBinary count] - 1; i >= 0; i--) {
+        while (!_timerFiredSingleBinaryPList) {
+            sleep(0.1);
+        }
         if (_rollbackedSingleBinaryPList) {
             break;
         }
+        _timerFiredSingleBinaryPList = NO;
         if ([noteIDs containsObject:_notesToWriteBinary[i][@"ID"]]) {
             timer = [NSTimer
-                     timerWithTimeInterval:0.4
+                     timerWithTimeInterval:0
                      target:self
                      selector:@selector(dropOneNoteInSinglePList:)
                      userInfo:@{
@@ -185,12 +207,17 @@
 
 - (void) dropNotesFromMultiplePListWithNoteIDs:(NSArray *)noteIDs {
     _rollbackedMultiplePList = NO;
+    _timerFiredMultiplePList = YES;
     _helperNotes = [NSMutableDictionary dictionaryWithContentsOfFile:HELPER_PLIST_PATH];
     NSTimer *timer;
     for (NSString *noteID in _helperNotes) {
+        while (!_timerFiredMultiplePList) {
+            sleep(0.1);
+        }
         if (_rollbackedMultiplePList) {
             break;
         }
+        _timerFiredMultiplePList = NO;
         if ([noteIDs containsObject:noteID]) {
             sleep(0.1);
             timer = [NSTimer
@@ -215,12 +242,17 @@
 
 - (void) dropNotesFromMultipleBinaryPListWIthNoteIDs:(NSArray *)noteIDs {
     _rollbackedMultipleBinaryPList = NO;
+    _timerFiredMultipleBinaryPList = YES;
     _helperNotesBinary = [NSMutableDictionary dictionaryWithContentsOfFile:HELPER_PLIST_PATH];
     NSTimer *timer;
     for (NSString *noteID in _helperNotesBinary) {
+        while (!_timerFiredMultipleBinaryPList) {
+            sleep(0.1);
+        }
         if (_rollbackedMultipleBinaryPList) {
             break;
         }
+        _timerFiredMultipleBinaryPList = NO;
         if ([noteIDs containsObject:noteID]) {
             sleep(0.1);
             timer = [NSTimer
@@ -265,6 +297,7 @@
             [self sendErrorNotification:@"Не прошел запрос"];
         }
     }
+    _timerFiredDataBase = YES;
 }
 
 - (void) dropOneNoteInSinglePList: (NSTimer *)timer {
@@ -290,6 +323,12 @@
                     _rollbackedSingleBinaryPList = YES;
                 }
                 [self sendErrorNotification:@"Что-то пошло не так при сносе"];
+            }
+            if (S) {
+                _timerFiredSinglePList = YES;
+            }
+            else {
+                _timerFiredSingleBinaryPList = YES;
             }
         }
         else {
@@ -329,10 +368,19 @@
                 else {
                     [self sendErrorNotification:@"Заметки которую вы пытаетесь удалить уже не было"];
                 }
+                if (M) {
+                    _timerFiredMultiplePList = YES;
+                }
+                else {
+                    _timerFiredMultipleBinaryPList = YES;
+                }
             }
             else {
                 [self sendErrorNotification:@"Во вспомогательном PList нет заметки, которая пришла на удаление"];
             }
+        }
+        else {
+            [self sendErrorNotification:@"Прислан некорректный тип стореджа"];
         }
     });
 }
