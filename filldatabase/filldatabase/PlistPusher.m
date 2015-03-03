@@ -142,11 +142,25 @@
 }
 
 - (void) writeDictionaryToMultiplePlistFile:(NSArray *)notes {
+    // создадим папку для множественных заметок
+    NSFileManager *manager = [NSFileManager defaultManager];
+    BOOL isDirectory;
+    if (![manager fileExistsAtPath:MULTIPLE_PLIST_FOLDER isDirectory:&isDirectory]) {
+        NSError *error = nil;
+        NSDictionary *attr = [NSDictionary
+                              dictionaryWithObject:NSFileProtectionComplete
+                              forKey:NSFileProtectionKey];
+        [manager createDirectoryAtPath:MULTIPLE_PLIST_FOLDER
+           withIntermediateDirectories:YES
+                            attributes:attr
+                                 error:&error];
+    }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         self.notesToPush = [NSMutableArray arrayWithArray:notes];
         TICK;
         self.selectionHelper = [NSMutableDictionary dictionary];
-        while ( [self.notesToPush count] != 0 ) {
+        
+        while ( [self.notesToPush count] > 0 ) {
             if (self.rollbacked) {
                 break;
             }
@@ -176,7 +190,7 @@
         NSDictionary *note = self.binaryNotesToPush[0];
         self.selectionHelper[note[@"ID"]] = [self getSelectionInfoForNote: note];
         
-        NSString *newPath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingString:note[@"ID"]];
+        NSString *newPath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingPathComponent:note[@"ID"]];
         NSData *representation = [NSPropertyListSerialization
                                   dataWithPropertyList:note
                                   format:NSPropertyListXMLFormat_v1_0
@@ -203,7 +217,8 @@
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         NSDictionary *note = self.notesToPush[0];
         self.selectionHelper[note[@"ID"]] = [self getSelectionInfoForNote: note];
-        NSString *newPath = [MULTIPLE_PLIST_FOLDER stringByAppendingString:note[@"ID"]];
+        NSString *newPath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:note[@"ID"]];
+        NSLog(@"%@", newPath);
         BOOL ok = [note writeToFile:newPath atomically:YES];
         if (!ok){
             [self sendErrorNotification:@"Не удалось записать заметку в файл PList"];

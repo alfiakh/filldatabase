@@ -210,8 +210,15 @@
     _timerFiredMultiplePList = YES;
     _helperNotes = [NSMutableDictionary dictionaryWithContentsOfFile:HELPER_PLIST_PATH];
     NSTimer *timer;
+    NSFileManager *manager = [NSFileManager defaultManager];
+    NSError *error= nil;
+    NSArray *multipleNotes = [manager contentsOfDirectoryAtPath:MULTIPLE_PLIST_FOLDER error:&error];
+    if ([_helperNotes count] != [multipleNotes count]) {
+        NSLog(@"%lu %lu", (unsigned long)[_helperNotes count], (unsigned long)[multipleNotes count]);
+    }
     for (NSString *noteID in _helperNotes) {
         while (!_timerFiredMultiplePList) {
+            NSLog(@"sleep");
             sleep(0.1);
         }
         if (_rollbackedMultiplePList) {
@@ -221,7 +228,7 @@
         if ([noteIDs containsObject:noteID]) {
             sleep(0.1);
             timer = [NSTimer
-                     timerWithTimeInterval:0.4
+                     timerWithTimeInterval:0
                      target:self
                      selector:@selector(dropOneNoteInMultiplePList:)
                      userInfo:@{
@@ -245,6 +252,12 @@
     _timerFiredMultipleBinaryPList = YES;
     _helperNotesBinary = [NSMutableDictionary dictionaryWithContentsOfFile:HELPER_PLIST_PATH];
     NSTimer *timer;
+    NSFileManager *manager = [NSFileManager defaultManager];
+    NSError *error= nil;
+    NSArray *multipleNotes = [manager contentsOfDirectoryAtPath:MULTIPLE_BINARY_PLIST_FOLDER error:&error];
+    if ([_helperNotes count] != [multipleNotes count]) {
+        NSLog(@"%lu %lu", (unsigned long)[_helperNotes count], (unsigned long)[multipleNotes count]);
+    }
     for (NSString *noteID in _helperNotesBinary) {
         while (!_timerFiredMultipleBinaryPList) {
             sleep(0.1);
@@ -256,12 +269,12 @@
         if ([noteIDs containsObject:noteID]) {
             sleep(0.1);
             timer = [NSTimer
-                     timerWithTimeInterval:0.4
+                     timerWithTimeInterval:0
                      target:self
                      selector:@selector(dropOneNoteInMultiplePList:)
                      userInfo:@{
                                 @"noteID": noteID,
-                                @"type": @"multiple"
+                                @"type": @"multiple binary"
                                 }
                      repeats:NO];
             [timer fire];
@@ -303,86 +316,108 @@
 - (void) dropOneNoteInSinglePList: (NSTimer *)timer {
     //на страх и риск. нужен алгоритм который ищет в аррае по entityID и возвращает индекс. пробегаться каждый раз аррай бред
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        BOOL S = [timer.userInfo[@"type"] isEqualToString:@"single"];
-        BOOL SB = [timer.userInfo[@"type"] isEqualToString:@"single binary"];
-        if (SB || S) {
-            NSUInteger counter = [timer.userInfo[@"counter"] integerValue];
-            BOOL correctNote = S ? [[_notesToWrite objectAtIndex:counter] isEqualToDictionary:timer.userInfo[@"note"]] : [[_notesToWriteBinary objectAtIndex:counter] isEqualToDictionary:timer.userInfo[@"note"]];
+        NSUInteger counter = [timer.userInfo[@"counter"] integerValue];
+        if (counter < [_notesToWrite count]) {
+            BOOL correctNote = [[_notesToWrite objectAtIndex:counter]isEqualToDictionary:timer.userInfo[@"note"]];
             if (correctNote) {
-                if (S) {
-                    [_notesToWrite removeObjectAtIndex:counter];
-                }
-                else if (SB) {
-                    [_notesToWriteBinary removeObjectAtIndex:counter];
-                }
+                [_notesToWrite removeObjectAtIndex:counter];
             }
             else {
-                if (S) {
-                    _rollbackedSinglePList = YES;
-                } else {
-                    _rollbackedSingleBinaryPList = YES;
-                }
-                [self sendErrorNotification:@"Что-то пошло не так при сносе"];
-            }
-            if (S) {
-                _timerFiredSinglePList = YES;
-            }
-            else {
-                _timerFiredSingleBinaryPList = YES;
+                _rollbackedSinglePList = YES;
+                [self sendErrorNotification:@"Объект был изменен в процессе удаления"];
             }
         }
         else {
-            [self sendErrorNotification:@"Прислан некорректный тип стореджа для дропа 1 заметки"];
+            _rollbackedSinglePList = YES;
+            [self sendErrorNotification:@"Объект был изменен в процессе удаления"];
         }
     });
+    _timerFiredSinglePList = YES;
+}
+
+- (void) dropOneNoteInSingleBinaryPList: (NSTimer *)timer {
+    //на страх и риск. нужен алгоритм который ищет в аррае по entityID и возвращает индекс. пробегаться каждый раз аррай бред
+    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        NSUInteger counter = [timer.userInfo[@"counter"] integerValue];
+        if (counter < [_notesToWriteBinary count]) {
+            BOOL correctNote = [[_notesToWriteBinary objectAtIndex:counter]isEqualToDictionary:timer.userInfo[@"note"]];
+            if (correctNote) {
+                [_notesToWriteBinary removeObjectAtIndex:counter];
+            }
+            else {
+                _rollbackedSingleBinaryPList = YES;
+                [self sendErrorNotification:@"Объект был изменен в процессе удаления"];
+            }
+        }
+        else {
+            _rollbackedSingleBinaryPList = YES;
+            [self sendErrorNotification:@"Объект был изменен в процессе удаления"];
+        }
+    });
+    _timerFiredSingleBinaryPList = YES;
 }
 
 - (void) dropOneNoteInMultiplePList: (NSTimer *) timer {
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         NSString *noteID = timer.userInfo[@"noteID"];
-        BOOL M = [timer.userInfo[@"type"] isEqualToString:@"multiple"];
-        BOOL MB = [timer.userInfo[@"type"] isEqualToString:@"multiple binary"];
-        if (M || MB) {
-            NSString *notePath = M ? [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:noteID] : [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingString:noteID];
-            if ((M && _helperNotes[noteID]) || (MB && _helperNotesBinary[noteID])) {
-                if (M) {
-                    [_helperNotes removeObjectForKey:noteID];
-                }
-                else {
-                    [_helperNotesBinary removeObjectForKey:noteID];
-                }
-                NSFileManager *manager = [NSFileManager defaultManager];
-                if ([manager fileExistsAtPath:notePath]) {
-                    NSError *error;
-                    BOOL ok = [manager removeItemAtPath:notePath error:&error];
-                    if (error || !ok) {
-                        if (M) {
-                            _rollbackedMultiplePList = YES;
-                        }
-                        else {
-                            _rollbackedMultipleBinaryPList = YES;
-                        }
-                        [self sendErrorNotification:@"Не удалось снести заметку"];
-                    }
-                }
-                else {
-                    [self sendErrorNotification:@"Заметки которую вы пытаетесь удалить уже не было"];
-                }
-                if (M) {
-                    _timerFiredMultiplePList = YES;
-                }
-                else {
-                    _timerFiredMultipleBinaryPList = YES;
+        NSString *notePath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:noteID];
+        
+        NSFileManager *manager = [NSFileManager defaultManager];
+        NSError *error= nil;
+        NSArray *multipleNotes = [manager contentsOfDirectoryAtPath:MULTIPLE_PLIST_FOLDER error:&error];
+        NSLog(@"%lu, %lu", (unsigned long) [_helperNotes count], (unsigned long)[multipleNotes count]);
+        
+        
+        if (_helperNotes[noteID]) {
+            [_helperNotes removeObjectForKey:noteID];
+            NSFileManager *manager = [NSFileManager defaultManager];
+            if ([manager fileExistsAtPath:notePath]) {
+                NSError *error;
+                BOOL ok = [manager removeItemAtPath:notePath error:&error];
+                if (error || !ok) {
+                    _rollbackedMultiplePList = YES;
+                    [self sendErrorNotification:@"Не удалось снести заметку"];
                 }
             }
             else {
-                [self sendErrorNotification:@"Во вспомогательном PList нет заметки, которая пришла на удаление"];
+                _rollbackedMultiplePList = YES;
+                [self sendErrorNotification:@"Заметки которую вы пытаетесь удалить уже не было"];
             }
         }
         else {
-            [self sendErrorNotification:@"Прислан некорректный тип стореджа"];
+            _rollbackedMultiplePList = YES;
+            [self sendErrorNotification:@"Во вспомогательном PList нет заметки, которая пришла на удаление"];
         }
     });
+    _timerFiredMultiplePList = YES;
+}
+
+- (void) dropOneNoteInMultipleBinaryPList: (NSTimer *) timer {
+    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        NSString *noteID = timer.userInfo[@"noteID"];
+        NSString *notePath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingPathComponent:noteID];
+        if (_helperNotesBinary[noteID]) {
+            [_helperNotesBinary removeObjectForKey:noteID];
+            NSFileManager *manager = [NSFileManager defaultManager];
+            if ([manager fileExistsAtPath:notePath]) {
+                NSError *error;
+                BOOL ok = [manager removeItemAtPath:notePath error:&error];
+                if (error || !ok) {
+                    _rollbackedMultipleBinaryPList = YES;
+                    [self sendErrorNotification:@"Не удалось снести заметку"];
+                }
+            }
+            else {
+                _rollbackedMultipleBinaryPList = YES;
+                [self sendErrorNotification:@"Заметки которую вы пытаетесь удалить уже не было"];
+            }
+        }
+        else {
+            _rollbackedMultipleBinaryPList = YES;
+            [self sendErrorNotification:@"Во вспомогательном PList нет заметки, которая пришла на удаление"];
+        }
+    });
+    _timerFiredMultiplePList = YES;
 }
 
 @end

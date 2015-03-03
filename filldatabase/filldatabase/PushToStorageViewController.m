@@ -49,7 +49,7 @@
     }
     
     [self.responseData addObjectsFromArray: notification.userInfo[@"notes"]];
-    int notesLength = [notification.userInfo[@"notes"] count];
+    unsigned long notesLength = [notification.userInfo[@"notes"] count];
     
     if ([notification.userInfo[@"notes"] count] == 1000) {
         NSNumber *lastModifyTS = notification.userInfo[@"notes"][notesLength - 1][@"modify_TS"];
@@ -57,7 +57,7 @@
                      withTImeStamp:lastModifyTS];
     }
     else if (self.accountNumber == [ACCOUNTS count] - 1){
-        [self addToConsole:[NSString stringWithFormat:@"Загрузили все заметки. Количество :%i", [self.responseData count]]];
+        [self addToConsole:[NSString stringWithFormat:@"Загрузили все заметки. Количество :%lu", (unsigned long)[self.responseData count]]];
     }
     else {
         self.accountNumber++;

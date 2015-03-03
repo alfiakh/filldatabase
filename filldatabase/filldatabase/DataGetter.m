@@ -82,7 +82,7 @@
                                           else {
                                               [self createErrorNotification: @"Произошла ошибка при отправке запроса"];
                                           }
-                                          TACK;
+//                                          TACK;
 //                                          NSLog(@"%@", tackInfo);
     }];
     [dataTask resume];
@@ -101,7 +101,7 @@
             [self createErrorNotification:@"Некорректный srvMessageCode"];
         }
         else {
-            NSString *message = [NSString stringWithFormat:@"%i",[responseData[@"data"] count]];
+            NSString *message = [NSString stringWithFormat:@"%lu",(unsigned long)[responseData[@"data"] count]];
             [self createDoneRequestNotification: message withResponseData: responseData];
         }
     }
