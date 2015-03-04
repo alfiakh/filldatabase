@@ -280,7 +280,7 @@
             [self sendErrorNotification:@"в хелпере нет такой заметки"];
         }
     }
-    BOOL ok = [_helperNotesBinary writeToFile:HELPER_PLIST_PATH atomically:YES];
+    BOOL ok = [_helperNotesBinary writeToFile:HELPER_BINARY_PLIST_PATH atomically:YES];
     if (!ok) {
         [self sendErrorNotification:@"Произошла ошибка при записи во вспомогательный файл"];
     }
@@ -375,6 +375,10 @@
 
 - (void) dropOneNoteInMultipleBinaryPList: (NSTimer *) timer {
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        NSFileManager *manager = [NSFileManager defaultManager];
+        NSError *error1 = nil;
+        NSArray *notesInFolder = [manager contentsOfDirectoryAtPath:MULTIPLE_BINARY_PLIST_FOLDER error:&error1];
+        NSLog(@"%lu %lu", (unsigned long)[notesInFolder count], (unsigned long)[_helperNotesBinary count]);
         NSString *noteID = timer.userInfo[@"noteID"];
         NSString *notePath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingPathComponent:noteID];
         if (_helperNotesBinary[noteID]) {
@@ -385,16 +389,19 @@
                 BOOL ok = [manager removeItemAtPath:notePath error:&error];
                 if (error || !ok) {
                     _rollbackedMultipleBinaryPList = YES;
+                    _timerFiredMultiplePList = YES;
                     [self sendErrorNotification:@"Не удалось снести заметку"];
                 }
             }
             else {
                 _rollbackedMultipleBinaryPList = YES;
+                _timerFiredMultiplePList = YES;
                 [self sendErrorNotification:@"Заметки которую вы пытаетесь удалить уже не было"];
             }
         }
         else {
             _rollbackedMultipleBinaryPList = YES;
+            _timerFiredMultiplePList = YES;
             [self sendErrorNotification:@"Во вспомогательном PList нет заметки, которая пришла на удаление"];
         }
     });
