@@ -210,20 +210,19 @@
     NSFileManager *manager = [NSFileManager defaultManager];
     NSError *error= nil;
     NSArray *multipleNotes = [manager contentsOfDirectoryAtPath:MULTIPLE_PLIST_FOLDER error:&error];
-    NSLog(@"%lu %lu", (unsigned long)[_helperNotes count], (unsigned long)[multipleNotes count]);
     if ([_helperNotes count] != [multipleNotes count]) {
-        NSLog(@"%lu %lu", (unsigned long)[_helperNotes count], (unsigned long)[multipleNotes count]);
+        [self sendErrorNotification:@"Количество заметок в хелпере не соответсвует реальному количеству заметок"];
     }
-    for (NSString *noteID in _helperNotes) {
+    for (NSString *noteID in [_helperNotes copy]) {
         while (!_timerFiredMultiplePList) {
+            NSLog(@"sleep");
             sleep(0.1);
         }
         if (_rollbackedMultiplePList) {
             break;
         }
         _timerFiredMultiplePList = NO;
-        if ([noteIDs containsObject:noteID]) {
-            sleep(0.1);
+        if (_helperNotes[noteID]) {
             timer = [NSTimer
                      timerWithTimeInterval:0
                      target:self
@@ -234,12 +233,14 @@
                      repeats:NO];
             [timer fire];
         }
-    }
-    if (!_rollbackedMultiplePList) {
-        BOOL ok = [_helperNotes writeToFile:HELPER_PLIST_PATH atomically:YES];
-        if (!ok) {
-            [self sendErrorNotification:@"Произошла ошибка при записи во вспомогательный файл"];
+        else {
+            _timerFiredMultiplePList = YES;
+            [self sendErrorNotification:@"в хелпере нет такой заметки"];
         }
+    }
+    BOOL ok = [_helperNotes writeToFile:HELPER_PLIST_PATH atomically:YES];
+    if (!ok) {
+        [self sendErrorNotification:@"Произошла ошибка при записи во вспомогательный файл"];
     }
 }
 
@@ -251,19 +252,19 @@
     NSFileManager *manager = [NSFileManager defaultManager];
     NSError *error= nil;
     NSArray *multipleNotes = [manager contentsOfDirectoryAtPath:MULTIPLE_BINARY_PLIST_FOLDER error:&error];
-    if ([_helperNotes count] != [multipleNotes count]) {
-        NSLog(@"%lu %lu", (unsigned long)[_helperNotes count], (unsigned long)[multipleNotes count]);
+    if ([_helperNotesBinary count] != [multipleNotes count]) {
+        [self sendErrorNotification:@"Количество заметок в хелпере не соответсвует реальному количеству заметок"];
     }
-    for (NSString *noteID in _helperNotesBinary) {
+    for (NSString *noteID in [_helperNotesBinary copy]) {
         while (!_timerFiredMultipleBinaryPList) {
+            NSLog(@"sleep");
             sleep(0.1);
         }
         if (_rollbackedMultipleBinaryPList) {
             break;
         }
         _timerFiredMultipleBinaryPList = NO;
-        if ([noteIDs containsObject:noteID]) {
-            sleep(0.1);
+        if (_helperNotesBinary[noteID]) {
             timer = [NSTimer
                      timerWithTimeInterval:0
                      target:self
@@ -274,23 +275,14 @@
                      repeats:NO];
             [timer fire];
         }
-    }
-    if (!_rollbackedMultipleBinaryPList) {
-        NSError *error = nil;
-        NSData *representation = [NSPropertyListSerialization
-                                  dataWithPropertyList:_helperNotesBinary
-                                  format:NSPropertyListXMLFormat_v1_0
-                                  options:0
-                                  error:&error];
-        if (!error) {
-            BOOL ok = [representation writeToFile:HELPER_BINARY_PLIST_PATH atomically:YES];
-            if (!ok) {
-                [self sendErrorNotification:@"Не удалось записать бинарный данные файл"];
-            }
-        }
         else {
-            [self sendErrorNotification:@"Не удалось преобразовать данные в бинарный форомат"];
+            _timerFiredMultipleBinaryPList = YES;
+            [self sendErrorNotification:@"в хелпере нет такой заметки"];
         }
+    }
+    BOOL ok = [_helperNotesBinary writeToFile:HELPER_PLIST_PATH atomically:YES];
+    if (!ok) {
+        [self sendErrorNotification:@"Произошла ошибка при записи во вспомогательный файл"];
     }
 }
 
