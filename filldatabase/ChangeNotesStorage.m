@@ -11,7 +11,24 @@
 #import "FMDatabase.h"
 #import "FMDatabaseAdditions.h"
 
-@implementation ChangeNotesStorage
+@implementation ChangeNotesStorage {
+    NSMutableArray *_changedNotes;
+    NSMutableArray *_changedNotesBinary;
+    
+    // состояния отката дропа
+    BOOL _rollbackedDataBase;
+    BOOL _rollbackedSinglePList;
+    BOOL _rollbackedSingleBinaryPList;
+    BOOL _rollbackedMultiplePList;
+    BOOL _rollbackedMultipleBinaryPList;
+    
+    // состояния файра таймера
+    BOOL _timerFiredDataBase;
+    BOOL _timerFiredSinglePList;
+    BOOL _timerFiredSingleBinaryPList;
+    BOOL _timerFiredMultiplePList;
+    BOOL _timerFiredMultipleBinaryPList;
+}
 
 - (void) sendErrorNotification:(NSString *)message {
     [[NSNotificationCenter defaultCenter]
@@ -75,51 +92,53 @@
 }
 
 - (void) changeNotesFromDataBaseWithNotesData:(NSArray *)notesData {
-    self.rollbacked = NO;
     FMDatabase *database = [FMDatabase databaseWithPath:DATABASE_PATH];
-    if ([database open]) {
-        if ([database beginTransaction]) {
-            for (NSString *note in notesData) {
-                if(self.rollbacked) {
-                    break;
-                }
-                NSDictionary *userInfo = @{
-                                           @"noteData": note,
-                                           @"database": database
-                                           };
-                NSTimer *timer = [NSTimer
-                                  timerWithTimeInterval:0.5
-                                  target:self
-                                  selector:@selector(changeOneNoteInDataBase:)
-                                  userInfo:userInfo
-                                  repeats:NO];
-                [timer fire];
-            }
-            if (!self.rollbacked && ![database commit]) {
-                [self sendErrorNotification:@"Не удалочь закоммитить транзакцию"];
-            }
-        }
-        else {
-            [self sendErrorNotification:@"Не удалось начать транзакцию"];
-        }
-
-    }
-    else {
+    if (![database open]) {
         [self sendErrorNotification:@"Не удалось открыть базу"];
+        return;
+    }
+    if (![database beginTransaction]) {
+        [self sendErrorNotification:@"Не удалось начать транзакцию"];
+        return;
+    }
+    _timerFiredDataBase = YES;
+    for (NSString *note in notesData) {
+        if(_rollbackedDataBase) {
+            break;
+        }
+        if (_timerFiredDataBase) {
+            sleep(0.1);
+        }
+        NSTimer *timer = [NSTimer
+                          timerWithTimeInterval:0
+                          target:self
+                          selector:@selector(changeOneNoteInDataBase:)
+                          userInfo:@{
+                                     @"noteData": note,
+                                     @"database": database
+                                     }
+                          repeats:NO];
+        [timer fire];
+    }
+    if (!_rollbackedDataBase && ![database commit]) {
+        [self sendErrorNotification:@"Не удалочь закоммитить транзакцию"];
     }
 }
 
 - (void) changeNotesFromSinglePListWithNoteIDs:(NSArray *)noteIDs {
-    self.rollbacked = NO;
     NSArray *notes = [NSArray arrayWithContentsOfFile:SINGLE_PLIST_PATH];
     NSTimer *timer;
+    _timerFiredSinglePList = YES;
     for (NSDictionary *note in notes) {
-        if (self.rollbacked) {
+        if (_rollbackedSinglePList) {
             break;
+        }
+        while (!_timerFiredSinglePList) {
+            sleep(0.1);
         }
         if ([noteIDs containsObject:note[@"ID"]]) {
             timer = [NSTimer
-                              timerWithTimeInterval:0.4
+                              timerWithTimeInterval:0
                               target:self
                               selector:@selector(changeOneNoteInSinglePList:)
                               userInfo:@{@"note": note}
@@ -127,8 +146,8 @@
             [timer fire];
         }
     }
-    if (!self.rollbacked) {
-        BOOL ok =[self.changedNotes writeToFile:SINGLE_PLIST_PATH atomically:YES];
+    if (!_timerFiredSinglePList) {
+        BOOL ok =[_changedNotes writeToFile:SINGLE_PLIST_PATH atomically:YES];
         if (!ok) {
             [self sendErrorNotification:@"Не удалось записать заметки в файл"];
         }
@@ -136,47 +155,52 @@
 }
 
 - (void) changeNotesFromSingleBinaryPListWithNoteIDs:(NSArray *)noteIDs {
-    self.rollbacked = NO;
     NSArray *notes = [NSArray arrayWithContentsOfFile:SINGLE_PLIST_BINARY_PATH];
     NSTimer *timer;
+    _timerFiredSingleBinaryPList = YES;
     for (NSDictionary *note in notes) {
-        if (self.rollbacked) {
+        if (_rollbackedSingleBinaryPList) {
             break;
+        }
+        while (!_timerFiredSingleBinaryPList) {
+            sleep(0.1);
         }
         if ([noteIDs containsObject:note[@"ID"]]) {
             timer = [NSTimer
-                              timerWithTimeInterval:0.4
+                              timerWithTimeInterval:0
                               target:self
-                              selector:@selector(changeOneNoteInSinglePList:)
+                              selector:@selector(changeOneNoteInSingleBinaryPList:)
                               userInfo:@{@"note": note}
                               repeats:NO];
             [timer fire];
         }
     }
-    if (!self.rollbacked) {
+    if (!_rollbackedSingleBinaryPList) {
         NSError *error = nil;
         NSData *representation = [NSPropertyListSerialization
-                                  dataWithPropertyList:self.changedNotes
+                                  dataWithPropertyList:_changedNotesBinary
                                   format:NSPropertyListXMLFormat_v1_0
                                   options:0
                                   error:&error];
-        if (!error) {
-            BOOL ok = [representation writeToFile:SINGLE_PLIST_BINARY_PATH atomically:YES];
-            if (!ok) {
-                [self sendErrorNotification:@"Не удалось записать данные в файл"];
-            }
-        }
-        else {
+        if (error) {
             [self sendErrorNotification:@"Не удалось преобразовать данные"];
+            return;
+        }
+        BOOL ok = [representation writeToFile:SINGLE_PLIST_BINARY_PATH atomically:YES];
+        if (!ok) {
+            [self sendErrorNotification:@"Не удалось записать данные в файл"];
         }
     }
 }
 
 - (void) changeNotesFromMultiplePListWithNoteIDs:(NSArray *)noteIDs {
-    self.rollbacked = NO;
+    _timerFiredMultiplePList = YES;
     for (NSString *noteID in noteIDs) {
-        if (self.rollbacked) {
+        if (_rollbackedMultiplePList) {
             break;
+        }
+        while (!_timerFiredMultiplePList) {
+            sleep(0.1);
         }
         NSTimer *timer = [NSTimer
                           timerWithTimeInterval:0.4
@@ -186,16 +210,16 @@
                           repeats:NO];
         [timer fire];
     }
-    if (!self.rollbacked) {
-        
-    }
 }
 
 - (void) changeNotesFromMultipleBinaryPListWithNoteIDs:(NSArray *)noteIDs {
-    self.rollbacked = NO;
+    _timerFiredMultipleBinaryPList = YES;
     for (NSString *noteID in noteIDs) {
-        if (self.rollbacked) {
+        if (_rollbackedMultipleBinaryPList) {
             break;
+        }
+        while (!_timerFiredMultipleBinaryPList) {
+            sleep(0.1);
         }
         NSTimer *timer = [NSTimer
                           timerWithTimeInterval:0.4
@@ -205,51 +229,58 @@
                           repeats:NO];
         [timer fire];
     }
-    if (!self.rollbacked) {
-        
-    }
 }
 
 - (void) changeOneNoteInDataBase:(NSTimer *) timer {
     NSString *sql = [self collectSQLStringWithNoteData:timer.userInfo[@"noteData"]];
     if(![timer.userInfo[@"database"] executeUpdate:sql]) {
-        self.rollbacked = YES;
+        _rollbackedDataBase = YES;
         if (![timer.userInfo[@"database"] rollback]) {
             [self sendErrorNotification:@"Не удалось зароллбечить транзакцию"];
+            return;
         }
-        else {
-            [self sendErrorNotification:@"Не прошел запрос"];
-        }
+        [self sendErrorNotification:@"Не прошел запрос в базу"];
     }
+    _timerFiredDataBase = YES;
 }
 
 - (void) changeOneNoteInSinglePList:(NSTimer *) timer {
     NSMutableDictionary *newNote = [NSMutableDictionary dictionaryWithDictionary:timer.userInfo[@"note"]];
     NSString *newMessage = [NSString stringWithFormat:@"%@ ", timer.userInfo];
     [newNote setObject:newMessage forKey:@"message"];
-    [self.changedNotes addObject:newNote];
+    [_changedNotes addObject:newNote];
+    _timerFiredSinglePList = YES;
+}
+
+- (void) changeOneNoteInSingleBinaryPList:(NSTimer *) timer {
+    NSMutableDictionary *newNote = [NSMutableDictionary dictionaryWithDictionary:timer.userInfo[@"note"]];
+    NSString *newMessage = [NSString stringWithFormat:@"%@ ", timer.userInfo];
+    [newNote setObject:newMessage forKey:@"message"];
+    [_changedNotesBinary addObject:newNote];
+    _timerFiredSingleBinaryPList = YES;
 }
 
 - (void) changeOneNoteInMultiplePList:(NSTimer *) timer {
     NSString *notePath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:timer.userInfo[@"noteData"]];
     NSMutableDictionary *note = [NSMutableDictionary dictionaryWithContentsOfFile:notePath];
     if(!note) {
-        self.rollbacked = YES;
+        _rollbackedMultiplePList = YES;
         [self sendErrorNotification:@"Да нету заметки!"];
     }
     note[@"message"] = [NSString stringWithFormat:@"%@ ", note[@"message"]];
     BOOL ok = [note writeToFile:notePath atomically:YES];
     if (!ok) {
-        self.rollbacked = YES;
+        _rollbackedMultiplePList = YES;
         [self sendErrorNotification:@"Не удалось записать заметку в файл=("];
     }
+    _timerFiredMultiplePList = YES;
 }
 
 - (void) changeOneNoteInMultipleBinaryPList:(NSTimer *) timer {
     NSString *notePath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingPathComponent:timer.userInfo[@"noteID"]];
     NSMutableDictionary *note = [NSMutableDictionary dictionaryWithContentsOfFile:notePath];
     if(!note) {
-        self.rollbacked = YES;
+        _rollbackedMultipleBinaryPList = YES;
         [self sendErrorNotification:@"Да нету заметки!"];
     }
     note[@"message"] = [NSString stringWithFormat:@"%@ ", note[@"message"]];
@@ -259,17 +290,17 @@
                              format:NSPropertyListXMLFormat_v1_0
                              options:0
                              error:&error];
-    if (!error) {
-        BOOL ok = [representation writeToFile:notePath atomically:YES];
-        if (!ok) {
-            self.rollbacked = YES;
-            [self sendErrorNotification:@"Не удалось вписать заметку в файл"];
-        }
-    }
-    else {
-        self.rollbacked = YES;
+    if (error) {
+        _rollbackedMultipleBinaryPList = YES;
         [self sendErrorNotification:@"Не удалось сериализовать данные"];
+        return;
     }
+    BOOL ok = [representation writeToFile:notePath atomically:YES];
+    if (!ok) {
+        _rollbackedMultipleBinaryPList = YES;
+        [self sendErrorNotification:@"Не удалось вписать заметку в файл"];
+    }
+    _timerFiredMultipleBinaryPList = YES;
 }
 
 @end

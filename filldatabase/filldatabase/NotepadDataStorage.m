@@ -90,9 +90,7 @@
         NSPredicate *notepadPredicate = [NSPredicate predicateWithFormat:predicateBaseString];
         return notepadPredicate;
     }
-    else {
-        return nil;
-    }
+    return nil;
 }
 
 - (NSArray *) applyPredicateToContentOfFile: (NSString *)pathPath {

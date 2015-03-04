@@ -22,7 +22,4 @@
 - (void) changeNotesFromMultiplePListWithNoteIDs: (NSArray *) noteIDs;
 - (void) changeNotesFromMultipleBinaryPListWithNoteIDs: (NSArray *) noteIDs;
 
-@property BOOL rollbacked;
-@property NSMutableArray *changedNotes;
-
 @end
