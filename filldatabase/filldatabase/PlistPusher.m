@@ -11,7 +11,18 @@
 
 #define SELECTION_KEYS @[@"event_enable", @"event_start_TS", @"event_end_TS", @"create_TS", @"modify_TS"]
 
-@implementation PlistPusher
+@implementation PlistPusher {
+    NSMutableArray *_notesToPush;
+    NSMutableArray *_notesToPushBinary;
+    NSMutableDictionary *_helperPList;
+    NSMutableDictionary *_helperPListBinary;
+ 
+    BOOL _rollbackedMultiple;
+    BOOL _rollbackedMultipleBinary;
+
+    BOOL _timerFiredMultiple;
+    BOOL _timerFiredMultipleBinary;
+}
 
 - (void) sendErrorNotification:(NSString *)message {
     dispatch_async(dispatch_get_main_queue(), ^(void){
@@ -76,28 +87,23 @@
         [self collectBinaryPlistFileInfo];
         NSError *error = nil;
         TICK;
-        NSData *representation = [NSPropertyListSerialization dataWithPropertyList:notes
-                                                                            format:NSPropertyListXMLFormat_v1_0
-                                                                           options:0
-                                                                             error:&error];
-        if (!error)
-        {
-            BOOL ok = [representation writeToFile:SINGLE_PLIST_BINARY_PATH
-                                       atomically:YES];
-            if (ok)
-            {
-                TACK;
-                [self sendDoneNotification:@"Удалось записать данные в файл PList" withTackInfo:tackInfo];
-            }
-            else
-            {
-                [self sendErrorNotification:@"Не удалось записать данные в файл PList"];
-            }
-        }
-        else
-        {
+        NSData *representation = [NSPropertyListSerialization
+                                  dataWithPropertyList:notes
+                                  format:NSPropertyListXMLFormat_v1_0
+                                  options:0
+                                  error:&error];
+        if (error) {
             [self sendErrorNotification:@"Пичаль=((( Не удалось сериализовать данные для PList"];
+            return;
         }
+        BOOL ok = [representation writeToFile:SINGLE_PLIST_BINARY_PATH
+                                   atomically:YES];
+        if (!ok) {
+            [self sendErrorNotification:@"Не удалось записать данные в файл PList"];
+            return;
+        }
+        TACK;
+        [self sendDoneNotification:@"Удалось записать данные в файл PList" withTackInfo:tackInfo];
     });
 }
 
@@ -107,56 +113,12 @@
         TICK;
         BOOL ok = [notes writeToFile:SINGLE_PLIST_PATH
                           atomically:YES];
-        if (ok)
-        {
-            TACK;
-            [self sendDoneNotification:@"Удалось записать данные в файл PList" withTackInfo: tackInfo];
-        }
-        else
-        {
+        if (!ok) {
             [self sendErrorNotification:@"Не удалось записать данные в файл PList"];
+            return;
         }
-    });
-}
-
-- (void) writeBinaryToMultiplePlistFile:(NSArray *)notes {
-    self.binaryNotesToPush = [NSMutableArray arrayWithArray:notes];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        self.rollbacked = NO;
-        self.selectionHelper = [NSMutableDictionary dictionary];
-        self.binaryNotesToPush = [NSMutableArray arrayWithArray:notes];
-        TICK;
-        while ( [self.binaryNotesToPush count] > 0 ) {
-            if (self.rollbacked) {
-                break;
-            }
-            NSTimer *notesToUpdateTimer = [NSTimer timerWithTimeInterval: 0.5
-                                                                  target: self
-                                                                selector: @selector( pushBinaryOneNote )
-                                                                userInfo: nil
-                                                                 repeats: NO];
-            [notesToUpdateTimer fire];
-        }
-        NSError *error = nil;
-        NSData *representation = [NSPropertyListSerialization dataWithPropertyList:self.selectionHelper
-                                                                            format:NSPropertyListXMLFormat_v1_0
-                                                                           options:0
-                                                                             error:&error];
-        if (!error){
-            BOOL ok = [representation
-                       writeToFile:HELPER_BINARY_PLIST_PATH
-                       atomically:YES];
-            if (!ok) {
-                [self sendErrorNotification:@"Не удалось записать хелпер для выборки в файл PList"];
-            }
-            else {
-                TACK;
-                [self sendDoneNotification:@"Готово" withTackInfo:tackInfo];
-            }
-        }
-        else{
-            [self sendErrorNotification:@"Пичаль=((( Не удалось сериализовать хелпер для выборки для PList"];
-        }
+        TACK;
+        [self sendDoneNotification:@"Удалось записать данные в файл PList" withTackInfo: tackInfo];
     });
 }
 
@@ -166,43 +128,105 @@
         return;
     }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        self.notesToPush = [NSMutableArray arrayWithArray:notes];
+        _notesToPush = [NSMutableArray arrayWithArray:notes];
+        _timerFiredMultiple = YES;
+        _helperPList = [NSMutableDictionary dictionary];
         TICK;
-        self.selectionHelper = [NSMutableDictionary dictionary];
-        
-        while ( [self.notesToPush count] > 0 ) {
-            if (self.rollbacked) {
+        while ([_notesToPush count] > 0) {
+            if (_rollbackedMultiple) {
                 break;
             }
-            NSTimer *notesToUpdateTimer = [NSTimer timerWithTimeInterval: 0.5
-                                                                  target: self
-                                                                selector: @selector( pushOneNote )
-                                                                userInfo: nil
-                                                                 repeats: NO];
+            if (!_timerFiredMultiple) {
+                sleep(0.1);
+            }
+            _timerFiredMultiple = NO;
+            NSTimer *notesToUpdateTimer = [NSTimer
+                                           timerWithTimeInterval: 0
+                                           target: self
+                                           selector: @selector( pushOneNote )
+                                           userInfo: nil
+                                           repeats: NO];
             [notesToUpdateTimer fire];
         }
-        BOOL ok = [self.selectionHelper
+        BOOL ok = [_helperPList
                    writeToFile:HELPER_PLIST_PATH
                    atomically:YES];
         if (!ok){
             [self sendErrorNotification:@"Не удалось записать хелпер для выборки в файл PList"];
+            return;
         }
-        else {
-            TACK;
-            [self sendDoneNotification:@"Готово" withTackInfo:tackInfo];
-        }
+        TACK;
+        [self sendDoneNotification:@"Пропушится мультипл " withTackInfo:tackInfo];
     });
 }
 
-- (void) pushBinaryOneNote {
-    // создадим папку для множественных заметок
+- (void) writeBinaryToMultiplePlistFile:(NSArray *)notes {
     if (![self createDirectoryWithPath:MULTIPLE_BINARY_PLIST_FOLDER]) {
         return;
     }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        _notesToPushBinary = [NSMutableArray arrayWithArray:notes];
+        _helperPListBinary = [NSMutableDictionary dictionary];
+        _timerFiredMultipleBinary = YES;
+        TICK;
+        while ([_notesToPushBinary count] > 0) {
+            if (_rollbackedMultipleBinary) {
+                break;
+            }
+            while (!_timerFiredMultipleBinary) {
+                sleep(0.1);
+            }
+            NSTimer *notesToUpdateTimer = [NSTimer
+                                           timerWithTimeInterval: 0
+                                           target: self
+                                           selector: @selector( pushBinaryOneNote )
+                                           userInfo: nil
+                                           repeats: NO];
+            [notesToUpdateTimer fire];
+        }
+        NSError *error = nil;
+        NSData *representation = [NSPropertyListSerialization
+                                  dataWithPropertyList:_helperPListBinary
+                                  format:NSPropertyListXMLFormat_v1_0
+                                  options:0
+                                  error:&error];
+        if (error) {
+            [self sendErrorNotification:@"Пичаль=((( Не удалось сериализовать хелпер для выборки для PList"];
+            return;
+        }
+        BOOL ok = [representation
+                   writeToFile:HELPER_BINARY_PLIST_PATH
+                   atomically:YES];
+        if (!ok) {
+            [self sendErrorNotification:@"Не удалось записать хелпер для выборки в файл PList"];
+            return;
+        }
+        TACK;
+        [self sendDoneNotification:@"Пропушлися мультипл бинари " withTackInfo:tackInfo];
+    });
+}
+
+- (void) pushOneNote {
+    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        NSDictionary *note = _notesToPush[0];
+        _helperPList[note[@"ID"]] = [self getSelectionInfoForNote: note];
+        NSString *newPath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:note[@"ID"]];
+        BOOL ok = [note writeToFile:newPath atomically:YES];
+        if (!ok){
+            _rollbackedMultiple = YES;
+            [self sendErrorNotification:@"Не удалось записать заметку в файл PList"];
+            return;
+        }
+        [_notesToPush removeObjectAtIndex:0];
+    });
+    _timerFiredMultiple = YES;
+}
+
+- (void) pushBinaryOneNote {
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         NSError *error = nil;
-        NSDictionary *note = self.binaryNotesToPush[0];
-        self.selectionHelper[note[@"ID"]] = [self getSelectionInfoForNote: note];
+        NSDictionary *note = _notesToPushBinary[0];
+        _helperPListBinary[note[@"ID"]] = [self getSelectionInfoForNote: note];
         
         NSString *newPath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingPathComponent:note[@"ID"]];
         NSData *representation = [NSPropertyListSerialization
@@ -210,33 +234,18 @@
                                   format:NSPropertyListXMLFormat_v1_0
                                   options:0
                                   error:&error];
-        if (!error){
-            BOOL ok = [representation writeToFile:newPath atomically:YES];
-            if (!ok) {
-                [self sendErrorNotification:@"Не удалось записать заметку в файл PList"];
-                self.rollbacked = YES;
-            }
-            else {
-                [self.binaryNotesToPush removeObjectAtIndex:0];
-            }
-        }
-        else{
-            self.rollbacked = YES;
+        if (error) {
+            _rollbackedMultipleBinary = YES;
             [self sendErrorNotification:@"Пичаль=((( Не удалось сериализовать данные для PList"];
+            return;
         }
-    });
-}
-
-- (void) pushOneNote {
-    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        NSDictionary *note = self.notesToPush[0];
-        self.selectionHelper[note[@"ID"]] = [self getSelectionInfoForNote: note];
-        NSString *newPath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:note[@"ID"]];
-        BOOL ok = [note writeToFile:newPath atomically:YES];
-        if (!ok){
+        BOOL ok = [representation writeToFile:newPath atomically:YES];
+        if (!ok) {
             [self sendErrorNotification:@"Не удалось записать заметку в файл PList"];
+            _rollbackedMultipleBinary = YES;
+            return;
         }
-        [self.notesToPush removeObjectAtIndex:0];
+        [_notesToPushBinary removeObjectAtIndex:0];
     });
 }
 

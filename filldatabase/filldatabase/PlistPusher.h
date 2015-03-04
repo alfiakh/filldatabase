@@ -19,9 +19,4 @@
 - (void) writeBinaryToMultiplePlistFile: (NSArray *)notes;
 - (void) writeDictionaryToMultiplePlistFile: (NSArray *)notes;
 
-@property NSMutableArray *notesToPush;
-@property NSMutableArray *binaryNotesToPush;
-@property NSMutableDictionary *selectionHelper;
-@property BOOL rollbacked;
-
 @end
