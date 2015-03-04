@@ -84,10 +84,12 @@
 }
 
 - (NSArray *) getIDsToChangeFromMultiplePList {
+    NSLog(@"%@", [self collectIDsFromPListWithPath:HELPER_PLIST_PATH]);
     return [self collectIDsFromPListWithPath:HELPER_PLIST_PATH];
 }
 
 - (NSArray *) getIDsToChangeFromMultipleBinaryPList {
+    NSLog(@"%@", [self collectIDsFromPListWithPath:HELPER_BINARY_PLIST_PATH]);
     return [self collectIDsFromPListWithPath:HELPER_BINARY_PLIST_PATH];
 }
 

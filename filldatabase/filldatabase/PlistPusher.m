@@ -132,7 +132,6 @@
         _timerFiredMultiple = YES;
         _helperPList = [NSMutableDictionary dictionary];
         TICK;
-        NSLog(@"%lu", (unsigned long) [_notesToPush count]);
         while ([_notesToPush count] > 0) {
             if (_rollbackedMultiple) {
                 break;
@@ -170,7 +169,6 @@
         _notesToPushBinary = [NSMutableArray arrayWithArray:notes];
         _helperPListBinary = [NSMutableDictionary dictionary];
         _timerFiredMultipleBinary = YES;
-        NSLog(@"%lu", (unsigned long) [_notesToPushBinary count]);
         TICK;
         while ([_notesToPushBinary count] > 0) {
             if (_rollbackedMultipleBinary) {
