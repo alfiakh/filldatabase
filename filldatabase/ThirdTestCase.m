@@ -12,11 +12,14 @@
 #define CR @"create_TS"
 #define MO @"modify_TS"
 
-@implementation ThirdTestCase
+@implementation ThirdTestCase {
+    dispatch_queue_t _testCaseQUeue;
+}
 
 - (id) init {
     self = [super init];
     if (self) {
+        _testCaseQUeue = dispatch_queue_create("com.testcases.queue", DISPATCH_QUEUE_SERIAL);
         [self run];
     }
     return self;
@@ -32,7 +35,7 @@
 }
 
 - (void) callTestCaseWithStoraType: (NSString *) storageType {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+    dispatch_async(_testCaseQUeue, ^(void) {
         NSString *notepadStorageSelectorName = [NSString stringWithFormat:@"getNotesForNotepadFrom%@", storageType];
         SEL notepadStorageSelector = NSSelectorFromString(notepadStorageSelectorName);
         NSString *dateRangeStorageSelectorName = [NSString stringWithFormat:@"getNotesForDateRangeFrom%@", storageType];

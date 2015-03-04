@@ -9,11 +9,14 @@
 #import "DropTestCase.h"
 #import "AllDefines.h"
 
-@implementation DropTestCase
+@implementation DropTestCase {
+    dispatch_queue_t _testCaseQUeue;
+}
 
 - (id) init {
     self = [super init];
     if (self) {
+        _testCaseQUeue = dispatch_queue_create("com.testcases.queue", DISPATCH_QUEUE_SERIAL);
         [self run];
     }
     return self;
@@ -64,7 +67,7 @@
 
 - (void) callTestCaseWithStoraType: (NSString *) storageType {
     if ([storageType isEqualToString:@"DataBase"]) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        dispatch_async(_testCaseQUeue, ^(void) {
             TICK;
             [self.storage dropNotesFromDataBasetWithNoteIDs:[self.storage getIDsToDropFromDataBase]];
             TACK;
@@ -72,7 +75,7 @@
         });
     }
     else if ([storageType isEqualToString:@"SinglePList"]) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        dispatch_async(_testCaseQUeue, ^(void) {
             TICK;
             [self.storage dropNotesFromSinglePListWithNoteIDs:[self.storage getIDsToDropFromSinglePList]];
             TACK;
@@ -80,7 +83,7 @@
         });
     }
     else if ([storageType isEqualToString:@"SingleBinaryPList"]) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        dispatch_async(_testCaseQUeue, ^(void) {
             TICK;
             [self.storage dropNotesFromSingleBinaryPListWithNoteIDs:[self.storage getIDsToDropFromSingleBinaryPList]];
             TACK;
@@ -88,7 +91,7 @@
         });
     }
     else if ([storageType isEqualToString:@"MultiplePList"]) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        dispatch_async(_testCaseQUeue, ^(void) {
             TICK;
             [self.storage dropNotesFromMultiplePListWithNoteIDs:[self.storage getIDsToDropFromMultiplePList]];
             TACK;
@@ -96,7 +99,7 @@
         });
     }
     else if ([storageType isEqualToString:@"MultipleBinaryPList"]) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        dispatch_async(_testCaseQUeue, ^(void) {
             TICK;
             [self.storage dropNotesFromMultipleBinaryPListWIthNoteIDs:[self.storage getIDsToDropFromMultipleBinaryPList]];
             TACK;

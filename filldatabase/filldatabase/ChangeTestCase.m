@@ -9,11 +9,14 @@
 #import "ChangeTestCase.h"
 #import "AllDefines.h"
 
-@implementation ChangeTestCase
+@implementation ChangeTestCase {
+    dispatch_queue_t _testCaseQUeue;
+}
 
 - (id) init {
     self = [super init];
     if (self) {
+        _testCaseQUeue = dispatch_queue_create("com.testcases.queue", DISPATCH_QUEUE_SERIAL);
         [self run];
     }
     return self;
@@ -28,48 +31,55 @@
     });
 }
 
+- (void) sendTCDoneNotification: (NSString *) storageType
+                   withTackInfo: (NSDictionary *) tackInfo {
+    NSString *message = [NSString stringWithFormat:@"Change TC finished %@ %@", storageType, tackInfo[@"time"]];
+    [self sendDoneNotification:message];
+}
 - (void) callTestCaseWithStoraType: (NSString *) storageType {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        // собираем строки для селекторов
-        NSString *getIDsSelectorName = [NSString stringWithFormat:@"getIDsToChangeFrom%@", storageType];
-        NSString *changeNotesSelectorName;
-        if (![storageType isEqualToString: @"DataBase"]) {
-            changeNotesSelectorName = [NSString stringWithFormat:@"changeNotesFrom%@tWithNoteIDs", storageType];
-        }
-        else {
-            changeNotesSelectorName = [NSString stringWithFormat:@"changeNotesFrom%@tWithNotesData", storageType];
-        }
-        
-        // создаем селекторы
-        SEL getIDsSelector = NSSelectorFromString(getIDsSelectorName);
-        SEL changeNotesSelector = NSSelectorFromString(changeNotesSelectorName);
-        
-        // создаем объекты NSInvocation
-        NSInvocation *changeNotesInvocation = [NSInvocation new];
-        NSInvocation *getIDsInvocation = [NSInvocation new];
-        
-        // подвязываем invocation к селекторам
-        [changeNotesInvocation setSelector:changeNotesSelector];
-        [getIDsInvocation setSelector:getIDsSelector];
-        
-        // вызываем получение ID заметок для изменения
-        [getIDsInvocation invokeWithTarget:self.storage];
-        
-        // создаем пространство для резултьтата и получаем результат
-        NSArray *IDs;
-        [getIDsInvocation getReturnValue:&IDs];
-        
-        // устанавливаем аргумент у invocation
-        [changeNotesInvocation setArgument:&IDs atIndex:0];
-        
-        // сам вызов
-        TICK;
-        [changeNotesInvocation invokeWithTarget:self.storage];
-        TACK;
-        
-        NSString *message = [NSString stringWithFormat:@"Change TC finished %@ %@", storageType, tackInfo[@"time"]];
-        [self sendDoneNotification:message];
-    });
+    if ([storageType isEqualToString:@"DataBase"]) {
+        dispatch_async(_testCaseQUeue, ^(void) {
+            TICK;
+            [self.storage changeNotesFromDataBaseWithNotesData:[self.storage getIDsToChangeFromDataBase]];
+            TACK;
+            [self sendTCDoneNotification:storageType withTackInfo:tackInfo];
+        });
+    }
+    else if ([storageType isEqualToString:@"SinglePList"]) {
+        dispatch_async(_testCaseQUeue, ^(void) {
+            TICK;
+            [self.storage changeNotesFromSinglePListWithNoteIDs:[self.storage getIDsToChangeFromSinglePList]];
+            TACK;
+            [self sendTCDoneNotification:storageType withTackInfo:tackInfo];
+        });
+    }
+    else if ([storageType isEqualToString:@"SingleBinaryPList"]) {
+        dispatch_async(_testCaseQUeue, ^(void) {
+            TICK;
+            [self.storage changeNotesFromSingleBinaryPListWithNoteIDs:[self.storage getIDsToChangeFromSingleBinaryPList]];
+            TACK;
+            [self sendTCDoneNotification:storageType withTackInfo:tackInfo];
+        });
+    }
+    else if ([storageType isEqualToString:@"MultiplePList"]) {
+        dispatch_async(_testCaseQUeue, ^(void) {
+            TICK;
+            [self.storage changeNotesFromMultiplePListWithNoteIDs:[self.storage getIDsToChangeFromMultiplePList]];
+            TACK;
+            [self sendTCDoneNotification:storageType withTackInfo:tackInfo];
+        });
+    }
+    else if ([storageType isEqualToString:@"MultipleBinaryPList"]) {
+        dispatch_async(_testCaseQUeue, ^(void) {
+            TICK;
+            [self.storage changeNotesFromMultipleBinaryPListWithNoteIDs:[self.storage getIDsToChangeFromMultipleBinaryPList]];
+            TACK;
+            [self sendTCDoneNotification:storageType withTackInfo:tackInfo];
+        });
+    }
+    else {
+        [self sendDoneNotification:@"Выслан некорректный тип стореджа"];
+    }
 }
 
 - (void) run {
