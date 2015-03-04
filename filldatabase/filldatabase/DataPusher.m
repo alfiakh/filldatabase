@@ -10,7 +10,9 @@
 #import "AllDefines.h"
 #import "SADictionaryAddtions.h"
 
-@implementation DataPusher
+@implementation DataPusher {
+    BOOL _timerFired;
+}
 
 - (id)init {
     self = [super init];
@@ -106,14 +108,18 @@
 }
 
 - (void) pushNotesFromResponse: (NSArray *) notes{
+    _timerFired = YES;
     TICK;
     self.notesToPush = [NSMutableArray arrayWithArray:notes];
     if ([self.database beginTransaction]) {
         while ( [self.notesToPush count] != 0 ) {
+            if (!_timerFired) {
+                sleep(0.1);
+            }
             if (self.rollbacked) {
                 break;
             }
-            
+            _timerFired = NO;
             NSTimer *notesToUpdateTimer = [NSTimer timerWithTimeInterval: 0.5
                                                               target: self
                                                             selector: @selector( pushOneNote)
@@ -154,6 +160,7 @@
             [self.notesToPush removeObjectAtIndex:0];
         }
     });
+    _timerFired = YES;
 
 }
 @end
