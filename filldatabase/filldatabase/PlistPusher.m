@@ -224,14 +224,6 @@
 
 - (void) pushBinaryOneNote {
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        
-        //
-        NSFileManager *manager = [NSFileManager defaultManager];
-        NSError *error1 = nil;
-        NSArray *notesInFolder = [manager contentsOfDirectoryAtPath:MULTIPLE_BINARY_PLIST_FOLDER error:&error1];
-        NSLog(@"%lu %lu", (unsigned long)[notesInFolder count], (unsigned long)[_helperPListBinary count]);
-        //
-        
         NSError *error = nil;
         NSDictionary *note = _notesToPushBinary[0];
         _helperPListBinary[note[@"ID"]] = [self getSelectionInfoForNote: note];
