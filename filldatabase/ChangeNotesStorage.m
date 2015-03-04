@@ -75,6 +75,11 @@
     return noteIDs;
 }
 
+- (NSArray *) collectIDsFromPListWithHelperPath: (NSString *) path {
+    NSDictionary *notes = [NSDictionary dictionaryWithContentsOfFile:path];
+    return [notes allKeys];
+}
+
 - (NSArray *) getIDsToChangeFromSinglePList {
     return [self collectIDsFromPListWithPath:SINGLE_PLIST_PATH];
 }
@@ -84,13 +89,11 @@
 }
 
 - (NSArray *) getIDsToChangeFromMultiplePList {
-    NSLog(@"%@", [self collectIDsFromPListWithPath:HELPER_PLIST_PATH]);
-    return [self collectIDsFromPListWithPath:HELPER_PLIST_PATH];
+    return [self collectIDsFromPListWithHelperPath:HELPER_PLIST_PATH];
 }
 
 - (NSArray *) getIDsToChangeFromMultipleBinaryPList {
-    NSLog(@"%@", [self collectIDsFromPListWithPath:HELPER_BINARY_PLIST_PATH]);
-    return [self collectIDsFromPListWithPath:HELPER_BINARY_PLIST_PATH];
+    return [self collectIDsFromPListWithHelperPath:HELPER_BINARY_PLIST_PATH];
 }
 
 - (void) changeNotesFromDataBaseWithNotesData:(NSArray *)notesData {
@@ -198,7 +201,6 @@
 - (void) changeNotesFromMultiplePListWithNoteIDs:(NSArray *)noteIDs {
     _timerFiredMultiplePList = YES;
     for (NSString *noteID in noteIDs) {
-        NSLog(@"%@", noteID);
         if (_rollbackedMultiplePList) {
             break;
         }
@@ -218,7 +220,6 @@
 - (void) changeNotesFromMultipleBinaryPListWithNoteIDs:(NSArray *)noteIDs {
     _timerFiredMultipleBinaryPList = YES;
     for (NSString *noteID in noteIDs) {
-        NSLog(@"%@", noteID);
         if (_rollbackedMultipleBinaryPList) {
             break;
         }
