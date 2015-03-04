@@ -375,10 +375,6 @@
 
 - (void) dropOneNoteInMultipleBinaryPList: (NSTimer *) timer {
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        NSFileManager *manager = [NSFileManager defaultManager];
-        NSError *error1 = nil;
-        NSArray *notesInFolder = [manager contentsOfDirectoryAtPath:MULTIPLE_BINARY_PLIST_FOLDER error:&error1];
-        NSLog(@"%lu %lu", (unsigned long)[notesInFolder count], (unsigned long)[_helperNotesBinary count]);
         NSString *noteID = timer.userInfo[@"noteID"];
         NSString *notePath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingPathComponent:noteID];
         if (_helperNotesBinary[noteID]) {

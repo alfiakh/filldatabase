@@ -196,6 +196,7 @@
 - (void) changeNotesFromMultiplePListWithNoteIDs:(NSArray *)noteIDs {
     _timerFiredMultiplePList = YES;
     for (NSString *noteID in noteIDs) {
+        NSLog(@"%@", noteID);
         if (_rollbackedMultiplePList) {
             break;
         }
@@ -203,7 +204,7 @@
             sleep(0.1);
         }
         NSTimer *timer = [NSTimer
-                          timerWithTimeInterval:0.4
+                          timerWithTimeInterval:0
                           target:self
                           selector:@selector(changeOneNoteInMultiplePList:)
                           userInfo:@{@"noteID":noteID}
@@ -215,6 +216,7 @@
 - (void) changeNotesFromMultipleBinaryPListWithNoteIDs:(NSArray *)noteIDs {
     _timerFiredMultipleBinaryPList = YES;
     for (NSString *noteID in noteIDs) {
+        NSLog(@"%@", noteID);
         if (_rollbackedMultipleBinaryPList) {
             break;
         }
@@ -222,7 +224,7 @@
             sleep(0.1);
         }
         NSTimer *timer = [NSTimer
-                          timerWithTimeInterval:0.4
+                          timerWithTimeInterval:0
                           target:self
                           selector:@selector(changeOneNoteInMultipleBinaryPList:)
                           userInfo:@{@"noteID":noteID}

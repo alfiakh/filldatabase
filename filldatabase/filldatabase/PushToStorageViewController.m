@@ -87,7 +87,6 @@
                          collectUrlForListWithUserID:[ACCOUNTS objectAtIndex:self.accountNumber]
                           lastTimeStamp:[[self.getter giveMeTS] integerValue]
                              notesCount:[NOTES_COUNT integerValue]];
-    NSLog(@"URL: %@", listUrl);
     [self.getter runRequestWithUrl:listUrl];
 }
 
