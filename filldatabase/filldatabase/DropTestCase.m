@@ -113,7 +113,7 @@
 
 - (void) run {
     self.storage = [[DropDataStorage alloc] init];
-    for (NSString *dataStorage in @[@"MultiplePList"]) {
+    for (NSString *dataStorage in DATA_STORAGES) {
         [self callTestCaseWithStoraType:dataStorage];
     }
 }

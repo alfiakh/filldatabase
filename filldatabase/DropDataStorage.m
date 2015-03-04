@@ -247,7 +247,7 @@
 - (void) dropNotesFromMultipleBinaryPListWIthNoteIDs:(NSArray *)noteIDs {
     _rollbackedMultipleBinaryPList = NO;
     _timerFiredMultipleBinaryPList = YES;
-    _helperNotesBinary = [NSMutableDictionary dictionaryWithContentsOfFile:HELPER_PLIST_PATH];
+    _helperNotesBinary = [NSMutableDictionary dictionaryWithContentsOfFile:HELPER_BINARY_PLIST_PATH];
     NSTimer *timer;
     NSFileManager *manager = [NSFileManager defaultManager];
     NSError *error= nil;
@@ -348,11 +348,6 @@
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         NSString *noteID = timer.userInfo[@"noteID"];
         NSString *notePath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:noteID];
-        
-        NSFileManager *manager = [NSFileManager defaultManager];
-        NSError *error= nil;
-        NSArray *multipleNotes = [manager contentsOfDirectoryAtPath:MULTIPLE_PLIST_FOLDER error:&error];
-        NSLog(@"%lu, %lu", (unsigned long) [_helperNotes count], (unsigned long)[multipleNotes count]);
         
         if (_helperNotes[noteID]) {
             [_helperNotes removeObjectForKey:noteID];
