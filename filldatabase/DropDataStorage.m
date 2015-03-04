@@ -405,7 +405,7 @@
             [self sendErrorNotification:@"Во вспомогательном PList нет заметки, которая пришла на удаление"];
         }
     });
-    _timerFiredMultiplePList = YES;
+    _timerFiredMultipleBinaryPList = YES;
 }
 
 @end
