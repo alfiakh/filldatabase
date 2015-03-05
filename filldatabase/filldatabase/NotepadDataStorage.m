@@ -96,13 +96,11 @@
 - (NSArray *) applyPredicateToContentOfFile: (NSString *)pathPath {
     NSArray *plistNotes = [NSArray arrayWithContentsOfFile:pathPath];
     NSPredicate *notepadFilterPredicate = [self buildPredicate];
-    if (notepadFilterPredicate) {
-        NSArray *filteredNotes = [plistNotes filteredArrayUsingPredicate:notepadFilterPredicate];
-        return filteredNotes;
+    if (!notepadFilterPredicate) {
+        return plistNotes;
     }
-    else {
-        return  plistNotes;
-    }
+    NSArray *filteredNotes = [plistNotes filteredArrayUsingPredicate:notepadFilterPredicate];
+    return filteredNotes;
 }
 
 -(NSArray *) collectMultipleNotesWithPath: (NSString *) notesFolder
