@@ -66,7 +66,7 @@
     return query;
 }
 
-- (void) getNotesForNotepadFromDataBase {
+- (void) getNotesForNotepadFromDataBase: (NSTimer *) timer {
     NSString *query = [self buildSqlQuery];
     if([[NSFileManager defaultManager] fileExistsAtPath:DATABASE_PATH]) {
         FMDatabase *database = [FMDatabase databaseWithPath:DATABASE_PATH];
@@ -114,21 +114,21 @@
     return notes;
 }
 
-- (void) getNotesForNotepadFromSinglePList {
+- (void) getNotesForNotepadFromSinglePList: (NSTimer *) timer {
     TICK;
     [self applyPredicateToContentOfFile:SINGLE_PLIST_PATH];
     TACK;
     NSLog(@"%@", tackInfo);
 }
 
-- (void) getNotesForNotepadFromSingleBinaryPList {
+- (void) getNotesForNotepadFromSingleBinaryPList: (NSTimer *) timer {
     TICK;
     [self applyPredicateToContentOfFile:SINGLE_PLIST_BINARY_PATH];
     TACK;
     NSLog(@"%@", tackInfo);
 }
 
-- (void) getNotesForNotepadFromMultiplePList {
+- (void) getNotesForNotepadFromMultiplePList: (NSTimer *) timer {
     TICK;
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:HELPER_PLIST_PATH];
     [self collectMultipleNotesWithPath:MULTIPLE_PLIST_FOLDER withIDs:helperfilteredNotes];
@@ -136,7 +136,7 @@
     NSLog(@"%@", tackInfo);
 }
 
-- (void) getNotesForNotepadFromMultipleBinaryPList {
+- (void) getNotesForNotepadFromMultipleBinaryPList: (NSTimer *) timer {
     TICK;
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:HELPER_BINARY_PLIST_PATH];
     [self collectMultipleNotesWithPath:MULTIPLE_BINARY_PLIST_FOLDER withIDs:helperfilteredNotes];

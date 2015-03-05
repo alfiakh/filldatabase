@@ -108,7 +108,7 @@
     return query;
 }
 
-- (void) getNotesForDateRangeFromDataBase {
+- (void) getNotesForDateRangeFromDataBase: (NSTimer *) timer {
     NSString *query = [self buildSqlQuery];
     if([[NSFileManager defaultManager] fileExistsAtPath:DATABASE_PATH]) {
         FMDatabase *database = [FMDatabase databaseWithPath:DATABASE_PATH];
@@ -139,14 +139,14 @@
     return filteredNotes;
 }
 
-- (void) getNotesForDateRangeFromSinglePList {
+- (void) getNotesForDateRangeFromSinglePList: (NSTimer *) timer {
     TICK;
     [self applyPredicateToContentOfFile:SINGLE_PLIST_PATH];
     TACK;
     NSLog(@"%@", tackInfo);
 }
 
-- (void) getNotesForDateRangeFromSingleBinaryPList {
+- (void) getNotesForDateRangeFromSingleBinaryPList: (NSTimer *) timer {
     TICK;
     [self applyPredicateToContentOfFile:SINGLE_PLIST_BINARY_PATH];
     TACK;
@@ -164,7 +164,7 @@
     return notes;
 }
 
-- (void) getNotesForDateRangeFromMultiplePList {
+- (void) getNotesForDateRangeFromMultiplePList: (NSTimer *) timer {
     TICK;
     NSString *singlePlistPath = HELPER_PLIST_PATH;
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
@@ -173,7 +173,7 @@
     NSLog(@"%@", tackInfo);
 }
 
-- (void) getNotesForDateRangeFromMultipleBinaryPList {
+- (void) getNotesForDateRangeFromMultipleBinaryPList: (NSTimer *) timer {
     TICK;
     NSString *singlePlistPath = HELPER_BINARY_PLIST_PATH;
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
