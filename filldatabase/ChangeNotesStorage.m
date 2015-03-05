@@ -205,6 +205,7 @@
             break;
         }
         while (!_timerFiredMultiplePList) {
+            NSLog(@"sleep");
             sleep(0.1);
         }
         NSTimer *timer = [NSTimer
@@ -224,6 +225,7 @@
             break;
         }
         while (!_timerFiredMultipleBinaryPList) {
+            NSLog(@"sleep");
             sleep(0.1);
         }
         NSTimer *timer = [NSTimer
@@ -266,11 +268,24 @@
 }
 
 - (void) changeOneNoteInMultiplePList:(NSTimer *) timer {
-    NSString *notePath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:timer.userInfo[@"noteData"]];
+    if (!timer.userInfo[@"noteID"]) {
+        [self sendErrorNotification:@"В таймер не пришел noteID"];
+        _timerFiredMultiplePList = YES;
+        return;
+    }
+    NSString *notePath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist", timer.userInfo[@"noteID"]]];
+    BOOL isDirectory;
+    NSFileManager *manager = [NSFileManager new];
+    if (![manager fileExistsAtPath:notePath isDirectory:&isDirectory] || isDirectory) {
+        [self sendErrorNotification:@"Заметка либо является папкой, либо ее нет"];
+        _timerFiredMultiplePList = YES;
+        return;
+    }
     NSMutableDictionary *note = [NSMutableDictionary dictionaryWithContentsOfFile:notePath];
     if(!note) {
-        _rollbackedMultiplePList = YES;
-        [self sendErrorNotification:@"Да нету заметки!"];
+        NSLog(@"Нет заметки multiple");
+        _timerFiredMultiplePList = YES;
+        return;
     }
     note[@"message"] = [NSString stringWithFormat:@"%@ ", note[@"message"]];
     BOOL ok = [note writeToFile:notePath atomically:YES];
@@ -282,11 +297,24 @@
 }
 
 - (void) changeOneNoteInMultipleBinaryPList:(NSTimer *) timer {
-    NSString *notePath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingPathComponent:timer.userInfo[@"noteID"]];
+    if (!timer.userInfo[@"noteID"]) {
+        [self sendErrorNotification:@"В таймер не пришел noteID"];
+        _timerFiredMultipleBinaryPList = YES;
+        return;
+    }
+    NSString *notePath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist", timer.userInfo[@"noteID"]]];
+    BOOL isDirectory;
+    NSFileManager *manager = [NSFileManager new];
+    if (![manager fileExistsAtPath:notePath isDirectory:&isDirectory] || isDirectory) {
+        [self sendErrorNotification:@"Заметка либо является папкой, либо ее нет"];
+        _timerFiredMultipleBinaryPList = YES;
+        return;
+    }
     NSMutableDictionary *note = [NSMutableDictionary dictionaryWithContentsOfFile:notePath];
     if(!note) {
-        _rollbackedMultipleBinaryPList = YES;
-        [self sendErrorNotification:@"Да нету заметки!"];
+        NSLog(@"Нет заметки multiple binary");
+        _timerFiredMultipleBinaryPList = YES;
+        return;
     }
     note[@"message"] = [NSString stringWithFormat:@"%@ ", note[@"message"]];
     NSError *error = nil;

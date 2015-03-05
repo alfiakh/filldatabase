@@ -212,7 +212,7 @@
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         NSDictionary *note = _notesToPush[0];
         _helperPList[note[@"ID"]] = [self getSelectionInfoForNote: note];
-        NSString *newPath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:note[@"ID"]];
+        NSString *newPath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist", note[@"ID"]]];
         BOOL ok = [note writeToFile:newPath atomically:YES];
         if (!ok){
             _rollbackedMultiple = YES;
@@ -230,7 +230,7 @@
         NSDictionary *note = _notesToPushBinary[0];
         _helperPListBinary[note[@"ID"]] = [self getSelectionInfoForNote: note];
         
-        NSString *newPath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingPathComponent:note[@"ID"]];
+        NSString *newPath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist", note[@"ID"]]];
         NSData *representation = [NSPropertyListSerialization
                                   dataWithPropertyList:note
                                   format:NSPropertyListXMLFormat_v1_0
