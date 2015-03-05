@@ -37,190 +37,72 @@
 }
 
 - (void) callTestCaseWithStoraType: (NSTimer *) timer {
-//    NSString *storageType = timer.userInfo[@"storageType"];
-//    dispatch_async(_testCaseQUeue, ^(void) {
-//        if ([storageType isEqualToString:@"DataBase"]) {
-//            TICK;
-//            [self.notepadStorage getNotesForNotepadFromDataBase];
-//            [self.calendarStorage getNotesForDateRangeFromDataBase];
-//            [self.monthCalendarStorage getNotesForDateRangeFromDataBase];
-//            [self.calendarStorage getNotesForDateRangeFromDataBase];
-//            [self.diaryStorage getNotesForDateRangeFromDataBase];
-//            [self.calendarStorage getNotesForDateRangeFromDataBase];
-//            TACK;
-//            NSString *message = [NSString stringWithFormat:@"1st TC finished %@ %@", storageType, tackInfo[@"time"]];
-//            [self sendDoneNotification:message];
-//        }
-//        else if ([storageType isEqualToString:@"SinglePList"]) {
-//            TICK;
-//            [self.notepadStorage getNotesForNotepadFromSinglePList];
-//            [self.calendarStorage getNotesForDateRangeFromSinglePList];
-//            [self.monthCalendarStorage getNotesForDateRangeFromSinglePList];
-//            [self.calendarStorage getNotesForDateRangeFromSinglePList];
-//            [self.diaryStorage getNotesForDateRangeFromSinglePList];
-//            [self.calendarStorage getNotesForDateRangeFromSinglePList];
-//            TACK;
-//            NSString *message = [NSString stringWithFormat:@"1st TC finished %@ %@", storageType, tackInfo[@"time"]];
-//            [self sendDoneNotification:message];
-//        }
-//        else if ([storageType isEqualToString:@"SingleBinaryPList"]) {
-//            TICK;
-//            [self.notepadStorage getNotesForNotepadFromSingleBinaryPList];
-//            [self.calendarStorage getNotesForDateRangeFromSingleBinaryPList];
-//            [self.monthCalendarStorage getNotesForDateRangeFromSingleBinaryPList];
-//            [self.calendarStorage getNotesForDateRangeFromSingleBinaryPList];
-//            [self.diaryStorage getNotesForDateRangeFromSingleBinaryPList];
-//            [self.calendarStorage getNotesForDateRangeFromSingleBinaryPList];
-//            TACK;
-//            NSString *message = [NSString stringWithFormat:@"1st TC finished %@ %@", storageType, tackInfo[@"time"]];
-//            [self sendDoneNotification:message];
-//        }
-//        else if ([storageType isEqualToString:@"MultiplePList"]) {
-//            TICK;
-//            [self.notepadStorage getNotesForNotepadFromMultiplePList];
-//            [self.calendarStorage getNotesForDateRangeFromMultiplePList];
-//            [self.monthCalendarStorage getNotesForDateRangeFromMultiplePList];
-//            [self.calendarStorage getNotesForDateRangeFromMultiplePList];
-//            [self.diaryStorage getNotesForDateRangeFromMultiplePList];
-//            [self.calendarStorage getNotesForDateRangeFromMultiplePList];
-//            TACK;
-//            NSString *message = [NSString stringWithFormat:@"1st TC finished %@ %@", storageType, tackInfo[@"time"]];
-//            [self sendDoneNotification:message];
-//        }
-//        else if ([storageType isEqualToString:@"MultipleBinaryPList"]) {
-//            TICK;
-//            [self.notepadStorage getNotesForNotepadFromMultipleBinaryPList];
-//            [self.calendarStorage getNotesForDateRangeFromMultipleBinaryPList];
-//            [self.monthCalendarStorage getNotesForDateRangeFromMultipleBinaryPList];
-//            [self.calendarStorage getNotesForDateRangeFromMultipleBinaryPList];
-//            [self.diaryStorage getNotesForDateRangeFromMultipleBinaryPList];
-//            [self.calendarStorage getNotesForDateRangeFromMultipleBinaryPList];
-//            TACK;
-//            NSString *message = [NSString stringWithFormat:@"1st TC finished %@ %@", storageType, tackInfo[@"time"]];
-//            [self sendDoneNotification:message];
-//        }
-//        else {
-//            [self sendDoneNotification:@"Прислан некорректный тип стореджа"];
-//        }
-//        _timerFired = YES;
-//    });
-//    dispatch_async(_testCaseQUeue, ^(void) {
-//    [self.notepadStorage getNotesForNotepadFromSinglePList];
-//    [self.notepadStorage getNotesForNotepadFromSinglePList];
-//    [self.notepadStorage getNotesForNotepadFromSinglePList];
-//    [self.notepadStorage getNotesForNotepadFromSinglePList];
-//    [self.notepadStorage getNotesForNotepadFromSinglePList];
-//    [self.notepadStorage getNotesForNotepadFromSinglePList];
-//    [self.notepadStorage getNotesForNotepadFromSinglePList];
-//    [self.notepadStorage getNotesForNotepadFromSinglePList];
-//    [self.notepadStorage getNotesForNotepadFromSinglePList];
-//    [self.notepadStorage getNotesForNotepadFromSinglePList];
-//    [self.notepadStorage getNotesForNotepadFromSinglePList];
-//    [self.notepadStorage getNotesForNotepadFromSinglePList];
-//    [self.notepadStorage getNotesForNotepadFromSinglePList];
-//    [self.notepadStorage getNotesForNotepadFromSinglePList];
-//    [self.notepadStorage getNotesForNotepadFromSinglePList];
-//    });
+    NSString *storageType = timer.userInfo[@"storageType"];
     dispatch_async(_testCaseQUeue, ^(void) {
-        NSTimer *timer;
-        timer = [NSTimer timerWithTimeInterval:0
-                                        target:self.notepadStorage
-                                      selector:@selector(getNotesForNotepadFromSinglePList)
-                                      userInfo:nil
-                                       repeats:NO];
-        [timer fire];
-        sleep(2);
-        timer = [NSTimer timerWithTimeInterval:0
-                                        target:self.notepadStorage
-                                      selector:@selector(getNotesForNotepadFromSinglePList)
-                                      userInfo:nil
-                                       repeats:NO];
-        [timer fire];
-        sleep(2);
-        timer = [NSTimer timerWithTimeInterval:0
-                                        target:self.notepadStorage
-                                      selector:@selector(getNotesForNotepadFromSinglePList)
-                                      userInfo:nil
-                                       repeats:NO];
-        [timer fire];
-        sleep(2);
-        timer = [NSTimer timerWithTimeInterval:0
-                                        target:self.notepadStorage
-                                      selector:@selector(getNotesForNotepadFromSinglePList)
-                                      userInfo:nil
-                                       repeats:NO];
-        [timer fire];
-        sleep(2);
-        timer = [NSTimer timerWithTimeInterval:0
-                                        target:self.notepadStorage
-                                      selector:@selector(getNotesForNotepadFromSinglePList)
-                                      userInfo:nil
-                                       repeats:NO];
-        [timer fire];
-        sleep(2);
-        timer = [NSTimer timerWithTimeInterval:0
-                                        target:self.notepadStorage
-                                      selector:@selector(getNotesForNotepadFromSinglePList)
-                                      userInfo:nil
-                                       repeats:NO];
-        [timer fire];
-        sleep(2);
-        timer = [NSTimer timerWithTimeInterval:0
-                                        target:self.notepadStorage
-                                      selector:@selector(getNotesForNotepadFromSinglePList)
-                                      userInfo:nil
-                                       repeats:NO];
-        [timer fire];
-        sleep(2);
-        timer = [NSTimer timerWithTimeInterval:0
-                                        target:self.notepadStorage
-                                      selector:@selector(getNotesForNotepadFromSinglePList)
-                                      userInfo:nil
-                                       repeats:NO];
-        [timer fire];
-        sleep(2);
-        timer = [NSTimer timerWithTimeInterval:0
-                                        target:self.notepadStorage
-                                      selector:@selector(getNotesForNotepadFromSinglePList)
-                                      userInfo:nil
-                                       repeats:NO];
-        [timer fire];
-        sleep(2);
-        timer = [NSTimer timerWithTimeInterval:0
-                                        target:self.notepadStorage
-                                      selector:@selector(getNotesForNotepadFromSinglePList)
-                                      userInfo:nil
-                                       repeats:NO];
-        [timer fire];
-        sleep(2);
-        timer = [NSTimer timerWithTimeInterval:0
-                                        target:self.notepadStorage
-                                      selector:@selector(getNotesForNotepadFromSinglePList)
-                                      userInfo:nil
-                                       repeats:NO];
-        [timer fire];
-        sleep(2);
-        timer = [NSTimer timerWithTimeInterval:0
-                                        target:self.notepadStorage
-                                      selector:@selector(getNotesForNotepadFromSinglePList)
-                                      userInfo:nil
-                                       repeats:NO];
-        [timer fire];
-        sleep(2);
-        timer = [NSTimer timerWithTimeInterval:0
-                                        target:self.notepadStorage
-                                      selector:@selector(getNotesForNotepadFromSinglePList)
-                                      userInfo:nil
-                                       repeats:NO];
-        [timer fire];
-        sleep(2);
-        timer = [NSTimer timerWithTimeInterval:0
-                                        target:self.notepadStorage
-                                      selector:@selector(getNotesForNotepadFromSinglePList)
-                                      userInfo:nil
-                                       repeats:NO];
-        [timer fire];
-        sleep(2);
+        if ([storageType isEqualToString:@"DataBase"]) {
+            TICK;
+            [self.notepadStorage getNotesForNotepadFromDataBase];
+            [self.calendarStorage getNotesForDateRangeFromDataBase];
+            [self.monthCalendarStorage getNotesForDateRangeFromDataBase];
+            [self.calendarStorage getNotesForDateRangeFromDataBase];
+            [self.diaryStorage getNotesForDateRangeFromDataBase];
+            [self.calendarStorage getNotesForDateRangeFromDataBase];
+            TACK;
+            NSString *message = [NSString stringWithFormat:@"1st TC finished %@ %@", storageType, tackInfo[@"time"]];
+            [self sendDoneNotification:message];
+        }
+        else if ([storageType isEqualToString:@"SinglePList"]) {
+            TICK;
+            [self.notepadStorage getNotesForNotepadFromSinglePList];
+            [self.calendarStorage getNotesForDateRangeFromSinglePList];
+            [self.monthCalendarStorage getNotesForDateRangeFromSinglePList];
+            [self.calendarStorage getNotesForDateRangeFromSinglePList];
+            [self.diaryStorage getNotesForDateRangeFromSinglePList];
+            [self.calendarStorage getNotesForDateRangeFromSinglePList];
+            TACK;
+            NSString *message = [NSString stringWithFormat:@"1st TC finished %@ %@", storageType, tackInfo[@"time"]];
+            [self sendDoneNotification:message];
+        }
+        else if ([storageType isEqualToString:@"SingleBinaryPList"]) {
+            TICK;
+            [self.notepadStorage getNotesForNotepadFromSingleBinaryPList];
+            [self.calendarStorage getNotesForDateRangeFromSingleBinaryPList];
+            [self.monthCalendarStorage getNotesForDateRangeFromSingleBinaryPList];
+            [self.calendarStorage getNotesForDateRangeFromSingleBinaryPList];
+            [self.diaryStorage getNotesForDateRangeFromSingleBinaryPList];
+            [self.calendarStorage getNotesForDateRangeFromSingleBinaryPList];
+            TACK;
+            NSString *message = [NSString stringWithFormat:@"1st TC finished %@ %@", storageType, tackInfo[@"time"]];
+            [self sendDoneNotification:message];
+        }
+        else if ([storageType isEqualToString:@"MultiplePList"]) {
+            TICK;
+            [self.notepadStorage getNotesForNotepadFromMultiplePList];
+            [self.calendarStorage getNotesForDateRangeFromMultiplePList];
+            [self.monthCalendarStorage getNotesForDateRangeFromMultiplePList];
+            [self.calendarStorage getNotesForDateRangeFromMultiplePList];
+            [self.diaryStorage getNotesForDateRangeFromMultiplePList];
+            [self.calendarStorage getNotesForDateRangeFromMultiplePList];
+            TACK;
+            NSString *message = [NSString stringWithFormat:@"1st TC finished %@ %@", storageType, tackInfo[@"time"]];
+            [self sendDoneNotification:message];
+        }
+        else if ([storageType isEqualToString:@"MultipleBinaryPList"]) {
+            TICK;
+            [self.notepadStorage getNotesForNotepadFromMultipleBinaryPList];
+            [self.calendarStorage getNotesForDateRangeFromMultipleBinaryPList];
+            [self.monthCalendarStorage getNotesForDateRangeFromMultipleBinaryPList];
+            [self.calendarStorage getNotesForDateRangeFromMultipleBinaryPList];
+            [self.diaryStorage getNotesForDateRangeFromMultipleBinaryPList];
+            [self.calendarStorage getNotesForDateRangeFromMultipleBinaryPList];
+            TACK;
+            NSString *message = [NSString stringWithFormat:@"1st TC finished %@ %@", storageType, tackInfo[@"time"]];
+            [self sendDoneNotification:message];
+        }
+        else {
+            [self sendDoneNotification:@"Прислан некорректный тип стореджа"];
+        }
+        _timerFired = YES;
     });
 }
 

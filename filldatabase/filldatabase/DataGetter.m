@@ -82,8 +82,8 @@
                                           else {
                                               [self createErrorNotification: @"Произошла ошибка при отправке запроса"];
                                           }
-//                                          TACK;
-//                                          NSLog(@"%@", tackInfo);
+                                          TACK;
+                                          NSLog(@"%@", tackInfo);
     }];
     [dataTask resume];
 }
