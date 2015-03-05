@@ -29,6 +29,7 @@
 		F0C08CE61AA30727002B1969 /* DropDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C08CE51AA30727002B1969 /* DropDataStorage.m */; };
 		F0C08CE91AA38471002B1969 /* ChangeTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C08CE81AA38471002B1969 /* ChangeTestCase.m */; };
 		F0C08CEC1AA3941F002B1969 /* DropTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C08CEB1AA3941F002B1969 /* DropTestCase.m */; };
+		F0C1FAAC1AA8ACF100A52951 /* StorageTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C1FAAB1AA8ACF100A52951 /* StorageTestViewController.m */; };
 		F0FDEF551A9656A500725F3A /* NotepadDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF541A9656A500725F3A /* NotepadDataStorage.m */; };
 		F0FDEF581A96911100725F3A /* DateRangeDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF571A96911100725F3A /* DateRangeDataStorage.m */; };
 		F0FDEF5B1A9CCA5400725F3A /* CasesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF5A1A9CCA5400725F3A /* CasesViewController.m */; };
@@ -92,6 +93,8 @@
 		F0C08CE81AA38471002B1969 /* ChangeTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeTestCase.m; sourceTree = "<group>"; };
 		F0C08CEA1AA3941F002B1969 /* DropTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropTestCase.h; sourceTree = "<group>"; };
 		F0C08CEB1AA3941F002B1969 /* DropTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropTestCase.m; sourceTree = "<group>"; };
+		F0C1FAAA1AA8ACF100A52951 /* StorageTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageTestViewController.h; sourceTree = "<group>"; };
+		F0C1FAAB1AA8ACF100A52951 /* StorageTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StorageTestViewController.m; sourceTree = "<group>"; };
 		F0FDEF531A9656A500725F3A /* NotepadDataStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotepadDataStorage.h; path = filldatabase/NotepadDataStorage.h; sourceTree = "<group>"; };
 		F0FDEF541A9656A500725F3A /* NotepadDataStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NotepadDataStorage.m; path = filldatabase/NotepadDataStorage.m; sourceTree = "<group>"; };
 		F0FDEF561A96911100725F3A /* DateRangeDataStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DateRangeDataStorage.h; path = filldatabase/DateRangeDataStorage.h; sourceTree = "<group>"; };
@@ -160,6 +163,8 @@
 		F009E2A81A8BA9E600271245 /* filldatabase */ = {
 			isa = PBXGroup;
 			children = (
+				F0C1FAAE1AA8AD2900A52951 /* pushers */,
+				F0C1FAAD1AA8ACFA00A52951 /* viewcontrollers */,
 				F0C08CE01AA0B9ED002B1969 /* testcases */,
 				F0FDEF4F1A96562500725F3A /* storage */,
 				F0B2DBD31A8CECCA00E8655D /* SADictionaryAddtions.h */,
@@ -167,17 +172,7 @@
 				F009E2D21A8BB20F00271245 /* AllDefines.h */,
 				F009E2AD1A8BA9E600271245 /* AppDelegate.h */,
 				F009E2AE1A8BA9E600271245 /* AppDelegate.m */,
-				F009E2B01A8BA9E600271245 /* PushToStorageViewController.h */,
-				F009E2B11A8BA9E600271245 /* PushToStorageViewController.m */,
 				F009E2B31A8BA9E600271245 /* Main.storyboard */,
-				F0FDEF591A9CCA5400725F3A /* CasesViewController.h */,
-				F0FDEF5A1A9CCA5400725F3A /* CasesViewController.m */,
-				F009E2CF1A8BABD400271245 /* DataGetter.h */,
-				F009E2D01A8BABD400271245 /* DataGetter.m */,
-				F0B2DBAC1A8C8B4000E8655D /* DataPusher.h */,
-				F0B2DBAD1A8C8B4000E8655D /* DataPusher.m */,
-				F0B2DBD71A933DCF00E8655D /* PlistPusher.h */,
-				F0B2DBD81A933DCF00E8655D /* PlistPusher.m */,
 				F009E2B61A8BA9E600271245 /* Images.xcassets */,
 				F009E2B81A8BA9E600271245 /* LaunchScreen.xib */,
 				F009E2A91A8BA9E600271245 /* Supporting Files */,
@@ -226,6 +221,32 @@
 				F0C08CEB1AA3941F002B1969 /* DropTestCase.m */,
 			);
 			name = testcases;
+			sourceTree = "<group>";
+		};
+		F0C1FAAD1AA8ACFA00A52951 /* viewcontrollers */ = {
+			isa = PBXGroup;
+			children = (
+				F009E2B01A8BA9E600271245 /* PushToStorageViewController.h */,
+				F009E2B11A8BA9E600271245 /* PushToStorageViewController.m */,
+				F0C1FAAA1AA8ACF100A52951 /* StorageTestViewController.h */,
+				F0C1FAAB1AA8ACF100A52951 /* StorageTestViewController.m */,
+				F0FDEF591A9CCA5400725F3A /* CasesViewController.h */,
+				F0FDEF5A1A9CCA5400725F3A /* CasesViewController.m */,
+			);
+			name = viewcontrollers;
+			sourceTree = "<group>";
+		};
+		F0C1FAAE1AA8AD2900A52951 /* pushers */ = {
+			isa = PBXGroup;
+			children = (
+				F009E2CF1A8BABD400271245 /* DataGetter.h */,
+				F009E2D01A8BABD400271245 /* DataGetter.m */,
+				F0B2DBAC1A8C8B4000E8655D /* DataPusher.h */,
+				F0B2DBAD1A8C8B4000E8655D /* DataPusher.m */,
+				F0B2DBD71A933DCF00E8655D /* PlistPusher.h */,
+				F0B2DBD81A933DCF00E8655D /* PlistPusher.m */,
+			);
+			name = pushers;
 			sourceTree = "<group>";
 		};
 		F0FDEF4F1A96562500725F3A /* storage */ = {
@@ -363,6 +384,7 @@
 				F0C08CDF1AA0B06F002B1969 /* ThirdTestCase.m in Sources */,
 				F009E2AC1A8BA9E600271245 /* main.m in Sources */,
 				F0B2DBCE1A8C90C700E8655D /* FMDatabase.m in Sources */,
+				F0C1FAAC1AA8ACF100A52951 /* StorageTestViewController.m in Sources */,
 				F0C08CE31AA0BACD002B1969 /* ChangeNotesStorage.m in Sources */,
 				F0B2DBD51A8CECCA00E8655D /* SADictionaryAddtions.m in Sources */,
 				F0FDEF551A9656A500725F3A /* NotepadDataStorage.m in Sources */,
