@@ -160,7 +160,7 @@
 - (void) dropNotesFromSingleBinaryPListWithNoteIDs:(NSArray *)noteIDs {
     _rollbackedSingleBinaryPList = NO;
     _timerFiredSingleBinaryPList = YES;
-    _notesToWriteBinary = [NSMutableArray arrayWithContentsOfFile:SINGLE_PLIST_PATH];
+    _notesToWriteBinary = [NSMutableArray arrayWithContentsOfFile:SINGLE_PLIST_BINARY_PATH];
     NSTimer *timer;
     for (int i = (int)[_notesToWriteBinary count] - 1; i >= 0; i--) {
         while (!_timerFiredSingleBinaryPList) {
@@ -347,8 +347,19 @@
 - (void) dropOneNoteInMultiplePList: (NSTimer *) timer {
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         NSString *noteID = timer.userInfo[@"noteID"];
-        NSString *notePath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:noteID];
-        
+        if (!timer.userInfo[@"noteID"]) {
+            [self sendErrorNotification:@"В таймер не пришел noteID"];
+            _timerFiredMultiplePList = YES;
+            return;
+        }
+        NSString *notePath = [MULTIPLE_PLIST_FOLDER stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist", timer.userInfo[@"noteID"]]];
+        BOOL isDirectory;
+        NSFileManager *manager = [NSFileManager new];
+        if (![manager fileExistsAtPath:notePath isDirectory:&isDirectory] || isDirectory) {
+            [self sendErrorNotification:@"Заметка либо является папкой, либо ее нет"];
+            _timerFiredMultiplePList = YES;
+            return;
+        }
         if (_helperNotes[noteID]) {
             [_helperNotes removeObjectForKey:noteID];
             NSFileManager *manager = [NSFileManager defaultManager];
@@ -376,7 +387,19 @@
 - (void) dropOneNoteInMultipleBinaryPList: (NSTimer *) timer {
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         NSString *noteID = timer.userInfo[@"noteID"];
-        NSString *notePath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingPathComponent:noteID];
+        if (!timer.userInfo[@"noteID"]) {
+            [self sendErrorNotification:@"В таймер не пришел noteID"];
+            _timerFiredMultipleBinaryPList = YES;
+            return;
+        }
+        NSString *notePath = [MULTIPLE_BINARY_PLIST_FOLDER stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist", timer.userInfo[@"noteID"]]];
+        BOOL isDirectory;
+        NSFileManager *manager = [NSFileManager new];
+        if (![manager fileExistsAtPath:notePath isDirectory:&isDirectory] || isDirectory) {
+            [self sendErrorNotification:@"Заметка либо является папкой, либо ее нет"];
+            _timerFiredMultipleBinaryPList = YES;
+            return;
+        }
         if (_helperNotesBinary[noteID]) {
             [_helperNotesBinary removeObjectForKey:noteID];
             NSFileManager *manager = [NSFileManager defaultManager];
