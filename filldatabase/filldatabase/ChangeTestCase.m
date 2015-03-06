@@ -83,7 +83,7 @@
 }
 
 - (void) run {
-    self.storage = [[ChangeNotesStorage alloc] init];
+    self.storage = [[ChangeNotesLauncher alloc] init];
     for (NSString *dataStorage in DATA_STORAGES) {
         [self callTestCaseWithStoraType:dataStorage];
     }

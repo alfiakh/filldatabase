@@ -6,12 +6,12 @@
 //  Copyright (c) 2015 Alfiya Khairetdinova. All rights reserved.
 //
 
-#import "ChangeNotesStorage.h"
+#import "ChangeNotesLauncher.h"
 #import "AllDefines.h"
 #import "FMDatabase.h"
 #import "FMDatabaseAdditions.h"
 
-@implementation ChangeNotesStorage {
+@implementation ChangeNotesLauncher {
     NSMutableArray *_changedNotes;
     NSMutableArray *_changedNotesBinary;
     

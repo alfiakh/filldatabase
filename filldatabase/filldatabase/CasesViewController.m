@@ -7,8 +7,8 @@
 //
 
 #import "CasesViewController.h"
-#import "NotepadDataStorage.h"
-#import "DateRangeDataStorage.h"
+#import "NotepadDataSelection.h"
+#import "DateRangeDataSelection.h"
 #import "FirstTestCase.h"
 #import "SecondTestCase.h"
 #import "ThirdTestCase.h"

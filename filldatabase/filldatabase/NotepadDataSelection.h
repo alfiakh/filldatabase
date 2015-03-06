@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "FMDatabase.h"
 
-@interface NotepadDataStorage : NSObject
+@interface NotepadDataSelection : NSObject
 
 - (id) initWithOrder: (NSString *) order
             withNotes: (BOOL) displayNotes
@@ -17,13 +17,13 @@
        withPastEvents: (BOOL) displayPastEvents;
 - (NSMutableString *) addNotepadConditionsToQuery: (NSMutableString *) query;
 - (NSString *) buildSqlQuery;
-- (void) getNotesForNotepadFromDataBase;
+- (void) getNotesForNotepadFromDataBase: (NSTimer *) timer;
 - (void) sendErrorNotification:(NSString *)message;
 - (NSPredicate *) buildPredicate;
-- (void) getNotesForNotepadFromSinglePList;
-- (void) getNotesForNotepadFromSingleBinaryPList;
-- (void) getNotesForNotepadFromMultiplePList;
-- (void) getNotesForNotepadFromMultipleBinaryPList;
+- (void) getNotesForNotepadFromSinglePList: (NSTimer *) timer;
+- (void) getNotesForNotepadFromSingleBinaryPList: (NSTimer *) timer;
+- (void) getNotesForNotepadFromMultiplePList: (NSTimer *) timer;
+- (void) getNotesForNotepadFromMultipleBinaryPList: (NSTimer *) timer;
 
 @property NSString *order;
 @property BOOL displayNotes;

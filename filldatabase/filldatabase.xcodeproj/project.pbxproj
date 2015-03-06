@@ -25,12 +25,12 @@
 		F0B2DBD51A8CECCA00E8655D /* SADictionaryAddtions.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBD41A8CECCA00E8655D /* SADictionaryAddtions.m */; };
 		F0B2DBD91A933DCF00E8655D /* PlistPusher.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B2DBD81A933DCF00E8655D /* PlistPusher.m */; };
 		F0C08CDF1AA0B06F002B1969 /* ThirdTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C08CDE1AA0B06F002B1969 /* ThirdTestCase.m */; };
-		F0C08CE31AA0BACD002B1969 /* ChangeNotesStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C08CE21AA0BACD002B1969 /* ChangeNotesStorage.m */; };
-		F0C08CE61AA30727002B1969 /* DropDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C08CE51AA30727002B1969 /* DropDataStorage.m */; };
+		F0C08CE31AA0BACD002B1969 /* ChangeNotesLauncher.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C08CE21AA0BACD002B1969 /* ChangeNotesLauncher.m */; };
+		F0C08CE61AA30727002B1969 /* DropNotesLauncher.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C08CE51AA30727002B1969 /* DropNotesLauncher.m */; };
 		F0C08CE91AA38471002B1969 /* ChangeTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C08CE81AA38471002B1969 /* ChangeTestCase.m */; };
 		F0C08CEC1AA3941F002B1969 /* DropTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C08CEB1AA3941F002B1969 /* DropTestCase.m */; };
-		F0FDEF551A9656A500725F3A /* NotepadDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF541A9656A500725F3A /* NotepadDataStorage.m */; };
-		F0FDEF581A96911100725F3A /* DateRangeDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF571A96911100725F3A /* DateRangeDataStorage.m */; };
+		F0FDEF551A9656A500725F3A /* NotepadDataSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF541A9656A500725F3A /* NotepadDataSelection.m */; };
+		F0FDEF581A96911100725F3A /* DateRangeDataSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF571A96911100725F3A /* DateRangeDataSelection.m */; };
 		F0FDEF5B1A9CCA5400725F3A /* CasesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF5A1A9CCA5400725F3A /* CasesViewController.m */; };
 		F0FDEF5E1A9CD59200725F3A /* FirstTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF5D1A9CD59200725F3A /* FirstTestCase.m */; };
 		F0FDEF611A9CF79700725F3A /* SecondTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDEF601A9CF79700725F3A /* SecondTestCase.m */; };
@@ -84,18 +84,18 @@
 		F0B2DBD81A933DCF00E8655D /* PlistPusher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlistPusher.m; sourceTree = "<group>"; };
 		F0C08CDD1AA0B06F002B1969 /* ThirdTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThirdTestCase.h; path = ../ThirdTestCase.h; sourceTree = "<group>"; };
 		F0C08CDE1AA0B06F002B1969 /* ThirdTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ThirdTestCase.m; path = ../ThirdTestCase.m; sourceTree = "<group>"; };
-		F0C08CE11AA0BACD002B1969 /* ChangeNotesStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeNotesStorage.h; sourceTree = "<group>"; };
-		F0C08CE21AA0BACD002B1969 /* ChangeNotesStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeNotesStorage.m; sourceTree = "<group>"; };
-		F0C08CE41AA30727002B1969 /* DropDataStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDataStorage.h; sourceTree = "<group>"; };
-		F0C08CE51AA30727002B1969 /* DropDataStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDataStorage.m; sourceTree = "<group>"; };
+		F0C08CE11AA0BACD002B1969 /* ChangeNotesLauncher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeNotesLauncher.h; sourceTree = "<group>"; };
+		F0C08CE21AA0BACD002B1969 /* ChangeNotesLauncher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeNotesLauncher.m; sourceTree = "<group>"; };
+		F0C08CE41AA30727002B1969 /* DropNotesLauncher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropNotesLauncher.h; sourceTree = "<group>"; };
+		F0C08CE51AA30727002B1969 /* DropNotesLauncher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropNotesLauncher.m; sourceTree = "<group>"; };
 		F0C08CE71AA38471002B1969 /* ChangeTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeTestCase.h; sourceTree = "<group>"; };
 		F0C08CE81AA38471002B1969 /* ChangeTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeTestCase.m; sourceTree = "<group>"; };
 		F0C08CEA1AA3941F002B1969 /* DropTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropTestCase.h; sourceTree = "<group>"; };
 		F0C08CEB1AA3941F002B1969 /* DropTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropTestCase.m; sourceTree = "<group>"; };
-		F0FDEF531A9656A500725F3A /* NotepadDataStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotepadDataStorage.h; path = filldatabase/NotepadDataStorage.h; sourceTree = "<group>"; };
-		F0FDEF541A9656A500725F3A /* NotepadDataStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NotepadDataStorage.m; path = filldatabase/NotepadDataStorage.m; sourceTree = "<group>"; };
-		F0FDEF561A96911100725F3A /* DateRangeDataStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DateRangeDataStorage.h; path = filldatabase/DateRangeDataStorage.h; sourceTree = "<group>"; };
-		F0FDEF571A96911100725F3A /* DateRangeDataStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DateRangeDataStorage.m; path = filldatabase/DateRangeDataStorage.m; sourceTree = "<group>"; };
+		F0FDEF531A9656A500725F3A /* NotepadDataSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotepadDataSelection.h; path = filldatabase/NotepadDataSelection.h; sourceTree = "<group>"; };
+		F0FDEF541A9656A500725F3A /* NotepadDataSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NotepadDataSelection.m; path = filldatabase/NotepadDataSelection.m; sourceTree = "<group>"; };
+		F0FDEF561A96911100725F3A /* DateRangeDataSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DateRangeDataSelection.h; path = filldatabase/DateRangeDataSelection.h; sourceTree = "<group>"; };
+		F0FDEF571A96911100725F3A /* DateRangeDataSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DateRangeDataSelection.m; path = filldatabase/DateRangeDataSelection.m; sourceTree = "<group>"; };
 		F0FDEF591A9CCA5400725F3A /* CasesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CasesViewController.h; sourceTree = "<group>"; };
 		F0FDEF5A1A9CCA5400725F3A /* CasesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CasesViewController.m; sourceTree = "<group>"; };
 		F0FDEF5C1A9CD59200725F3A /* FirstTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstTestCase.h; sourceTree = "<group>"; };
@@ -231,14 +231,14 @@
 		F0FDEF4F1A96562500725F3A /* storage */ = {
 			isa = PBXGroup;
 			children = (
-				F0C08CE11AA0BACD002B1969 /* ChangeNotesStorage.h */,
-				F0C08CE21AA0BACD002B1969 /* ChangeNotesStorage.m */,
-				F0C08CE41AA30727002B1969 /* DropDataStorage.h */,
-				F0C08CE51AA30727002B1969 /* DropDataStorage.m */,
-				F0FDEF531A9656A500725F3A /* NotepadDataStorage.h */,
-				F0FDEF541A9656A500725F3A /* NotepadDataStorage.m */,
-				F0FDEF561A96911100725F3A /* DateRangeDataStorage.h */,
-				F0FDEF571A96911100725F3A /* DateRangeDataStorage.m */,
+				F0C08CE11AA0BACD002B1969 /* ChangeNotesLauncher.h */,
+				F0C08CE21AA0BACD002B1969 /* ChangeNotesLauncher.m */,
+				F0C08CE41AA30727002B1969 /* DropNotesLauncher.h */,
+				F0C08CE51AA30727002B1969 /* DropNotesLauncher.m */,
+				F0FDEF531A9656A500725F3A /* NotepadDataSelection.h */,
+				F0FDEF541A9656A500725F3A /* NotepadDataSelection.m */,
+				F0FDEF561A96911100725F3A /* DateRangeDataSelection.h */,
+				F0FDEF571A96911100725F3A /* DateRangeDataSelection.m */,
 			);
 			name = storage;
 			path = ..;
@@ -354,18 +354,18 @@
 				F0FDEF611A9CF79700725F3A /* SecondTestCase.m in Sources */,
 				F0B2DBD11A8C90C700E8655D /* FMDatabaseQueue.m in Sources */,
 				F0C08CEC1AA3941F002B1969 /* DropTestCase.m in Sources */,
-				F0C08CE61AA30727002B1969 /* DropDataStorage.m in Sources */,
+				F0C08CE61AA30727002B1969 /* DropNotesLauncher.m in Sources */,
 				F009E2AF1A8BA9E600271245 /* AppDelegate.m in Sources */,
 				F0C08CE91AA38471002B1969 /* ChangeTestCase.m in Sources */,
 				F0B2DBAE1A8C8B4000E8655D /* DataPusher.m in Sources */,
-				F0FDEF581A96911100725F3A /* DateRangeDataStorage.m in Sources */,
+				F0FDEF581A96911100725F3A /* DateRangeDataSelection.m in Sources */,
 				F0B2DBD21A8C90C700E8655D /* FMResultSet.m in Sources */,
 				F0C08CDF1AA0B06F002B1969 /* ThirdTestCase.m in Sources */,
 				F009E2AC1A8BA9E600271245 /* main.m in Sources */,
 				F0B2DBCE1A8C90C700E8655D /* FMDatabase.m in Sources */,
-				F0C08CE31AA0BACD002B1969 /* ChangeNotesStorage.m in Sources */,
+				F0C08CE31AA0BACD002B1969 /* ChangeNotesLauncher.m in Sources */,
 				F0B2DBD51A8CECCA00E8655D /* SADictionaryAddtions.m in Sources */,
-				F0FDEF551A9656A500725F3A /* NotepadDataStorage.m in Sources */,
+				F0FDEF551A9656A500725F3A /* NotepadDataSelection.m in Sources */,
 				F0FDEF5E1A9CD59200725F3A /* FirstTestCase.m in Sources */,
 				F0B2DBCF1A8C90C700E8655D /* FMDatabaseAdditions.m in Sources */,
 			);

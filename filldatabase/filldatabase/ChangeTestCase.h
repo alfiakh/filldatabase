@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ChangeNotesStorage.h"
+#import "ChangeNotesLauncher.h"
 
 @interface ChangeTestCase : NSObject
 
-@property ChangeNotesStorage *storage;
+@property ChangeNotesLauncher *storage;
 
 @end

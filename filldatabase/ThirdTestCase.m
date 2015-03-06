@@ -55,20 +55,20 @@
 }
 
 - (void) run {
-    self.notepadStorage = [[NotepadDataStorage alloc]
+    self.notepadStorage = [[NotepadDataSelection alloc]
                            initWithOrder:CR
                            withNotes:YES
                            withFutureEvents:NO
                            withPastEvents:YES];
-    self.calendarStorage = [[DateRangeDataStorage alloc]
+    self.calendarStorage = [[DateRangeDataSelection alloc]
                             initWithDate:[NSDate date]
                             withNotes:YES
                             countDays:@7];
-    self.monthCalendarStorage = [[DateRangeDataStorage alloc]
+    self.monthCalendarStorage = [[DateRangeDataSelection alloc]
                                  initWithDate:[NSDate date]
                                  withNotes:NO
                                  countDays:@42];
-    self.diaryStorage = [[DateRangeDataStorage alloc]
+    self.diaryStorage = [[DateRangeDataSelection alloc]
                          initWithDate:[NSDate date]
                          withNotes:YES
                          countDays:@1];

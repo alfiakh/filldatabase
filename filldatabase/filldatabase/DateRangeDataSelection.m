@@ -6,13 +6,13 @@
 //  Copyright (c) 2015 Alfiya Khairetdinova. All rights reserved.
 //
 
-#import "DateRangeDataStorage.h"
+#import "DateRangeDataSelection.h"
 #import "AllDefines.h"
 #define CALENDAR_COLUMNS @"ID, message, event_enable, event_start_TS, event_end_TS"
 #define INDICATOR_COLUMNS @"event_start_TS, event_end_TS"
 #define DIARY_COLUMNS @"ID, message, event_enable, event_start_TS, event_end_TS, event_alarms, create_TS, modify_TS, modify_devID, create_devID"
 
-@implementation DateRangeDataStorage
+@implementation DateRangeDataSelection
 
 - (id) initWithDate: (NSDate *)dateStart
           withNotes: (BOOL) displayNotes

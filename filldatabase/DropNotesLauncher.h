@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface DropDataStorage : NSObject
+@interface DropNotesLauncher : NSObject
 
 - (NSArray *) getIDsToDropFromDataBase;
 - (NSArray *) getIDsToDropFromSinglePList;

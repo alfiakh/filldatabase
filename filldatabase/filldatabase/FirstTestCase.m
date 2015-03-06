@@ -36,10 +36,22 @@
     });
 }
 
+- (void) runStepNotepadStorageWithSelector: (SEL) selector {
+    while (!self.stepOvered) {
+        NSLog(@"sleep");
+        sleep(0.1);
+    }
+    NSTimer *timer = [NSTimer timerWithTimeInterval:0
+                                             target:self.notepadStorage
+                                           selector:selector
+                                           userInfo:nil
+                                            repeats:NO];
+    [timer fire];
+}
+
 - (void) callTestCaseWithStoraType: (NSTimer *) timer {
     __block NSString *storageType = timer.userInfo[@"storageType"];
     dispatch_async(_testCaseQUeue, ^(void) {
-        TICK;
 //        [self.notepadStorage getNotesForNotepadFromDataBase];
 //        [self.calendarStorage getNotesForDateRangeFromDataBase];
 //        [self.monthCalendarStorage getNotesForDateRangeFromDataBase];
@@ -52,16 +64,23 @@
         SEL getNotesForDateRangeSelector = NSSelectorFromString(getNotesForDateRangeSelectorNsame);
         if (![self.notepadStorage respondsToSelector:getNotesForNotepadSelector]) {
             NSLog(@"Notepad storage doesn't respond to selector %@", getNotesForNotepadSelectorNsame);
+            return;
         }
         if (![self.monthCalendarStorage respondsToSelector:getNotesForDateRangeSelector]) {
             NSLog(@"Month calendar storage doesn't respond to selector %@", getNotesForDateRangeSelectorNsame);
+            return;
         }
         if (![self.calendarStorage respondsToSelector:getNotesForDateRangeSelector]) {
             NSLog(@"Calendar storage doesn't respond to selector%@", getNotesForDateRangeSelectorNsame);
+            return;
         }
         if (![self.monthCalendarStorage respondsToSelector:getNotesForDateRangeSelector]) {
             NSLog(@"Diary storage doesn't respond to selector %@", getNotesForDateRangeSelectorNsame);
+            return;
         }
+        self.stepOvered = YES;
+        TICK;
+        
         TACK;
         NSString *message = [NSString stringWithFormat:@"1st TC finished %@ %@", storageType, tackInfo[@"time"]];
         [self sendDoneNotification:message];
@@ -70,20 +89,20 @@
 }
 
 - (void) run {
-    self.notepadStorage = [[NotepadDataStorage alloc]
+    self.notepadStorage = [[NotepadDataSelection alloc]
                            initWithOrder:CR
                            withNotes:YES
                            withFutureEvents:YES
                            withPastEvents:YES];
-    self.calendarStorage = [[DateRangeDataStorage alloc]
+    self.calendarStorage = [[DateRangeDataSelection alloc]
                             initWithDate:[NSDate date]
                             withNotes:YES
                             countDays:@7];
-    self.monthCalendarStorage = [[DateRangeDataStorage alloc]
+    self.monthCalendarStorage = [[DateRangeDataSelection alloc]
                                  initWithDate:[NSDate date]
                                  withNotes:NO
                                  countDays:@42];
-    self.diaryStorage = [[DateRangeDataStorage alloc]
+    self.diaryStorage = [[DateRangeDataSelection alloc]
                          initWithDate:[NSDate date]
                          withNotes:YES
                          countDays:@1];

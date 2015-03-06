@@ -6,12 +6,12 @@
 //  Copyright (c) 2015 Alfiya Khairetdinova. All rights reserved.
 //
 
-#import "NotepadDataStorage.h"
+#import "NotepadDataSelection.h"
 #import "AllDefines.h"
 
 #define COLUMNS @"ID, message, event_enable, event_start_TS, event_end_TS, event_alarms, create_TS, modify_TS, modify_devID, create_devID"
 
-@implementation NotepadDataStorage
+@implementation NotepadDataSelection
 
 - (id) initWithOrder: (NSString *)order
            withNotes: (BOOL)displayNotes

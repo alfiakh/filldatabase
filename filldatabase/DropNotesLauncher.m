@@ -6,11 +6,11 @@
 //  Copyright (c) 2015 Alfiya Khairetdinova. All rights reserved.
 //
 
-#import "DropDataStorage.h"
+#import "DropNotesLauncher.h"
 #import "FMDatabase.h"
 #import "AllDefines.h"
 
-@implementation DropDataStorage {
+@implementation DropNotesLauncher {
     // состояния отката дропа
     BOOL _rollbackedDataBase;
     BOOL _rollbackedSinglePList;

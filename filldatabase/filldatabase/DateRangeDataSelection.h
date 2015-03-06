@@ -9,18 +9,18 @@
 #import <Foundation/Foundation.h>
 #import "FMDatabase.h"
 
-@interface DateRangeDataStorage : NSObject
+@interface DateRangeDataSelection : NSObject
 
 - (id) initWithDate: (NSDate *)dateStart
           withNotes: (BOOL) displayNotes
           countDays: (NSNumber *)count;
 - (NSString *) buildSqlQuery;
-- (void) getNotesForDateRangeFromDataBase;
+- (void) getNotesForDateRangeFromDataBase: (NSTimer *) timer;
 - (void) sendErrorNotification:(NSString *)message;
-- (void) getNotesForDateRangeFromSinglePList;
-- (void) getNotesForDateRangeFromSingleBinaryPList;
-- (void) getNotesForDateRangeFromMultiplePList;
-- (void) getNotesForDateRangeFromMultipleBinaryPList;
+- (void) getNotesForDateRangeFromSinglePList: (NSTimer *) timer;
+- (void) getNotesForDateRangeFromSingleBinaryPList: (NSTimer *) timer;
+- (void) getNotesForDateRangeFromMultiplePList: (NSTimer *) timer;
+- (void) getNotesForDateRangeFromMultipleBinaryPList: (NSTimer *) timer;
 
 @property NSDate *dateStart;
 @property BOOL displayNotes;

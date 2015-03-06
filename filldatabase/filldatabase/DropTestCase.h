@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DropDataStorage.h"
+#import "DropNotesLauncher.h"
 
 @interface DropTestCase : NSObject
 
-@property DropDataStorage *storage;
+@property DropNotesLauncher *storage;
 
 @end
