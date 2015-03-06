@@ -17,9 +17,16 @@
     BOOL _timerFired;
 }
 
+- (id) init {
+    self = [super init];
+    if (self) {
+        _testCaseQUeue = dispatch_queue_create("com.testcases.queue", DISPATCH_QUEUE_SERIAL);
+    }
+    return self;
+}
+
 - (void) callTestCaseWithStoraType: (NSTimer *) timer {
     __block NSString *storageType = timer.userInfo[@"storageType"];
-    dispatch_async(_testCaseQUeue, ^(void) {
         self.stepOvered = YES;
         SEL getNotesForNotepadSelector = [super getNotepadSelectorWithStorageType:storageType];
         SEL getNotesForDateRangeSelector = [super getDateRangeSelectorWithStorageType:storageType];
@@ -41,7 +48,6 @@
         TACK;
         NSString *message = [NSString stringWithFormat:@"3rd TC finished %@ %@", storageType, tackInfo[@"time"]];
         [self sendDoneNotification:message];
-    });
 }
 
 - (void) run {
@@ -62,20 +68,27 @@
                          initWithDate:[NSDate date]
                          withNotes:YES
                          countDays:@1];
-    NSTimer *timer;
+    __block NSTimer *timer;
     _timerFired = YES;
-    for (NSString *dataStorage in DATA_STORAGES) {
-        if (!_timerFired) {
+    dispatch_async(_testCaseQUeue, ^(void) {
+        for (NSString *dataStorage in DATA_STORAGES) {
+            while (!_timerFired) {
+                NSLog(@"sleep");
+                sleep(0.1);
+            }
+            _timerFired = NO;
+            timer = [NSTimer timerWithTimeInterval:0
+                                            target:self selector:@selector(callTestCaseWithStoraType:)
+                                          userInfo:@{@"storageType": dataStorage}
+                                           repeats:NO];
+            [timer fire];
+        }
+        while (!_timerFired) {
             NSLog(@"sleep");
             sleep(0.1);
         }
-        _timerFired = NO;
-        timer = [NSTimer timerWithTimeInterval:0
-                                        target:self selector:@selector(callTestCaseWithStoraType:)
-                                      userInfo:@{@"storageType": dataStorage}
-                                       repeats:NO];
-        [timer fire];
-    }
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    });
 }
 
 @end
