@@ -148,19 +148,13 @@
 }
 
 - (void) getNotesForDateRangeFromSinglePList: (NSTimer *) timer {
-    TICK;
     [self applyPredicateToContentOfFile:SINGLE_PLIST_PATH];
-    TACK;
     [self sendStepOveredNotification];
-    NSLog(@"%@", tackInfo);
 }
 
 - (void) getNotesForDateRangeFromSingleBinaryPList: (NSTimer *) timer {
-    TICK;
     [self applyPredicateToContentOfFile:SINGLE_PLIST_BINARY_PATH];
-    TACK;
     [self sendStepOveredNotification];
-    NSLog(@"%@", tackInfo);
 }
 
 -(NSArray *) collectMultipleNotesWithPath: (NSString *) notesFolder
@@ -175,23 +169,17 @@
 }
 
 - (void) getNotesForDateRangeFromMultiplePList: (NSTimer *) timer {
-    TICK;
     NSString *singlePlistPath = HELPER_PLIST_PATH;
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
     [self collectMultipleNotesWithPath:MULTIPLE_PLIST_FOLDER withIDs:helperfilteredNotes];
-    TACK;
     [self sendStepOveredNotification];
-    NSLog(@"%@", tackInfo);
 }
 
 - (void) getNotesForDateRangeFromMultipleBinaryPList: (NSTimer *) timer {
-    TICK;
     NSString *singlePlistPath = HELPER_BINARY_PLIST_PATH;
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
     [self collectMultipleNotesWithPath:MULTIPLE_BINARY_PLIST_FOLDER withIDs:helperfilteredNotes];
-    TACK;
     [self sendStepOveredNotification];
-    NSLog(@"%@", tackInfo);
 }
 
 @end

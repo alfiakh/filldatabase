@@ -123,37 +123,25 @@
 }
 
 - (void) getNotesForNotepadFromSinglePList: (NSTimer *) timer {
-    TICK;
     [self applyPredicateToContentOfFile:SINGLE_PLIST_PATH];
-    TACK;
     [self sendStepOveredNotification];
-    NSLog(@"%@", tackInfo);
 }
 
 - (void) getNotesForNotepadFromSingleBinaryPList: (NSTimer *) timer {
-    TICK;
     [self applyPredicateToContentOfFile:SINGLE_PLIST_BINARY_PATH];
-    TACK;
     [self sendStepOveredNotification];
-    NSLog(@"%@", tackInfo);
 }
 
 - (void) getNotesForNotepadFromMultiplePList: (NSTimer *) timer {
-    TICK;
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:HELPER_PLIST_PATH];
     [self collectMultipleNotesWithPath:MULTIPLE_PLIST_FOLDER withIDs:helperfilteredNotes];
     [self sendStepOveredNotification];
-    TACK;
-    NSLog(@"%@", tackInfo);
 }
 
 - (void) getNotesForNotepadFromMultipleBinaryPList: (NSTimer *) timer {
-    TICK;
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:HELPER_BINARY_PLIST_PATH];
     [self collectMultipleNotesWithPath:MULTIPLE_BINARY_PLIST_FOLDER withIDs:helperfilteredNotes];
     [self sendStepOveredNotification];
-    TACK;
-    NSLog(@"%@", tackInfo);
 }
 
 @end
