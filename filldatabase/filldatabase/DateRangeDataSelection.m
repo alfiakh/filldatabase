@@ -51,6 +51,13 @@
      userInfo: @{@"message": message}];
 }
 
+- (void) sendStepOveredNotification {
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName: @"TestCaseStepOveredNotification"
+     object: nil
+     userInfo: nil];
+}
+
 - (NSString *) collectBetweenConditionWIthType: (NSString *) type
                                    withKeyName: (NSString *) keyName
                                 withLowerBound: (int) low
@@ -124,6 +131,7 @@
     else {
         [self sendErrorNotification:@"Сорь, базы нет"];
     }
+    [self sendStepOveredNotification];
 }
 
 - (NSPredicate *) buildPredicate {
@@ -143,6 +151,7 @@
     TICK;
     [self applyPredicateToContentOfFile:SINGLE_PLIST_PATH];
     TACK;
+    [self sendStepOveredNotification];
     NSLog(@"%@", tackInfo);
 }
 
@@ -150,6 +159,7 @@
     TICK;
     [self applyPredicateToContentOfFile:SINGLE_PLIST_BINARY_PATH];
     TACK;
+    [self sendStepOveredNotification];
     NSLog(@"%@", tackInfo);
 }
 
@@ -170,6 +180,7 @@
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
     [self collectMultipleNotesWithPath:MULTIPLE_PLIST_FOLDER withIDs:helperfilteredNotes];
     TACK;
+    [self sendStepOveredNotification];
     NSLog(@"%@", tackInfo);
 }
 
@@ -179,6 +190,7 @@
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:singlePlistPath];
     [self collectMultipleNotesWithPath:MULTIPLE_BINARY_PLIST_FOLDER withIDs:helperfilteredNotes];
     TACK;
+    [self sendStepOveredNotification];
     NSLog(@"%@", tackInfo);
 }
 

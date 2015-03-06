@@ -33,6 +33,13 @@
      userInfo: @{@"message": message}];
 }
 
+- (void) sendStepOveredNotification {
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName: @"TestCaseStepOveredNotification"
+     object: nil
+     userInfo: nil];
+}
+
 - (NSMutableString *) addNotepadConditionsToQuery: (NSMutableString *) query {
     NSMutableArray *conditions = [NSMutableArray arrayWithArray:@[]];
     if (!self.displayNotes) {
@@ -82,6 +89,7 @@
     else {
         [self sendErrorNotification:@"Сорь, базы нет"];
     }
+    [self sendStepOveredNotification];
 }
 
 - (NSPredicate *) buildPredicate {
@@ -118,6 +126,7 @@
     TICK;
     [self applyPredicateToContentOfFile:SINGLE_PLIST_PATH];
     TACK;
+    [self sendStepOveredNotification];
     NSLog(@"%@", tackInfo);
 }
 
@@ -125,6 +134,7 @@
     TICK;
     [self applyPredicateToContentOfFile:SINGLE_PLIST_BINARY_PATH];
     TACK;
+    [self sendStepOveredNotification];
     NSLog(@"%@", tackInfo);
 }
 
@@ -132,6 +142,7 @@
     TICK;
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:HELPER_PLIST_PATH];
     [self collectMultipleNotesWithPath:MULTIPLE_PLIST_FOLDER withIDs:helperfilteredNotes];
+    [self sendStepOveredNotification];
     TACK;
     NSLog(@"%@", tackInfo);
 }
@@ -140,6 +151,7 @@
     TICK;
     NSArray *helperfilteredNotes = [self applyPredicateToContentOfFile:HELPER_BINARY_PLIST_PATH];
     [self collectMultipleNotesWithPath:MULTIPLE_BINARY_PLIST_FOLDER withIDs:helperfilteredNotes];
+    [self sendStepOveredNotification];
     TACK;
     NSLog(@"%@", tackInfo);
 }

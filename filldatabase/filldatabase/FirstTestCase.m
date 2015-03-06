@@ -23,8 +23,17 @@
     if (self) {
         _testCaseQUeue = dispatch_queue_create("com.testcases.queue", DISPATCH_QUEUE_SERIAL);
         [self run];
+        [[NSNotificationCenter defaultCenter]
+         addObserver:self
+         selector:@selector(updateStepOvered)
+         name:@"TestCaseStepOveredNotification"
+         object:nil];
     }
     return self;
+}
+
+- (void) updateStepOvered {
+    self.stepOvered = YES;
 }
 
 - (void) sendDoneNotification: (NSString *)message {
@@ -36,28 +45,53 @@
     });
 }
 
-- (void) runStepNotepadStorageWithSelector: (SEL) selector {
+- (void) runStepStorageWithSelector: (SEL) selector
+                                withTarger: (NSString *) targer {
     while (!self.stepOvered) {
         NSLog(@"sleep");
         sleep(0.1);
     }
-    NSTimer *timer = [NSTimer timerWithTimeInterval:0
-                                             target:self.notepadStorage
-                                           selector:selector
-                                           userInfo:nil
-                                            repeats:NO];
+    self.stepOvered = NO;
+    NSTimer *timer;
+    if ([targer isEqualToString:@"notepadStorage"]) {
+        timer = [NSTimer timerWithTimeInterval:0
+                                        target:self.notepadStorage
+                                      selector:selector
+                                      userInfo:nil
+                                       repeats:NO];
+    }
+    else if ([targer isEqualToString:@"calendarStorage"]) {
+        timer = [NSTimer timerWithTimeInterval:0
+                                        target:self.calendarStorage
+                                      selector:selector
+                                      userInfo:nil
+                                       repeats:NO];
+    }
+    else if ([targer isEqualToString:@"monthCalendarStorage"]) {
+        timer = [NSTimer timerWithTimeInterval:0
+                                        target:self.monthCalendarStorage
+                                      selector:selector
+                                      userInfo:nil
+                                       repeats:NO];
+    }
+    else if ([targer isEqualToString:@"diaryStorage"]) {
+        timer = [NSTimer timerWithTimeInterval:0
+                                        target:self.diaryStorage
+                                      selector:selector
+                                      userInfo:nil
+                                       repeats:NO];
+    }
+    else {
+        [self sendDoneNotification:@"Выслан некорректный таргет для таймера"];
+        self.stepOvered = YES;
+        return;
+    }
     [timer fire];
 }
 
 - (void) callTestCaseWithStoraType: (NSTimer *) timer {
     __block NSString *storageType = timer.userInfo[@"storageType"];
     dispatch_async(_testCaseQUeue, ^(void) {
-//        [self.notepadStorage getNotesForNotepadFromDataBase];
-//        [self.calendarStorage getNotesForDateRangeFromDataBase];
-//        [self.monthCalendarStorage getNotesForDateRangeFromDataBase];
-//        [self.calendarStorage getNotesForDateRangeFromDataBase];
-//        [self.diaryStorage getNotesForDateRangeFromDataBase];
-//        [self.calendarStorage getNotesForDateRangeFromDataBase];
         NSString *getNotesForNotepadSelectorNsame = [NSString stringWithFormat:@"getNotesForNotepadFrom%@:", storageType];
         SEL getNotesForNotepadSelector = NSSelectorFromString(getNotesForNotepadSelectorNsame);
         NSString *getNotesForDateRangeSelectorNsame = [NSString stringWithFormat:@"getNotesForDateRangeFrom%@:", storageType];
@@ -80,7 +114,12 @@
         }
         self.stepOvered = YES;
         TICK;
-        
+        [self runStepStorageWithSelector:getNotesForNotepadSelector withTarger:@"notepadStorage"];
+        [self runStepStorageWithSelector:getNotesForDateRangeSelector withTarger:@"calendarStorage"];
+        [self runStepStorageWithSelector:getNotesForDateRangeSelector withTarger:@"monthCalendarStorage"];
+        [self runStepStorageWithSelector:getNotesForDateRangeSelector withTarger:@"calendarStorage"];
+        [self runStepStorageWithSelector:getNotesForDateRangeSelector withTarger:@"diaryStorage"];
+        [self runStepStorageWithSelector:getNotesForDateRangeSelector withTarger:@"calendarStorage"];
         TACK;
         NSString *message = [NSString stringWithFormat:@"1st TC finished %@ %@", storageType, tackInfo[@"time"]];
         [self sendDoneNotification:message];
