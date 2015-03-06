@@ -50,11 +50,14 @@
 }
 
 - (IBAction)firstCase:(id)sender {
+//    FirstTestCase *testCase = [[FirstTestCase alloc] init];
+//    [testCase run];
     [[FirstTestCase alloc] init];
 }
 
 - (IBAction)secondCase:(id)sender {
-    [[SecondTestCase alloc] init];
+    SecondTestCase *testCase = [[SecondTestCase alloc] init];
+    [testCase run];
 }
 
 - (IBAction)thirdCase:(id)sender {
