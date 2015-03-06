@@ -27,27 +27,28 @@
 
 - (void) callTestCaseWithStoraType: (NSTimer *) timer {
     __block NSString *storageType = timer.userInfo[@"storageType"];
-        self.stepOvered = YES;
-        SEL getNotesForNotepadSelector = [super getNotepadSelectorWithStorageType:storageType];
-        SEL getNotesForDateRangeSelector = [super getDateRangeSelectorWithStorageType:storageType];
-        TICK;
-        [super runStepStorageWithSelector:getNotesForNotepadSelector
-                               withTarget:@"notepadStorage"];
-        [super runStepStorageWithSelector:getNotesForDateRangeSelector
-                               withTarget:@"calendarStorage"];
-        [super runStepStorageWithSelector:getNotesForDateRangeSelector
-                               withTarget:@"diaryStorage"];
-        [super runStepStorageWithSelector:getNotesForDateRangeSelector
-                               withTarget:@"diaryStorage"];
-        [super runStepStorageWithSelector:getNotesForDateRangeSelector
-                               withTarget:@"diaryStorage"];
-        [super runStepStorageWithSelector:getNotesForDateRangeSelector
-                               withTarget:@"monthCalendarStorage"];
-        [super runStepStorageWithSelector:getNotesForDateRangeSelector
-                               withTarget:@"calendarStorage"];
-        TACK;
-        NSString *message = [NSString stringWithFormat:@"3rd TC finished %@ %@", storageType, tackInfo[@"time"]];
-        [self sendDoneNotification:message];
+    self.stepOvered = YES;
+    SEL getNotesForNotepadSelector = [super getNotepadSelectorWithStorageType:storageType];
+    SEL getNotesForDateRangeSelector = [super getDateRangeSelectorWithStorageType:storageType];
+    TICK;
+    [super runStepStorageWithSelector:getNotesForNotepadSelector
+                           withTarget:@"notepadStorage"];
+    [super runStepStorageWithSelector:getNotesForDateRangeSelector
+                           withTarget:@"calendarStorage"];
+    [super runStepStorageWithSelector:getNotesForDateRangeSelector
+                           withTarget:@"diaryStorage"];
+    [super runStepStorageWithSelector:getNotesForDateRangeSelector
+                           withTarget:@"diaryStorage"];
+    [super runStepStorageWithSelector:getNotesForDateRangeSelector
+                           withTarget:@"diaryStorage"];
+    [super runStepStorageWithSelector:getNotesForDateRangeSelector
+                           withTarget:@"monthCalendarStorage"];
+    [super runStepStorageWithSelector:getNotesForDateRangeSelector
+                           withTarget:@"calendarStorage"];
+    TACK;
+    NSString *message = [NSString stringWithFormat:@"3rd TC finished %@ %@", storageType, tackInfo[@"time"]];
+    [self sendDoneNotification:message];
+    _timerFired = YES;
 }
 
 - (void) run {
