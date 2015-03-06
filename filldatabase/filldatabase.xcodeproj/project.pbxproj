@@ -217,16 +217,16 @@
 		F0C08CE01AA0B9ED002B1969 /* testcases */ = {
 			isa = PBXGroup;
 			children = (
-				F0C08CE71AA38471002B1969 /* ChangeTestCase.h */,
-				F0C08CE81AA38471002B1969 /* ChangeTestCase.m */,
-				F0C08CDD1AA0B06F002B1969 /* ThirdTestCase.h */,
-				F0C08CDE1AA0B06F002B1969 /* ThirdTestCase.m */,
-				F0FDEF5C1A9CD59200725F3A /* FirstTestCase.h */,
-				F0FDEF5D1A9CD59200725F3A /* FirstTestCase.m */,
 				F0C3E21D1AA9E82B003C858E /* BaseSelectionTestCase.h */,
 				F0C3E21E1AA9E82B003C858E /* BaseSelectionTestCase.m */,
+				F0FDEF5C1A9CD59200725F3A /* FirstTestCase.h */,
+				F0FDEF5D1A9CD59200725F3A /* FirstTestCase.m */,
 				F0FDEF5F1A9CF79700725F3A /* SecondTestCase.h */,
 				F0FDEF601A9CF79700725F3A /* SecondTestCase.m */,
+				F0C08CDD1AA0B06F002B1969 /* ThirdTestCase.h */,
+				F0C08CDE1AA0B06F002B1969 /* ThirdTestCase.m */,
+				F0C08CE71AA38471002B1969 /* ChangeTestCase.h */,
+				F0C08CE81AA38471002B1969 /* ChangeTestCase.m */,
 				F0C08CEA1AA3941F002B1969 /* DropTestCase.h */,
 				F0C08CEB1AA3941F002B1969 /* DropTestCase.m */,
 			);
