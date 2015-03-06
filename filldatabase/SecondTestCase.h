@@ -16,5 +16,6 @@
 @property DateRangeDataSelection *calendarStorage;
 @property DateRangeDataSelection *monthCalendarStorage;
 @property DateRangeDataSelection *diaryStorage;
+@property BOOL stepOvered;
 
 @end
