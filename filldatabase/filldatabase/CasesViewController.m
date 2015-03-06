@@ -50,9 +50,8 @@
 }
 
 - (IBAction)firstCase:(id)sender {
-//    FirstTestCase *testCase = [[FirstTestCase alloc] init];
-//    [testCase run];
-    [[FirstTestCase alloc] init];
+    FirstTestCase *testCase = [[FirstTestCase alloc] init];
+    [testCase run];
 }
 
 - (IBAction)secondCase:(id)sender {
@@ -61,7 +60,8 @@
 }
 
 - (IBAction)thirdCase:(id)sender {
-    [[ThirdTestCase alloc] init];
+    ThirdTestCase *testCase = [[ThirdTestCase alloc] init];
+    [testCase run];
 }
 
 - (IBAction)changeManyNotes:(id)sender {

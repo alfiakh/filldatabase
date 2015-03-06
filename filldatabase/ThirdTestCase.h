@@ -9,12 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "NotepadDataSelection.h"
 #import "DateRangeDataSelection.h"
+#import "BaseSelectionTestCase.h"
 
-@interface ThirdTestCase : NSObject
+@interface ThirdTestCase : BaseSelectionTestCase
 
-@property NotepadDataSelection *notepadStorage;
-@property DateRangeDataSelection *calendarStorage;
-@property DateRangeDataSelection *monthCalendarStorage;
-@property DateRangeDataSelection *diaryStorage;
+- (void) run;
 
 @end
